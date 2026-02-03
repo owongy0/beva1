@@ -650,7 +650,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <p className="text-gray-600">Phone: +852 91061836</p>
-                  <p className="text-gray-600">Email: info@beva.com</p>
+                  <p className="text-gray-600">Email: info@bevahk.com</p>
                 </CardContent>
               </Card>
               
@@ -722,9 +722,13 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-1">
-              <h3 className="text-xl font-bold mb-4">BEVA</h3>
+              <img 
+                src="/BEVA1 (White).svg" 
+                alt="BEVA Clinic" 
+                className="h-10 w-auto mb-4"
+              />
               <p className="text-gray-400 text-sm">
-                Providing exceptional endovascular care with compassion and expertise.
+                Providing exceptional care with compassion and expertise.
               </p>
             </div>
             
@@ -753,7 +757,7 @@ export default function HomePage() {
                 <li>123 Medical Center Drive</li>
                 <li>Hong Kong, Central</li>
                 <li>+852 1234 5678</li>
-                <li>info@beva.com</li>
+                <li>info@bevahk.com</li>
               </ul>
             </div>
           </div>
