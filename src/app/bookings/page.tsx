@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import type { Appointment } from '@prisma/client';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -29,8 +29,8 @@ export default async function BookingsPage() {
 
   // Separate into upcoming and past
   const now = new Date();
-  const upcoming = appointments.filter((apt: Appointment) => apt.date >= now && apt.status !== 'CANCELLED');
-  const past = appointments.filter((apt: Appointment) => apt.date < now || apt.status === 'CANCELLED');
+  const upcoming = appointments.filter((apt: typeof appointments[0]) => apt.date >= now && apt.status !== 'CANCELLED');
+  const past = appointments.filter((apt: typeof appointments[0]) => apt.date < now || apt.status === 'CANCELLED');
 
   return (
     <div className="max-w-4xl mx-auto p-4 py-8">
