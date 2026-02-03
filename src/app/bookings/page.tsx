@@ -28,9 +28,10 @@ type Appointment = {
 };
 
 export default async function BookingsPage() {
+  // Get userId - middleware ensures this page is protected
   const { userId } = await auth();
-
-  // NOT LOGGED IN - Redirect to sign in
+  
+  // Redirect if not logged in (shouldn't happen due to middleware, but just in case)
   if (!userId) {
     redirect('/sign-in');
   }

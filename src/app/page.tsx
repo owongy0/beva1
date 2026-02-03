@@ -24,6 +24,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import dynamic from 'next/dynamic';
+
+// Dynamic import for map to avoid SSR issues
+const ClinicMap = dynamic(() => import('@/components/map').then(mod => mod.ClinicMap), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[400px] bg-gray-100 rounded-lg flex items-center justify-center">
+      <span className="text-gray-400">Loading map...</span>
+    </div>
+  ),
+});
 
 const procedures = [
   {
@@ -673,18 +684,9 @@ export default function HomePage() {
             </div>
             
             <div className="h-full min-h-[400px]">
-              <Card className="border-gray-200 h-full overflow-hidden">
+              <Card className="relative isolate z-0 border-gray-200 h-full overflow-hidden">
                 <CardContent className="p-0 h-full">
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.49494256864!2d114.16780177693236!3d22.29711384300774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34040121e78df1ad%3A0xb2b135950f821bc4!2s21%20Ashley!5e0!3m2!1sen!2shk!4v1770102531541!5m2!1sen!2shk" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="min-h-[400px] rounded-lg"
-                  />
+                  <ClinicMap />
                 </CardContent>
               </Card>
             </div>
