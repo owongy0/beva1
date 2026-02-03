@@ -182,7 +182,7 @@ Significantly shorter hospital stays and a quicker return to daily life compared
 ];
 
 const whyUsPoints = [
-  { title: 'Expert Surgeons', description: 'Board-certified specialists with decades of experience in endovascular procedures' },
+  { title: 'Our Specialists', description: 'Board-certified specialists with decades of experience in endovascular procedures' },
   { title: 'Modern Facilities', description: 'State-of-the-art equipment and comfortable recovery rooms' },
   { title: 'Personalized Care', description: 'Treatment plans tailored to your unique needs and condition' },
   { title: 'Fast Recovery', description: 'Minimally invasive techniques for shorter hospital stays' },
@@ -217,8 +217,8 @@ const faqs = [
 
 const teamMembers = [
   {
-    name: 'Dr. Sarah Chen',
-    title: 'Chief of Vascular Surgery',
+    name: 'Dr. Oscar Wong',
+    title: 'Consultant Neurosurgeon',
     specialty: 'Endovascular Specialist',
     experience: '20+ years experience',
     icon: Award,
@@ -243,8 +243,8 @@ const teamMembers = [
     bio: 'Dr. Chen is a pioneer in minimally invasive vascular procedures with over 20 years of clinical experience. She has performed more than 5,000 endovascular procedures and has published extensively in peer-reviewed journals. Her research focuses on improving patient outcomes through innovative treatment approaches.'
   },
   {
-    name: 'Dr. Michael Rodriguez',
-    title: 'Senior Surgeon',
+    name: 'Dr. Titus Wong',
+    title: 'Consultant Interventional Radiologist',
     specialty: 'Interventional Radiology',
     experience: '15+ years experience',
     icon: Stethoscope,
@@ -269,8 +269,8 @@ const teamMembers = [
     bio: 'Dr. Rodriguez specializes in cutting-edge interventional radiology techniques. He trained at world-renowned institutions and brings expertise in treating complex vascular conditions with minimally invasive approaches. He is passionate about patient-centered care and optimizing recovery times.'
   },
   {
-    name: 'Dr. Emily Watson',
-    title: 'Vascular Surgeon',
+    name: 'Dr. Kwong-Yau Chan',
+    title: 'Consultant Vascular Surgeon',
     specialty: 'Minimally Invasive Procedures',
     experience: '12+ years experience',
     icon: GraduationCap,
@@ -295,7 +295,7 @@ const teamMembers = [
     bio: 'Dr. Watson is dedicated to providing the least invasive treatment options for her patients. With fellowship training at the Cleveland Clinic, she combines surgical expertise with advanced endovascular skills. She has been recognized for her compassionate patient care and clinical excellence.'
   },
   {
-    name: 'Dr. James Park',
+    name: 'Dr. Clinton Wong',
     title: 'Consultant Surgeon',
     specialty: 'Aneurysm Treatment',
     experience: '18+ years experience',
@@ -340,12 +340,12 @@ export default function HomePage() {
             {/* Left - Text Content */}
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black">
-                World-class treatment, without open surgery
+                Advanced Treatments for Brain, Spine and Body Conditions
               </h1>
               
               <p className="text-lg text-gray-600">
-                Specialized endovascular treatments with experienced surgeons. 
-                Advanced minimally invasive options for faster recovery and improved outcomes.
+                
+                Minimally invasive options for faster recovery and improved outcomes.
               </p>
               
               <div className="flex flex-wrap gap-4">
@@ -362,7 +362,7 @@ export default function HomePage() {
             <div className="relative">
               <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
                 <img 
-                  src="/20240328_pic4.jpg" 
+                  src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg" 
                   alt="BEVA Clinic Medical Facility" 
                   className="w-full h-full object-cover"
                 />
@@ -379,7 +379,7 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-black mb-4">Our Procedures</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Advanced endovascular treatments delivered by experienced specialists
+              Highly specialised treatments delivered by experienced specialists
             </p>
           </div>
           
@@ -634,9 +634,9 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">
+                    Suite 1904<br />
                     21 Ashley Road<br />
-                    Suite 456<br />
-                    Hong Kong, Tsim Sha Tsui
+                    Tsim Sha Tsui, Kowloon
                   </p>
                 </CardContent>
               </Card>
