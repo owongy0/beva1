@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  patientId   String   // Clerk user ID
+  patientName String
+  doctorName  String   // Will be dropdown: Dr. Sarah Chen, Dr. Michael Rodriguez, etc.
+  procedure   String   // Previously 'specialty', now free text
+  date        DateTime
+  status      AppointmentStatus @default(SCHEDULED)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([patientId])
+  @@index([date])
+  @@index([status])
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
