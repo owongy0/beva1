@@ -1,0 +1,291 @@
+{
+  "metadata": {
+    "title": "BEVA Clinic - Advanced Endovascular Treatments",
+    "description": "Minimally invasive treatments for brain, spine and body conditions. Book a consultation with our experienced specialists."
+  },
+  "nav": {
+    "procedures": "Procedures",
+    "about": "About",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "signIn": "Sign In",
+    "register": "Register",
+    "myBookings": "My Bookings",
+    "menu": "Menu",
+    "loggedInAs": "Logged in as"
+  },
+  "hero": {
+    "title": "Advanced Treatments for Brain, Spine and Body Conditions",
+    "subtitle": "Minimally invasive options for faster recovery and improved outcomes.",
+    "bookConsultation": "Book A Consultation",
+    "ourProcedures": "Our Procedures"
+  },
+  "procedures": {
+    "title": "Our Procedures",
+    "subtitle": "Highly specialised treatments delivered by experienced specialists",
+    "learnMore": "Learn More",
+    "close": "Close",
+    "items": [
+      {
+        "title": "Cerebral Aneurysm Treatment",
+        "shortDescription": "Advanced coiling and flow diversion techniques to treat brain aneurysms with minimal invasiveness.",
+        "fullDescription": "Our cerebral aneurysm treatment uses state-of-the-art endovascular techniques to repair weakened blood vessels in the brain. We offer coiling, flow diversion, and stent-assisted procedures tailored to each patient's specific condition.",
+        "benefits": [
+          "Minimally invasive approach through a small groin incision",
+          "No open brain surgery required",
+          "Shorter hospital stays - often just 1-2 days",
+          "Faster recovery compared to traditional surgery",
+          "Reduced risk of complications"
+        ],
+        "recovery": "Most patients return to normal activities within 1-2 weeks. Follow-up imaging is performed at 3, 6, and 12 months to ensure the aneurysm remains secure."
+      },
+      {
+        "title": "Carotid Artery Stenting",
+        "shortDescription": "Restore blood flow to the brain with our advanced carotid stenting procedure.",
+        "fullDescription": "Carotid artery stenting is a minimally invasive procedure to open narrowed carotid arteries that supply blood to the brain. We use embolic protection devices and advanced stent technology to ensure safety and efficacy.",
+        "benefits": [
+          "Prevents stroke by improving blood flow to the brain",
+          "Smaller incision than traditional carotid endarterectomy",
+          "Lower risk of nerve injury and wound complications",
+          "Suitable for patients who are high-risk for open surgery",
+          "Quick return to daily activities"
+        ],
+        "recovery": "Patients typically stay overnight for observation. Most return to normal activities within a few days, with follow-up ultrasound imaging at regular intervals."
+      },
+      {
+        "title": "Chronic Subdural Hematoma (cSDH)",
+        "shortDescription": "Effective minimally invasive treatment for chronic subdural hematoma with Middle Meningeal Artery (MMA) embolization.",
+        "fullDescription": "Chronic subdural hematoma (cSDH) is a collection of blood on the brain's surface beneath the outer covering. Our innovative MMA embolization procedure addresses the root cause by blocking the blood vessels that feed the hematoma membrane, preventing recurrence.",
+        "benefits": [
+          "Non-surgical alternative to burr hole drainage",
+          "Significantly reduces recurrence rates",
+          "Performed under local anesthesia with sedation",
+          "Same-day or overnight procedure",
+          "Particularly effective for recurrent cSDH cases"
+        ],
+        "recovery": "Recovery is typically rapid, with most patients discharged the same day or next day. Follow-up CT scans monitor hematoma resolution over 4-8 weeks."
+      },
+      {
+        "title": "Trans-Venous Embolization",
+        "shortDescription": "Specialized venous approach for treating complex vascular malformations and fistulas.",
+        "fullDescription": "Trans-venous embolization is an advanced technique for treating vascular malformations and arteriovenous fistulas through the venous system. This approach is particularly valuable for dural arteriovenous fistulas and certain types of brain AVMs.",
+        "benefits": [
+          "Alternative route when arterial access is challenging",
+          "More complete treatment of certain fistulas",
+          "Reduced radiation exposure compared to repeated arterial procedures",
+          "Lower complication risk for specific malformation types",
+          "Can be combined with arterial approaches for complex cases"
+        ],
+        "recovery": "Hospital stay varies based on the complexity of the procedure. Most patients are monitored for 24-48 hours with gradual return to normal activities over 1-2 weeks."
+      },
+      {
+        "title": "Trans-Arterial Embolization",
+        "shortDescription": "Precision-targeted treatment for tumors, bleeding, and vascular malformations.",
+        "fullDescription": "Trans-arterial embolization delivers therapeutic agents directly to target vessels through catheter-based techniques. We treat various conditions including uterine fibroids, prostate enlargement, traumatic bleeding, and hypervascular tumors.",
+        "benefits": [
+          "Targeted treatment preserves surrounding healthy tissue",
+          "Effective for both benign and malignant conditions",
+          "Avoids open surgery in many cases",
+          "Can be repeated if necessary",
+          "Preserves organ function (e.g., uterus in fibroid treatment)"
+        ],
+        "recovery": "Most procedures are outpatient or require overnight observation. Recovery depends on the treated condition but is generally significantly faster than surgical alternatives."
+      },
+      {
+        "title": "EVAR & TEVAR",
+        "shortDescription": "Endovascular repair of aortic aneurysms using advanced stent graft technology.",
+        "fullDescription": "Endovascular Aortic Repair (EVAR) and Thoracic Endovascular Aortic Repair (TEVAR) are minimally invasive alternatives to open aortic surgery. We use custom-fitted stent grafts to reinforce weakened areas of the aorta without major chest or abdominal surgery.",
+        "benefits": [
+          "Avoids large surgical incisions and chest/abdominal opening",
+          "Dramatically reduced blood loss",
+          "Shorter ICU and hospital stays",
+          "Lower mortality risk compared to open repair",
+          "Suitable for elderly and high-risk surgical patients"
+        ],
+        "recovery": "Most patients stay 2-3 days in hospital. Return to normal activities typically occurs within 2-4 weeks. Lifelong CT surveillance is required to monitor the stent graft."
+      }
+    ]
+  },
+  "whyUs": {
+    "title": "Why Choose Us",
+    "subtitle": "Excellence in patient care and medical expertise",
+    "points": [
+      {
+        "title": "Expert Specialists",
+        "description": "Our team consists of board-certified vascular surgeons and interventional radiologists with decades of combined experience in endovascular procedures."
+      },
+      {
+        "title": "Advanced Technology",
+        "description": "We utilize the latest imaging equipment and minimally invasive techniques to ensure precise diagnoses and optimal treatment outcomes."
+      },
+      {
+        "title": "Personalised Care",
+        "description": "Every patient receives an individualized treatment plan tailored to their specific condition, medical history, and lifestyle needs."
+      },
+      {
+        "title": "Faster Recovery",
+        "description": "Our minimally invasive approaches mean less pain, smaller scars, shorter hospital stays, and quicker return to your daily activities."
+      }
+    ]
+  },
+  "team": {
+    "title": "Meet Our Specialists",
+    "subtitle": "World-class expertise with a patient-centered approach",
+    "education": "Education",
+    "certifications": "Certifications",
+    "expertise": "Areas of Expertise",
+    "members": [
+      {
+        "name": "Dr. Wai-Man Leung",
+        "title": "Head of Service",
+        "specialty": "Endovascular Neurosurgery",
+        "experience": "20+ years experience",
+        "bio": "Dr. Leung is a pioneer in minimally invasive vascular procedures with over 20 years of clinical experience. She has performed more than 5,000 endovascular procedures and has published extensively in peer-reviewed journals. Her research focuses on improving patient outcomes through innovative treatment approaches.",
+        "education": [
+          "MD, Harvard Medical School",
+          "Fellowship in Endovascular Surgery, Mayo Clinic",
+          "Residency in General Surgery, Johns Hopkins Hospital",
+          "Board Certified in Vascular Surgery"
+        ],
+        "certifications": [
+          "Fellow, Society for Vascular Surgery (SVS)",
+          "Member, American College of Surgeons (ACS)",
+          "Diplomate, American Board of Vascular Surgery",
+          "Fellow, Society of Interventional Radiology (SIR)"
+        ],
+        "expertise": [
+          "Cerebral Aneurysm Treatment",
+          "Carotid Artery Stenting",
+          "Complex Aortic Repairs",
+          "Peripheral Artery Disease"
+        ]
+      },
+      {
+        "name": "Dr. Titus Wong",
+        "title": "Consultant Interventional Radiologist",
+        "specialty": "Interventional Radiology",
+        "experience": "15+ years experience",
+        "bio": "Dr. Wong specializes in cutting-edge interventional radiology techniques. He trained at world-renowned institutions and brings expertise in treating complex vascular conditions with minimally invasive approaches. He is passionate about patient-centered care and optimizing recovery times.",
+        "education": [
+          "MD, Stanford University School of Medicine",
+          "Residency in Diagnostic Radiology, UCLA Medical Center",
+          "Fellowship in Interventional Radiology, MD Anderson Cancer Center",
+          "Board Certified in Diagnostic & Interventional Radiology"
+        ],
+        "certifications": [
+          "Fellow, Society of Interventional Radiology (SIR)",
+          "Member, Radiological Society of North America (RSNA)",
+          "Diplomate, American Board of Radiology",
+          "Certified in Vascular & Interventional Radiology"
+        ],
+        "expertise": [
+          "Trans-Arterial Embolization",
+          "Uterine Fibroid Embolization",
+          "Prostate Artery Embolization",
+          "Oncologic Interventions"
+        ]
+      },
+      {
+        "name": "Dr. Kwong-Yau Chan",
+        "title": "Consultant Vascular Surgeon",
+        "specialty": "Minimally Invasive Procedures",
+        "experience": "12+ years experience",
+        "bio": "Dr. Chan is dedicated to providing the least invasive treatment options for her patients. With fellowship training at the Cleveland Clinic, she combines surgical expertise with advanced endovascular skills. She has been recognized for her compassionate patient care and clinical excellence.",
+        "education": [
+          "MD, Johns Hopkins University School of Medicine",
+          "Residency in General Surgery, Massachusetts General Hospital",
+          "Fellowship in Vascular Surgery, Cleveland Clinic",
+          "Board Certified in General & Vascular Surgery"
+        ],
+        "certifications": [
+          "Fellow, American College of Surgeons (ACS)",
+          "Member, Society for Vascular Surgery (SVS)",
+          "Diplomate, American Board of Surgery",
+          "European Board of Vascular Surgery Certification"
+        ],
+        "expertise": [
+          "EVAR & TEVAR Procedures",
+          "Venous Disease Treatment",
+          "Dialysis Access Management",
+          "Limb Salvage Surgery"
+        ]
+      },
+      {
+        "name": "Dr. Clinton Wong",
+        "title": "Consultant Surgeon",
+        "specialty": "Aneurysm Treatment",
+        "experience": "18+ years experience",
+        "bio": "Dr. Wong brings a unique combination of neurosurgical expertise and biomedical engineering background. His research-driven approach and precision in treating cerebrovascular conditions have made him a leader in the field. He has developed several techniques for complex aneurysm treatments.",
+        "education": [
+          "MD, Mayo Clinic Alix School of Medicine",
+          "PhD in Biomedical Engineering, MIT",
+          "Residency in Neurosurgery, UCSF Medical Center",
+          "Fellowship in Cerebrovascular Surgery, Barrow Neurological Institute"
+        ],
+        "certifications": [
+          "Fellow, American Association of Neurological Surgeons (AANS)",
+          "Member, Congress of Neurological Surgeons (CNS)",
+          "Diplomate, American Board of Neurological Surgery",
+          "Society of Vascular & Interventional Neurology (SVIN)"
+        ],
+        "expertise": [
+          "Brain Aneurysm Coiling",
+          "Flow Diverter Procedures",
+          "Chronic Subdural Hematoma Treatment",
+          "Cerebrovascular Disorders"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Book a consultation or learn more about our services",
+    "address": "21/F, 21 Ashley Road, Tsim Sha Tsui, Hong Kong",
+    "phone": "+852 2345 6789",
+    "email": "info@beva.com.hk",
+    "hours": "Mon - Fri: 9:00 AM - 6:00 PM",
+    "bookAppointment": "Book an Appointment",
+    "location": "Our Location"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What is endovascular treatment?",
+        "answer": "Endovascular treatment is a minimally invasive procedure performed inside blood vessels using thin tubes called catheters. Instead of open surgery, doctors access the treatment area through a small puncture, typically in the groin. This approach offers faster recovery, less pain, and fewer complications compared to traditional surgery."
+      },
+      {
+        "question": "How do I know if I'm a candidate for endovascular treatment?",
+        "answer": "Suitability depends on your specific condition, overall health, and the anatomy of your blood vessels. During your consultation, our specialists will review your medical history, perform necessary imaging studies, and discuss whether endovascular treatment is appropriate for you. We treat each patient individually to determine the best approach."
+      },
+      {
+        "question": "Is the consultation fee covered by insurance?",
+        "answer": "Many insurance plans cover specialist consultations and endovascular procedures. We recommend contacting your insurance provider to verify coverage. Our administrative team can also assist with insurance inquiries and provide necessary documentation for claims."
+      },
+      {
+        "question": "How long does recovery typically take?",
+        "answer": "Recovery times vary depending on the procedure and individual factors. Most endovascular procedures allow patients to return home the same day or after an overnight stay. Many patients resume normal activities within 1-2 weeks, which is significantly faster than recovery from open surgery."
+      },
+      {
+        "question": "What should I expect during my first visit?",
+        "answer": "Your first visit includes a comprehensive medical evaluation, review of any previous imaging or test results, and a detailed discussion of your condition. Our specialists will explain treatment options, answer your questions, and develop a personalized care plan. Please bring your ID, insurance information, and a list of current medications."
+      },
+      {
+        "question": "Do you offer second opinions?",
+        "answer": "Yes, we regularly provide second opinions for patients seeking additional guidance on their diagnosis or treatment options. Our specialists can review your case, imaging studies, and medical records to offer an expert perspective on the best course of action."
+      }
+    ]
+  },
+  "footer": {
+    "about": "About Us",
+    "aboutText": "BEVA Clinic specializes in advanced endovascular treatments for brain, spine, and body conditions. Our team of experienced specialists is committed to providing minimally invasive solutions with exceptional patient care.",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact Info",
+    "copyright": "© 2025 BEVA Clinic. All rights reserved."
+  },
+  "language": {
+    "english": "English",
+    "chinese": "繁體中文",
+    "switch": "Switch Language"
+  }
+}
