@@ -13,29 +13,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+
 import {
   Stethoscope,
-  Heart,
-  Activity,
-  Users,
   Award,
   Check,
   MapPin,
   Phone,
   Clock,
   GraduationCap,
-  Brain,
-  ArrowRight,
-  Microscope,
   Sparkles,
-  Target,
+  ArrowRight,
+  Mail,
 } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Locale } from '@/i18n/config';
 import { Dictionary } from '@/i18n/get-dictionary';
 
@@ -54,11 +50,9 @@ interface HomePageClientProps {
   dictionary: Dictionary;
 }
 
-// Icon mapping for team members
-const teamIcons = [Award, Stethoscope, GraduationCap, Award];
 
-// Procedure icon mapping
-const procedureIcons = [Brain, Heart, Activity, Users, Target, Microscope];
+
+
 
 export default function HomePageClient({ lang, dictionary }: HomePageClientProps) {
   const [openDialogs, setOpenDialogs] = useState<Record<number, boolean>>({});
@@ -112,7 +106,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
 
       {/* Procedures Section */}
       <section id="procedures" className="py-24 bg-slate-50/50">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.procedures.title}</h2>
             <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
@@ -120,10 +114,9 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
               {t.procedures.subtitle}
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {t.procedures.items.map((procedure, index) => {
-              const IconComponent = procedureIcons[index % procedureIcons.length];
               return (
                 <Dialog 
                   key={index}
@@ -131,72 +124,82 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                   onOpenChange={(open) => setOpenDialogs(prev => ({ ...prev, [index]: open }))}
                 >
                   <DialogTrigger asChild>
-                    <Card className="border-0 shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer h-full flex flex-col group overflow-hidden bg-white rounded-2xl border-t-4 border-t-[#00477f] hover:-translate-y-2">
-                      <CardHeader className="flex-grow pb-4 pt-6">
-                        <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-500 group-hover:rotate-3">
-                          <IconComponent className="w-12 h-12 text-[#00477f]" />
-                        </div>
-                        <CardTitle className="text-slate-900 text-xl font-bold group-hover:text-[#00477f] transition-colors duration-300 leading-tight">{procedure.title}</CardTitle>
-                        <CardDescription className="text-slate-500 text-base mt-2 leading-relaxed">
-                          {procedure.shortDescription}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0 mt-auto pb-6">
-                        <p className="text-center text-sm text-[#00477f] font-medium group-hover:text-[#00477f] transition-colors flex items-center justify-center gap-2">
-                          {t.procedures.learnMore}
-                          <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-                    <DialogHeader>
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-4xl"><IconComponent className="w-10 h-10 text-[#00477f]" /></span>
-                        <DialogTitle className="text-2xl">{procedure.title}</DialogTitle>
-                      </div>
-                      <DialogDescription className="text-gray-600">
-                        {procedure.shortDescription}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="mt-4 space-y-6">
-                      <div>
-                        <h3 className="font-semibold text-black mb-2">{t.procedures.learnMore}</h3>
-                        <p className="text-gray-700 leading-relaxed">{procedure.fullDescription}</p>
-                      </div>
+                    <button className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
+                      {/* Title */}
+                      <h3 className="font-bold text-slate-900 text-lg leading-tight mb-3 group-hover:text-[#00477f] transition-colors">
+                        {procedure.title}
+                      </h3>
                       
+                      {/* Short description */}
+                      <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-grow">
+                        {procedure.shortDescription}
+                      </p>
+                      
+                      {/* Learn more link */}
+                      <div className="flex items-center gap-2 text-[#00477f] font-medium text-sm pt-4 border-t border-slate-100 group-hover:border-[#00477f]/20 transition-colors">
+                        <span>{lang === 'zh-TW' ? '了解更多' : 'Learn more'}</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </button>
+                  </DialogTrigger>
+                  
+                  <DialogContent className="max-w-4xl w-[95vw] max-h-[85vh] overflow-y-auto">
+                    <DialogHeader className="pb-6 border-b">
                       <div>
-                        <h3 className="font-semibold text-black mb-2">
+                        <DialogTitle className="text-2xl font-bold text-slate-900">{procedure.title}</DialogTitle>
+                        <p className="text-slate-500 mt-2">{procedure.shortDescription}</p>
+                      </div>
+                    </DialogHeader>
+                    
+                    <div className="pt-8 space-y-8">
+                      <section>
+                        <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                          {lang === 'zh-TW' ? '概述' : 'Overview'}
+                        </h3>
+                        <p className="text-slate-600 leading-relaxed">{procedure.fullDescription}</p>
+                      </section>
+
+                      <section>
+                        <h3 className="text-lg font-semibold text-slate-900 mb-4">
                           {lang === 'zh-TW' ? '治療優點' : 'Benefits'}
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {procedure.benefits.map((benefit, i) => (
-                            <li key={i} className="text-gray-700 text-sm flex items-start gap-2">
-                              <span className="text-[#00477f] mt-1">•</span>
-                              {benefit}
+                            <li key={i} className="flex items-start gap-3 bg-slate-50 rounded-lg p-3">
+                              <Check className="w-5 h-5 text-[#00477f] mt-0.5 shrink-0" />
+                              <span className="text-slate-600 text-sm">{benefit}</span>
                             </li>
                           ))}
                         </ul>
-                      </div>
-                      
-                      <div>
-                        <h3 className="font-semibold text-black mb-2">
-                          {lang === 'zh-TW' ? '康復' : 'Recovery'}
+                      </section>
+
+                      <section className="bg-gradient-to-r from-[#f8fafc] to-[#e6eef5] rounded-xl p-6">
+                        <h3 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                          <Clock className="w-5 h-5 text-[#00477f]" />
+                          {lang === 'zh-TW' ? '康復時間' : 'Recovery'}
                         </h3>
-                        <p className="text-gray-700">{procedure.recovery}</p>
-                      </div>
-                      
-                      <div className="pt-4 border-t">
-                        <Button 
-                          onClick={() => {
-                            setOpenDialogs(prev => ({ ...prev, [index]: false }));
-                            setTimeout(scrollToContact, 100);
-                          }}
-                          className="w-full bg-[#00477f] text-white hover:bg-[#00477f] py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
-                        >
-                          {t.contact.bookAppointment}
-                        </Button>
-                      </div>
+                        <p className="text-slate-600">{procedure.recovery}</p>
+                      </section>
+
+                      {/* Placeholder for future video/content */}
+                      <section className="border-2 border-dashed border-slate-200 rounded-xl p-12 text-center bg-slate-50/50">
+                        <div className="text-slate-400">
+                          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Stethoscope className="w-8 h-8 text-slate-300" />
+                          </div>
+                          <p className="text-sm">{lang === 'zh-TW' ? '視頻與詳細資料即將推出' : 'Video and detailed materials coming soon'}</p>
+                        </div>
+                      </section>
+
+                      <Button 
+                        onClick={() => {
+                          setOpenDialogs(prev => ({ ...prev, [index]: false }));
+                          setTimeout(scrollToContact, 100);
+                        }}
+                        className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
+                      >
+                        {t.contact.bookAppointment}
+                      </Button>
                     </div>
                   </DialogContent>
                 </Dialog>
@@ -206,33 +209,112 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
         </div>
       </section>
 
-      {/* Why Us Section */}
+      {/* Our Focus Section */}
       <section id="about" className="py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.whyUs.title}</h2>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+              {lang === 'zh-TW' ? '我們的專科範疇' : 'Our Clinical Focus'}
+            </h2>
             <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              {t.whyUs.subtitle}
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              {lang === 'zh-TW' 
+                ? '從腦部血管到周邊動脈，我們以微創技術治療全身各部位的血管疾病，避免傳統開刀手術的風險與恢復期。'
+                : 'From brain vessels to peripheral arteries, we treat vascular conditions throughout the body using minimally invasive techniques—avoiding the risks and recovery time of traditional open surgery.'}
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {t.whyUs.points.map((point, index) => (
-              <div key={index} className="flex flex-col items-center text-center p-8 rounded-2xl bg-slate-50 hover:bg-[#f0f5fa]/50 transition-colors duration-300 group">
-                <div className="w-16 h-16 bg-[#00477f] rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-[#00477f]/20 group-hover:shadow-xl group-hover:shadow-[#00477f]/30 group-hover:scale-110 transition-all duration-300">
-                  <Sparkles className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{point.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{point.description}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Neurovascular */}
+            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                {lang === 'zh-TW' ? '腦血管疾病' : 'Neurovascular Conditions'}
+              </h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '治療腦動脈瘤、血管畸形及腦部出血性疾病，無需開顱手術。'
+                  : 'Brain aneurysms, vascular malformations, and intracranial hemorrhage—treated without opening the skull.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Cerebral Aneurysm', 'Brain AVM', 'Dural AV Fistula', 'cSDH'].map((item) => (
+                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
+                    {item}
+                  </span>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Arterial/Vascular */}
+            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                {lang === 'zh-TW' ? '動脈及主動脈疾病' : 'Arterial & Aortic Disease'}
+              </h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '頸動脈狹窄及主動脈瘤的血管內修復，降低中風風險。'
+                  : 'Carotid artery stenosis and aortic aneurysm repair—reducing stroke risk and preventing rupture.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Carotid Stenting', 'EVAR/TEVAR'].map((item) => (
+                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Pelvic/Organ Health */}
+            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                {lang === 'zh-TW' ? '盆腔及器官健康' : 'Pelvic & Organ Health'}
+              </h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '子宮肌瘤、前列腺肥大及痔瘡的動脈栓塞治療，保留器官功能。'
+                  : 'Uterine fibroids, enlarged prostate, and hemorrhoids—treated while preserving organ function.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Uterine Fibroids', 'BPH', 'Hemorrhoids'].map((item) => (
+                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Chronic Pain/Musculoskeletal */}
+            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                {lang === 'zh-TW' ? '慢性疼痛治療' : 'Chronic Pain Management'}
+              </h3>
+              <p className="text-slate-600 mb-4 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '膝關節炎及足底筋膜炎的血管栓塞治療，延遲或避免關節置換手術。'
+                  : 'Knee osteoarthritis and plantar fasciitis—delaying or avoiding joint replacement surgery.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['Knee Arthritis', 'Plantar Fasciitis'].map((item) => (
+                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <Button 
+              onClick={scrollToContact}
+              className="bg-[#00477f] text-white hover:bg-[#003d70] px-12 py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
+            >
+              {t.contact.bookAppointment}
+            </Button>
           </div>
         </div>
       </section>
       {/* Meet Our Team Section */}
       <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.team.title}</h2>
             <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
@@ -241,125 +323,180 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.team.members.map((doctor, index) => {
-              const IconComponent = teamIcons[index % teamIcons.length];
-              return (
+          {/* Horizontal Scroll Carousel */}
+          <div className="relative">
+            {/* Scroll Buttons */}
+            <button 
+              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: -400, behavior: 'smooth' })}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -ml-4 lg:ml-0"
+            >
+              ←
+            </button>
+            <button 
+              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: 400, behavior: 'smooth' })}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -mr-4 lg:mr-0"
+            >
+              →
+            </button>
+
+            {/* Scroll Container */}
+            <div 
+              id="team-scroll"
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-8"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {t.team.members.map((doctor, index) => (
                 <Dialog 
                   key={index}
                   open={openTeamDialogs[index]} 
                   onOpenChange={(open) => setOpenTeamDialogs(prev => ({ ...prev, [index]: open }))}
                 >
                   <DialogTrigger asChild>
-                    <Card className="border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden">
-                      <CardHeader className="text-center pb-4">
-                        <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center group-hover:from-gray-200 group-hover:to-gray-300 transition-all duration-300">
-                          <IconComponent className="w-10 h-10 text-gray-600" />
+                    <div className="snap-center shrink-0 w-[320px] sm:w-[380px]">
+                      <div className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-slate-100 h-full">
+                        {/* Photo Placeholder */}
+                        <div className="w-32 h-32 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full mx-auto mb-6 flex items-center justify-center group-hover:from-[#e6eef5] group-hover:to-[#d1e3f6] transition-all duration-500">
+                          <span className="text-4xl font-light text-slate-400 group-hover:text-[#00477f]">
+                            {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                          </span>
                         </div>
-                        <CardTitle className="text-lg group-hover:text-gray-700 transition-colors">{doctor.name}</CardTitle>
-                        <CardDescription className="space-y-1">
-                          <p className="font-medium text-black">{doctor.title}</p>
-                          <p className="text-gray-500">{doctor.specialty}</p>
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                          <Award className="w-4 h-4" />
-                          <span>{doctor.experience}</span>
+
+                        {/* Name & Title */}
+                        <div className="text-center mb-4">
+                          <h3 className="font-bold text-slate-900 text-2xl mb-1 group-hover:text-[#00477f] transition-colors">
+                            {doctor.name}
+                          </h3>
+                          <p className="text-[#00477f] font-medium">{doctor.title}</p>
+                          <p className="text-slate-500 text-sm">{doctor.specialty}</p>
                         </div>
-                        <p className="text-center text-xs text-gray-400 mt-3 group-hover:text-gray-500 transition-colors">
-                          {lang === 'zh-TW' ? '點擊查看簡介' : 'Click to view profile'}
+
+                        {/* Experience Badge */}
+                        <div className="flex justify-center mb-6">
+                          <span className="px-4 py-2 bg-slate-50 rounded-full text-sm text-slate-600 font-medium">
+                            {doctor.experience}
+                          </span>
+                        </div>
+
+                        {/* Quote */}
+                        <p className="text-slate-500 text-center text-sm italic mb-8 leading-relaxed">
+                          "{doctor.bio.substring(0, 100)}..."
                         </p>
-                      </CardContent>
-                    </Card>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-                    <DialogHeader>
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-10 h-10 text-gray-600" />
+
+                        {/* Actions */}
+                        <div className="space-y-3">
+                          <Button 
+                            variant="outline" 
+                            className="w-full border-[#00477f] text-[#00477f] hover:bg-[#f0f5fa]"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenTeamDialogs(prev => ({ ...prev, [index]: true }));
+                            }}
+                          >
+                            {lang === 'zh-TW' ? '查看簡介' : 'View Profile'}
+                          </Button>
+                          <Button 
+                            className="w-full bg-[#00477f] text-white hover:bg-[#003d70]"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              scrollToContact();
+                            }}
+                          >
+                            {t.contact.bookAppointment}
+                          </Button>
                         </div>
-                        <div>
-                          <DialogTitle className="text-2xl mb-1">{doctor.name}</DialogTitle>
-                          <DialogDescription className="text-base">
-                            <span className="block font-medium text-black">{doctor.title}</span>
-                            <span className="block text-gray-500">{doctor.specialty}</span>
-                          </DialogDescription>
+                      </div>
+                    </div>
+                  </DialogTrigger>
+
+                  {/* Detail Modal */}
+                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="pb-6 border-b">
+                      <div className="flex items-start gap-6">
+                        <div className="w-24 h-24 bg-gradient-to-br from-[#e6eef5] to-[#d1e3f6] rounded-full flex items-center justify-center shrink-0">
+                          <span className="text-3xl font-light text-[#00477f]">
+                            {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                          </span>
+                        </div>
+                        <div className="flex-1">
+                          <DialogTitle className="text-3xl font-bold text-slate-900 mb-1">{doctor.name}</DialogTitle>
+                          <p className="text-[#00477f] font-medium text-lg">{doctor.title}</p>
+                          <p className="text-slate-500">{doctor.specialty} • {doctor.experience}</p>
                         </div>
                       </div>
                     </DialogHeader>
-                    <div className="mt-4 space-y-6">
-                      {/* Education */}
-                      <div>
-                        <h3 className="font-semibold text-black mb-3 flex items-center gap-2">
-                          <GraduationCap className="w-5 h-5" />
-                          {t.team.education}
+
+                    <div className="pt-6 space-y-8">
+                      {/* Bio */}
+                      <section>
+                        <h3 className="font-semibold text-slate-900 mb-3 text-lg">
+                          {lang === 'zh-TW' ? '簡介' : 'About'}
                         </h3>
-                        <ul className="space-y-2">
-                          {doctor.education.map((edu, i) => (
-                            <li key={i} className="text-gray-600 text-sm flex items-start gap-2">
-                              <span className="text-black mt-1">•</span>
-                              {edu}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      {/* Certifications */}
-                      <div>
-                        <h3 className="font-semibold text-black mb-3 flex items-center gap-2">
-                          <Award className="w-5 h-5" />
-                          {t.team.certifications}
-                        </h3>
-                        <ul className="space-y-2">
-                          {doctor.certifications.map((cert, i) => (
-                            <li key={i} className="text-gray-600 text-sm flex items-start gap-2">
-                              <span className="text-black mt-1">•</span>
-                              {cert}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
+                        <p className="text-slate-600 leading-relaxed">{doctor.bio}</p>
+                      </section>
+
                       {/* Expertise */}
-                      <div>
-                        <h3 className="font-semibold text-black mb-3 flex items-center gap-2">
-                          <Stethoscope className="w-5 h-5" />
+                      <section>
+                        <h3 className="font-semibold text-slate-900 mb-3 text-lg flex items-center gap-2">
+                          <Stethoscope className="w-5 h-5 text-[#00477f]" />
                           {t.team.expertise}
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {doctor.expertise.map((exp, i) => (
-                            <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
+                            <span key={i} className="px-4 py-2 bg-[#f0f5fa] text-[#00477f] text-sm rounded-full font-medium">
                               {exp}
                             </span>
                           ))}
                         </div>
+                      </section>
+
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {/* Education */}
+                        <section>
+                          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                            <GraduationCap className="w-5 h-5 text-[#00477f]" />
+                            {t.team.education}
+                          </h3>
+                          <ul className="space-y-2">
+                            {doctor.education.map((edu, i) => (
+                              <li key={i} className="text-slate-600 text-sm flex items-start gap-2">
+                                <span className="text-[#00477f] mt-1">•</span>
+                                {edu}
+                              </li>
+                            ))}
+                          </ul>
+                        </section>
+
+                        {/* Certifications */}
+                        <section>
+                          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                            <Award className="w-5 h-5 text-[#00477f]" />
+                            {t.team.certifications}
+                          </h3>
+                          <ul className="space-y-2">
+                            {doctor.certifications.map((cert, i) => (
+                              <li key={i} className="text-slate-600 text-sm flex items-start gap-2">
+                                <span className="text-[#00477f] mt-1">•</span>
+                                {cert}
+                              </li>
+                            ))}
+                          </ul>
+                        </section>
                       </div>
-                      
-                      {/* Bio */}
-                      <div>
-                        <h3 className="font-semibold text-black mb-3">
-                          {lang === 'zh-TW' ? '簡介' : 'About'}
-                        </h3>
-                        <p className="text-gray-600 text-sm leading-relaxed">{doctor.bio}</p>
-                      </div>
-                      
-                      <div className="pt-4 border-t">
-                        <Button 
-                          onClick={() => {
-                            setOpenTeamDialogs(prev => ({ ...prev, [index]: false }));
-                            setTimeout(scrollToContact, 100);
-                          }}
-                          className="w-full bg-[#00477f] text-white hover:bg-[#00477f] py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
-                        >
-                          {t.contact.bookAppointment}
-                        </Button>
-                      </div>
+
+                      <Button 
+                        onClick={() => {
+                          setOpenTeamDialogs(prev => ({ ...prev, [index]: false }));
+                          setTimeout(scrollToContact, 100);
+                        }}
+                        className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
+                      >
+                        {t.contact.bookAppointment}
+                      </Button>
                     </div>
                   </DialogContent>
                 </Dialog>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -375,62 +512,77 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <Card className="border-0 shadow-lg shadow-slate-200/50 bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-slate-900 flex items-center gap-3 text-xl">
-                    <div className="w-10 h-10 bg-[#e6eef5] rounded-xl flex items-center justify-center">
-                      <MapPin className="w-5 h-5 text-[#00477f]" />
-                    </div>
-                    {lang === 'zh-TW' ? '地址' : 'Address'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600 leading-relaxed">
-                    {t.contact.address}
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-0 shadow-lg shadow-slate-200/50 bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-slate-900 flex items-center gap-3 text-xl">
-                    <div className="w-10 h-10 bg-[#e6eef5] rounded-xl flex items-center justify-center">
-                      <Phone className="w-5 h-5 text-[#00477f]" />
-                    </div>
-                    {lang === 'zh-TW' ? '聯絡方式' : 'Contact'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-slate-600">{t.contact.phone}</p>
-                  <p className="text-slate-600">{t.contact.email}</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-0 shadow-lg shadow-slate-200/50 bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-slate-900 flex items-center gap-3 text-xl">
-                    <div className="w-10 h-10 bg-[#e6eef5] rounded-xl flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-[#00477f]" />
-                    </div>
-                    {lang === 'zh-TW' ? '營業時間' : 'Operating Hours'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-slate-600">
-                    <p>{t.contact.hours}</p>
+          <div className="grid lg:grid-cols-5 gap-8">
+            {/* Contact Info - Left Side */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Main CTA Card */}
+              <div className="bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-3xl p-8 text-white shadow-xl shadow-[#00477f]/20">
+                <h3 className="text-2xl font-bold mb-3">
+                  {lang === 'zh-TW' ? '預約諮詢' : 'Book a Consultation'}
+                </h3>
+                <p className="text-white/80 mb-6 leading-relaxed">
+                  {lang === 'zh-TW' 
+                    ? '與我們的專科醫生團隊預約初步諮詢，討論您的治療選項。'
+                    : 'Schedule an initial consultation with our specialist team to discuss your treatment options.'}
+                </p>
+                <Button 
+                  className="w-full bg-white text-[#00477f] hover:bg-slate-100 py-6 text-lg font-semibold"
+                  onClick={() => window.location.href = `tel:${t.contact.phone.replace(/\s/g, '')}`}
+                >
+                  <Phone className="w-5 h-5 mr-2" />
+                  {t.contact.phone}
+                </Button>
+              </div>
+
+              {/* Info Items */}
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#e6eef5] rounded-xl flex items-center justify-center shrink-0">
+                    <MapPin className="w-6 h-6 text-[#00477f]" />
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-1">
+                      {lang === 'zh-TW' ? '診所地址' : 'Clinic Address'}
+                    </h4>
+                    <p className="text-slate-600 leading-relaxed">
+                      {t.contact.address}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#e6eef5] rounded-xl flex items-center justify-center shrink-0">
+                    <Clock className="w-6 h-6 text-[#00477f]" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-1">
+                      {lang === 'zh-TW' ? '營業時間' : 'Operating Hours'}
+                    </h4>
+                    <p className="text-slate-600">
+                      {t.contact.hours}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-[#e6eef5] rounded-xl flex items-center justify-center shrink-0">
+                    <Mail className="w-6 h-6 text-[#00477f]" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-1">Email</h4>
+                    <a href={`mailto:${t.contact.email}`} className="text-slate-600 hover:text-[#00477f] transition-colors">
+                      {t.contact.email}
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <div className="h-full min-h-[400px]">
-              <Card className="relative isolate z-0 border-gray-200 h-full overflow-hidden">
-                <CardContent className="p-0 h-full">
-                  <ClinicMap />
-                </CardContent>
-              </Card>
+            {/* Map - Right Side */}
+            <div className="lg:col-span-3 h-[400px] lg:h-auto min-h-[400px]">
+              <div className="bg-slate-100 rounded-3xl overflow-hidden h-full border border-slate-200">
+                <ClinicMap />
+              </div>
             </div>
           </div>
         </div>
@@ -465,40 +617,31 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       {/* Footer */}
       <footer className="bg-slate-100 text-slate-800 py-16">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-            <div className="md:col-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
+            <div className="md:col-span-5">
               <img 
                 src="/BEVA1.svg" 
                 alt="BEVA Clinic" 
-                className="h-12 w-auto mb-5"
+                className="h-12 w-auto mb-4"
               />
-              <p className="text-slate-600 text-sm leading-relaxed">
+              <p className="text-slate-600 text-sm leading-relaxed max-w-sm">
                 {t.footer.aboutText}
               </p>
             </div>
             
-            <div>
-              <h4 className="font-bold text-lg mb-5 text-[#00477f]">{t.footer.quickLinks}</h4>
-              <ul className="space-y-3 text-slate-700">
+            <div className="md:col-span-3 md:col-start-7">
+              <h4 className="font-bold text-lg mb-4 text-[#00477f]">{t.footer.quickLinks}</h4>
+              <ul className="space-y-2 text-slate-700">
                 <li><a href={`/${lang}#procedures`} className="hover:text-[#00477f] transition-colors">{t.nav.procedures}</a></li>
+                <li><a href={`/${lang}#about`} className="hover:text-[#00477f] transition-colors">{t.nav.about}</a></li>
                 <li><a href={`/${lang}#contact`} className="hover:text-[#00477f] transition-colors">{t.nav.contact}</a></li>
                 <li><a href={`/${lang}#faq`} className="hover:text-[#00477f] transition-colors">{t.nav.faq}</a></li>
-                <li><Link href={`/${lang}/bookings`} className="hover:text-[#00477f] transition-colors">{t.nav.myBookings}</Link></li>
               </ul>
             </div>
             
-            <div>
-              <h4 className="font-bold text-lg mb-5 text-[#00477f]">{t.procedures.title}</h4>
-              <ul className="space-y-3 text-slate-700">
-                {t.procedures.items.slice(0, 3).map((proc, i) => (
-                  <li key={i}><a href={`/${lang}#procedures`} className="hover:text-[#00477f] transition-colors">{proc.title}</a></li>
-                ))}
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-lg mb-5 text-[#00477f]">{t.footer.contactInfo}</h4>
-              <ul className="space-y-3 text-slate-700 text-sm">
+            <div className="md:col-span-4">
+              <h4 className="font-bold text-lg mb-4 text-[#00477f]">{t.footer.contactInfo}</h4>
+              <ul className="space-y-2 text-slate-700 text-sm">
                 <li>{t.contact.address}</li>
                 <li className="text-[#00477f] font-semibold">{t.contact.phone}</li>
                 <li>{t.contact.email}</li>

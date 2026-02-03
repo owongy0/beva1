@@ -1,5 +1,5 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { match as matchLocale } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import { i18n } from './i18n/config'
@@ -24,48 +24,24 @@ function pathnameHasLocale(request: Request): boolean {
   )
 }
 
-// Public routes that don't require authentication
-const isPublicRoute = createRouteMatcher([
-  // Root paths with locale
-  '/:locale',
-  '/:locale/procedures',
-  '/:locale/about',
-  '/:locale/contact',
-  '/:locale/faq',
-  '/:locale/sign-in(.*)',
-  '/:locale/sign-up(.*)',
-  // Root paths without locale (will be redirected)
-  '/',
-  '/procedures',
-  '/about',
-  '/contact',
-  '/faq',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-])
-
-export default clerkMiddleware(async (auth, req) => {
-  const pathname = new URL(req.url).pathname
+export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
 
   // Check if there is any supported locale in the pathname
-  const pathnameIsMissingLocale = !pathnameHasLocale(req)
+  const pathnameIsMissingLocale = !pathnameHasLocale(request)
 
   // If no locale in pathname, redirect to the detected locale
   if (pathnameIsMissingLocale) {
-    const locale = getLocale(req)
+    const locale = getLocale(request)
 
     // Redirect to the path with locale prefix
     return NextResponse.redirect(
-      new URL(`/${locale}${pathname.startsWith('/') ? pathname : `/${pathname}`}`, req.url)
+      new URL(`/${locale}${pathname.startsWith('/') ? pathname : `/${pathname}`}`, request.url)
     )
   }
 
-  // Protect routes that require authentication
-  // The bookings page and API routes should be protected
-  if (!isPublicRoute(req)) {
-    await auth.protect()
-  }
-})
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],

@@ -66,30 +66,95 @@
         "recovery": "Recovery is typically rapid, with most patients discharged the same day or next day. Follow-up CT scans monitor hematoma resolution over 4-8 weeks."
       },
       {
-        "title": "Trans-Venous Embolization",
-        "shortDescription": "Specialized venous approach for treating complex vascular malformations and fistulas.",
-        "fullDescription": "Trans-venous embolization is an advanced technique for treating vascular malformations and arteriovenous fistulas through the venous system. This approach is particularly valuable for dural arteriovenous fistulas and certain types of brain AVMs.",
+        "title": "Dural Arteriovenous Fistula",
+        "shortDescription": "Trans-venous treatment for abnormal connections between arteries and veins in the brain's dura.",
+        "fullDescription": "Dural arteriovenous fistula (dAVF) is an abnormal connection between arteries and veins within the dura mater surrounding the brain. Our trans-venous approach allows precise closure of these fistulas through the venous system, often providing a safer and more complete treatment than traditional arterial approaches.",
         "benefits": [
-          "Alternative route when arterial access is challenging",
-          "More complete treatment of certain fistulas",
-          "Reduced radiation exposure compared to repeated arterial procedures",
-          "Lower complication risk for specific malformation types",
-          "Can be combined with arterial approaches for complex cases"
+          "Direct venous access to the fistula site",
+          "More complete closure of complex fistulas",
+          "Reduced risk of arterial puncture complications",
+          "Lower radiation exposure compared to arterial approaches",
+          "Can treat multiple feeders through a single venous access"
         ],
-        "recovery": "Hospital stay varies based on the complexity of the procedure. Most patients are monitored for 24-48 hours with gradual return to normal activities over 1-2 weeks."
+        "recovery": "Most patients stay 1-2 nights for monitoring. Gradual return to normal activities over 1-2 weeks with follow-up angiography at 3-6 months."
       },
       {
-        "title": "Trans-Arterial Embolization",
-        "shortDescription": "Precision-targeted treatment for tumors, bleeding, and vascular malformations.",
-        "fullDescription": "Trans-arterial embolization delivers therapeutic agents directly to target vessels through catheter-based techniques. We treat various conditions including uterine fibroids, prostate enlargement, traumatic bleeding, and hypervascular tumors.",
+        "title": "Brain AVM",
+        "shortDescription": "Trans-venous embolization for arteriovenous malformations in the brain.",
+        "fullDescription": "Brain arteriovenous malformation (AVM) is a tangle of abnormal blood vessels connecting arteries and veins. Our specialized trans-venous embolization technique treats specific types of AVMs through the venous drainage system, offering an alternative when arterial access is challenging or risky.",
         "benefits": [
-          "Targeted treatment preserves surrounding healthy tissue",
-          "Effective for both benign and malignant conditions",
-          "Avoids open surgery in many cases",
-          "Can be repeated if necessary",
-          "Preserves organ function (e.g., uterus in fibroid treatment)"
+          "Alternative for AVMs with difficult arterial access",
+          "Reduced risk of intra-procedural bleeding",
+          "Can reach deep-seated AVMs safely",
+          "Lower complication rates for select AVM types",
+          "May be combined with surgery or radiosurgery"
         ],
-        "recovery": "Most procedures are outpatient or require overnight observation. Recovery depends on the treated condition but is generally significantly faster than surgical alternatives."
+        "recovery": "Hospital stay is typically 2-3 days. Recovery varies based on AVM size and location, with most patients returning to normal activities within 2-4 weeks."
+      },
+      {
+        "title": "Hemorrhoid Embolization",
+        "shortDescription": "Non-surgical treatment for internal hemorrhoids using targeted arterial embolization.",
+        "fullDescription": "Hemorrhoid embolization is a minimally invasive alternative to surgery for treating symptomatic internal hemorrhoids. By blocking the blood supply to the hemorrhoidal arteries, this procedure reduces swelling and bleeding without the pain and recovery time of traditional hemorrhoidectomy.",
+        "benefits": [
+          "No surgery, cuts, or stitches required",
+          "Minimal pain compared to hemorrhoidectomy",
+          "Outpatient procedure - home same day",
+          "Quick return to normal activities",
+          "Can treat multiple hemorrhoids in one session"
+        ],
+        "recovery": "Most patients resume normal activities within 24-48 hours. Minor discomfort may occur for a few days. Bleeding typically reduces within 1-2 weeks as hemorrhoids shrink."
+      },
+      {
+        "title": "Prostate Artery Embolization",
+        "shortDescription": "Minimally invasive treatment for enlarged prostate (BPH) without surgery.",
+        "fullDescription": "Prostate artery embolization (PAE) treats benign prostatic hyperplasia (BPH) by blocking blood flow to the prostate gland. This shrinks the enlarged prostate and relieves urinary symptoms including frequent urination, weak stream, and nighttime urination without the risks of traditional surgery.",
+        "benefits": [
+          "Preserves sexual function (unlike TURP)",
+          "No catheter or only brief catheterization",
+          "Outpatient procedure",
+          "No risk of urinary incontinence",
+          "Faster recovery than surgical options"
+        ],
+        "recovery": "Outpatient procedure with same-day discharge. Mild pelvic discomfort for 2-3 days. Urinary symptoms improve gradually over 2-4 weeks as the prostate shrinks."
+      },
+      {
+        "title": "Uterine Fibroid Embolization",
+        "shortDescription": "Non-surgical treatment for uterine fibroids to reduce heavy bleeding and pain.",
+        "fullDescription": "Uterine fibroid embolization (UFE) treats symptomatic fibroids that cause heavy menstrual bleeding, pelvic pain, and pressure symptoms. Small particles are injected to block blood flow to the fibroids, causing them to shrink while preserving the uterus.",
+        "benefits": [
+          "Avoids hysterectomy - uterus preserved",
+          "No abdominal incisions or scarring",
+          "Return to work in 1-2 weeks",
+          "Highly effective for heavy bleeding",
+          "Lower complication rates than surgery"
+        ],
+        "recovery": "Same-day discharge with some cramping for 2-3 days managed with medication. Return to normal activities within 1-2 weeks. MRI follow-up at 3-6 months shows fibroid shrinkage."
+      },
+      {
+        "title": "Genicular Artery Embolization",
+        "shortDescription": "Targeted treatment for knee arthritis pain when other treatments fail.",
+        "fullDescription": "Genicular artery embolization (GAE) treats chronic knee pain from osteoarthritis by reducing inflammation in the knee joint. This procedure blocks tiny blood vessels around the knee that contribute to inflammation and pain, offering relief for patients not ready for or unsuitable for knee replacement surgery.",
+        "benefits": [
+          "Delays or avoids knee replacement surgery",
+          "No joint implants or hardware",
+          "Minimal recovery time",
+          "Can be repeated if needed",
+          "Preserves all future treatment options"
+        ],
+        "recovery": "Outpatient procedure with same-day discharge. Mild knee discomfort for 2-3 days. Pain relief typically begins within 2-4 weeks as inflammation subsides."
+      },
+      {
+        "title": "Foot Artery Embolization",
+        "shortDescription": "Minimally invasive treatment for chronic plantar fasciitis and foot pain.",
+        "fullDescription": "Foot artery embolization treats chronic foot pain, including plantar fasciitis that has not responded to conservative treatments. By targeting specific arteries in the foot, this procedure reduces inflammation and pain in the plantar fascia, allowing patients to walk comfortably again.",
+        "benefits": [
+          "Non-surgical alternative for chronic foot pain",
+          "No lengthy immobilization required",
+          "Outpatient procedure",
+          "Quick return to walking activities",
+          "Effective when other treatments fail"
+        ],
+        "recovery": "Same-day discharge with minimal restrictions. Mild foot discomfort for a few days. Gradual improvement in pain over 2-6 weeks as inflammation reduces."
       },
       {
         "title": "EVAR & TEVAR",
