@@ -11,7 +11,21 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, User, Stethoscope, FileText, Phone } from 'lucide-react';
+import { Calendar, Clock, User, FileText, Phone } from 'lucide-react';
+
+// Define the appointment type based on Prisma schema
+type Appointment = {
+  id: string;
+  patientId: string;
+  patientName: string;
+  doctorName: string;
+  procedure: string;
+  date: Date;
+  status: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
+  notes: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export default async function BookingsPage() {
   const { userId } = await auth();
@@ -25,12 +39,12 @@ export default async function BookingsPage() {
   const appointments = await prisma.appointment.findMany({
     where: { patientId: userId },
     orderBy: { date: 'asc' },
-  });
+  }) as Appointment[];
 
   // Separate into upcoming and past
   const now = new Date();
-  const upcoming = appointments.filter((apt: typeof appointments[0]) => apt.date >= now && apt.status !== 'CANCELLED');
-  const past = appointments.filter((apt: typeof appointments[0]) => apt.date < now || apt.status === 'CANCELLED');
+  const upcoming = appointments.filter((apt) => apt.date >= now && apt.status !== 'CANCELLED');
+  const past = appointments.filter((apt) => apt.date < now || apt.status === 'CANCELLED');
 
   return (
     <div className="max-w-4xl mx-auto p-4 py-8">
@@ -87,7 +101,7 @@ export default async function BookingsPage() {
         <div className="mb-10">
           <h2 className="text-xl font-semibold text-black mb-4">Upcoming Appointments</h2>
           <div className="space-y-4">
-            {upcoming.map((appointment) => (
+            {upcoming.map((appointment: Appointment) => (
               <Card key={appointment.id} className="border-gray-200">
                 <CardHeader className="pb-4">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
@@ -143,7 +157,7 @@ export default async function BookingsPage() {
         <div>
           <h2 className="text-xl font-semibold text-black mb-4">Past Appointments</h2>
           <div className="space-y-4">
-            {past.map((appointment) => (
+            {past.map((appointment: Appointment) => (
               <Card key={appointment.id} className="border-gray-200 bg-gray-50">
                 <CardHeader className="pb-4">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
