@@ -345,7 +345,7 @@ export default function HomePage() {
               
               <p className="text-lg text-gray-600">
                 Specialized endovascular treatments with experienced surgeons. 
-                Advanced minimally invasive options for faster recovery and improved outcomes
+                Advanced minimally invasive options for faster recovery and improved outcomes.
               </p>
               
               <div className="flex flex-wrap gap-4">
