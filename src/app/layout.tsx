@@ -7,6 +7,7 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 import { Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -167,6 +168,7 @@ export default function RootLayout({
             </div>
           </header>
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
