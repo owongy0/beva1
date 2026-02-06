@@ -87,10 +87,11 @@ export function TeamGrid({ lang, t, onBookAppointment }: TeamGridProps) {
 
                 {/* BACK of card */}
                 <div 
-                  className="absolute inset-0 w-full h-full"
+                  className="absolute inset-0 w-full h-full touch-pan-y"
                   style={{ 
                     backfaceVisibility: 'hidden',
-                    transform: 'rotateY(180deg)'
+                    transform: 'rotateY(180deg)',
+                    WebkitOverflowScrolling: 'touch'
                   }}
                 >
                   <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-stone-100 h-full flex flex-col overflow-hidden">
@@ -109,7 +110,10 @@ export function TeamGrid({ lang, t, onBookAppointment }: TeamGridProps) {
                     </div>
 
                     {/* Scrollable content */}
-                    <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4">
+                    <div 
+                      className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 touch-pan-y"
+                      style={{ WebkitOverflowScrolling: 'touch' }}
+                    >
                       {/* Bio */}
                       <p className="text-slate-600 text-sm leading-relaxed">
                         {doctor.bio}

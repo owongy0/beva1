@@ -70,6 +70,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  
+  // Rewrites for manifest.json to handle i18n routes
+  async rewrites() {
+    return [
+      {
+        source: '/:lang/manifest.json',
+        destination: '/manifest.json',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
