@@ -127,91 +127,115 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                 
                 <DialogContent className="max-w-5xl w-full h-full sm:h-auto sm:max-h-[90vh] overflow-hidden p-0 sm:rounded-2xl">
                   {/* Category Header with Close Button */}
-                  <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex items-center justify-between">
-                    <div>
-                      <DialogTitle className="text-lg sm:text-2xl font-bold text-slate-900">{category.name}</DialogTitle>
+                  <DialogHeader className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex flex-row items-center justify-between gap-3 text-left">
+                    <div className="flex-1 min-w-0">
+                      <DialogTitle className="text-lg sm:text-2xl font-bold text-slate-900 text-left">{category.name}</DialogTitle>
                       <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 hidden sm:block">{category.description}</p>
                     </div>
                     <DialogClose asChild>
-                      <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors">
-                        <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600" />
+                      <button className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 hover:scale-105 active:scale-95 flex items-center justify-center transition-all shrink-0">
+                        <X className="w-4 h-4 text-slate-600" />
                       </button>
                     </DialogClose>
-                  </div>
+                  </DialogHeader>
                   
                   {/* Treatments List */}
-                  <div className="p-3 sm:p-6 space-y-2 sm:space-y-4 overflow-y-auto max-h-[calc(100vh-180px)] sm:max-h-[60vh]">
+                  <div className="p-3 sm:p-6 space-y-2 sm:space-y-3 overflow-y-auto max-h-[calc(100vh-180px)] sm:max-h-[60vh]">
                     {category.treatments.map((treatment, treatIndex) => (
                       <Dialog key={treatIndex}>
                         <DialogTrigger asChild>
-                          <button className="w-full text-left bg-stone-50 hover:bg-sky-50 rounded-lg sm:rounded-xl p-3 sm:p-5 transition-colors group">
-                            <div className="flex items-start justify-between gap-3 sm:gap-4">
+                          <button className="w-full text-left bg-white border border-stone-200 hover:border-[#00477f]/30 hover:bg-sky-50/50 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 transition-all duration-200 group shadow-sm hover:shadow-md">
+                            <div className="flex items-center justify-between gap-3 sm:gap-4">
                               <div className="flex-1 min-w-0">
                                 <h4 className="font-semibold text-slate-900 text-sm sm:text-lg group-hover:text-[#00477f] transition-colors line-clamp-1">
                                   {treatment.title}
                                 </h4>
-                                <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 line-clamp-2">
+                                <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 line-clamp-2 leading-relaxed">
                                   {treatment.shortDescription}
                                 </p>
                               </div>
-                              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 group-hover:text-[#00477f] shrink-0 mt-0.5" />
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-stone-100 group-hover:bg-[#00477f] flex items-center justify-center shrink-0 transition-all">
+                                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-white transition-colors" />
+                              </div>
                             </div>
                           </button>
                         </DialogTrigger>
                         
                         <DialogContent className="max-w-3xl w-full h-full sm:h-auto sm:max-h-[85vh] overflow-hidden p-0 sm:rounded-2xl">
                           {/* Treatment Header with Close */}
-                          <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex items-start justify-between gap-3">
-                            <DialogHeader className="flex-1 text-left">
-                              <DialogTitle className="text-base sm:text-xl font-bold text-slate-900 leading-tight">{treatment.title}</DialogTitle>
+                          <DialogHeader className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex flex-row items-start justify-between gap-3 text-left">
+                            <div className="flex-1 min-w-0 text-left">
+                              <DialogTitle className="text-base sm:text-xl font-bold text-slate-900 leading-tight text-left">{treatment.title}</DialogTitle>
                               <p className="text-slate-500 text-xs sm:text-sm mt-0.5 line-clamp-2">{treatment.shortDescription}</p>
-                            </DialogHeader>
+                            </div>
                             <DialogClose asChild>
-                              <button className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors shrink-0">
+                              <button className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 hover:scale-105 active:scale-95 flex items-center justify-center transition-all shrink-0">
                                 <X className="w-4 h-4 text-slate-600" />
                               </button>
                             </DialogClose>
-                          </div>
+                          </DialogHeader>
                           
-                          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
-                            <section>
-                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 mb-2 sm:mb-3">
-                                {lang === 'zh-TW' ? '概述' : 'Overview'}
-                              </h3>
-                              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">{treatment.fullDescription}</p>
-                            </section>
+                          <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
+                            <div className="space-y-5 sm:space-y-6">
+                              {/* Overview Section */}
+                              <section className="bg-white">
+                                <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                                  <div className="w-1 h-4 sm:h-5 bg-[#00477f] rounded-full"></div>
+                                  <h3 className="text-sm sm:text-base font-semibold text-slate-900">
+                                    {lang === 'zh-TW' ? '概述' : 'Overview'}
+                                  </h3>
+                                </div>
+                                <div className="pl-3">
+                                  <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">{treatment.fullDescription}</p>
+                                </div>
+                              </section>
 
-                            <section>
-                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 mb-2 sm:mb-3">
-                                {lang === 'zh-TW' ? '治療優點' : 'Benefits'}
-                              </h3>
-                              <ul className="space-y-1.5 sm:space-y-2">
-                                {treatment.benefits.map((benefit, i) => (
-                                  <li key={i} className="flex items-start gap-2 sm:gap-3 bg-stone-50 rounded-lg p-2 sm:p-3">
-                                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f] mt-0.5 shrink-0" />
-                                    <span className="text-slate-700 text-xs sm:text-sm">{benefit}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </section>
+                              {/* Benefits Section */}
+                              <section>
+                                <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                                  <div className="w-1 h-4 sm:h-5 bg-[#00477f] rounded-full"></div>
+                                  <h3 className="text-sm sm:text-base font-semibold text-slate-900">
+                                    {lang === 'zh-TW' ? '治療優點' : 'Benefits'}
+                                  </h3>
+                                </div>
+                                <ul className="space-y-2 sm:space-y-2.5 pl-3">
+                                  {treatment.benefits.map((benefit, i) => (
+                                    <li key={i} className="flex items-start gap-2.5 sm:gap-3">
+                                      <div className="w-5 h-5 sm:w-5 sm:h-5 rounded-full bg-[#00477f]/10 flex items-center justify-center shrink-0 mt-0">
+                                        <Check className="w-3 h-3 sm:w-3 sm:h-3 text-[#00477f]" />
+                                      </div>
+                                      <span className="text-slate-700 text-xs sm:text-sm leading-relaxed flex-1">{benefit}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </section>
 
-                            <section className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
-                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 mb-1.5 sm:mb-2 flex items-center gap-2">
-                                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f]" />
-                                {lang === 'zh-TW' ? '康復時間' : 'Recovery'}
-                              </h3>
-                              <p className="text-slate-700 text-xs sm:text-sm">{treatment.recovery}</p>
-                            </section>
+                              {/* Recovery Section */}
+                              <section className="bg-gradient-to-br from-sky-50/80 to-blue-50/80 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-sky-100">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                    <Clock className="w-4 h-4 sm:w-4 sm:h-4 text-[#00477f]" />
+                                  </div>
+                                  <h3 className="text-sm sm:text-base font-semibold text-slate-900">
+                                    {lang === 'zh-TW' ? '康復時間' : 'Recovery Time'}
+                                  </h3>
+                                </div>
+                                <p className="text-slate-700 text-xs sm:text-sm leading-relaxed pl-10 sm:pl-11">{treatment.recovery}</p>
+                              </section>
 
-                            <Button 
-                              onClick={() => {
-                                setOpenDialogs(prev => ({ ...prev, [catIndex]: false }));
-                                setTimeout(scrollToContact, 100);
-                              }}
-                              className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-5 text-sm sm:text-base font-semibold"
-                            >
-                              {t.contact.bookAppointment}
-                            </Button>
+                              {/* CTA Button */}
+                              <div className="pt-2">
+                                <Button 
+                                  onClick={() => {
+                                    setOpenDialogs(prev => ({ ...prev, [catIndex]: false }));
+                                    setTimeout(scrollToContact, 100);
+                                  }}
+                                  className="w-full bg-[#00477f] text-white hover:bg-[#003d70] hover:shadow-lg hover:shadow-[#00477f]/20 py-4 sm:py-5 text-sm sm:text-base font-semibold transition-all"
+                                >
+                                  {t.contact.bookAppointment}
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                         </DialogContent>
                       </Dialog>
@@ -333,93 +357,104 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                   {/* Detail Modal */}
                   <DialogContent className="max-w-3xl w-full h-full sm:h-auto sm:max-h-[90vh] overflow-hidden p-0 sm:rounded-2xl">
                     {/* Modal Header with Close */}
-                    <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex items-start justify-between gap-3">
+                    <DialogHeader className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex flex-row items-start justify-between gap-3 text-left">
                       <div className="flex items-start gap-3 sm:gap-6">
                         <div className="w-14 h-14 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-sky-100 to-blue-200 rounded-full flex items-center justify-center shrink-0">
                           <span className="text-xl sm:text-2xl lg:text-3xl font-light text-[#00477f]">
                             {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
                           </span>
                         </div>
-                        <div className="flex-1 min-w-0 pt-1">
-                          <DialogTitle className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-0.5 leading-tight">{doctor.name}</DialogTitle>
+                        <div className="flex-1 min-w-0 pt-1 text-left">
+                          <DialogTitle className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-0.5 leading-tight text-left">{doctor.name}</DialogTitle>
                           <p className="text-[#00477f] font-medium text-sm sm:text-base lg:text-lg">{doctor.title}</p>
                           <p className="text-slate-500 text-xs sm:text-sm">{doctor.specialty} • {doctor.experience}</p>
                         </div>
                       </div>
                       <DialogClose asChild>
-                        <button className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors shrink-0">
+                        <button className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 hover:scale-105 active:scale-95 flex items-center justify-center transition-all shrink-0">
                           <X className="w-4 h-4 text-slate-600" />
                         </button>
                       </DialogClose>
-                    </div>
+                    </DialogHeader>
 
-                    <div className="p-4 sm:p-6 space-y-5 sm:space-y-8 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
-                      {/* Bio */}
-                      <section>
-                        <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 text-base sm:text-lg">
-                          {lang === 'zh-TW' ? '簡介' : 'About'}
-                        </h3>
-                        <p className="text-slate-700 text-sm leading-relaxed">{doctor.bio}</p>
-                      </section>
+                    <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
+                      <div className="space-y-6 sm:space-y-8">
+                        {/* Bio */}
+                        <section className="bg-stone-50/50 rounded-xl sm:rounded-2xl p-4 sm:p-5">
+                          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                            <div className="w-1 h-4 sm:h-5 bg-[#00477f] rounded-full"></div>
+                            <h3 className="font-semibold text-slate-900 text-base sm:text-lg">
+                              {lang === 'zh-TW' ? '簡介' : 'About'}
+                            </h3>
+                          </div>
+                          <p className="text-slate-700 text-sm leading-relaxed pl-3">{doctor.bio}</p>
+                        </section>
 
-                      {/* Expertise */}
-                      <section>
-                        <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 text-base sm:text-lg flex items-center gap-2">
-                          <Stethoscope className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
-                          {t.team.expertise}
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {doctor.expertise.map((exp, i) => (
-                            <span key={i} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-50 text-[#00477f] text-xs sm:text-sm rounded-full font-medium">
-                              {exp}
-                            </span>
-                          ))}
+                        {/* Expertise */}
+                        <section>
+                          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#00477f]/10 flex items-center justify-center">
+                              <Stethoscope className="w-4 h-4 sm:w-4 sm:h-4 text-[#00477f]" />
+                            </div>
+                            <h3 className="font-semibold text-slate-900 text-base sm:text-lg">{t.team.expertise}</h3>
+                          </div>
+                          <div className="flex flex-wrap gap-2 pl-2">
+                            {doctor.expertise.map((exp, i) => (
+                              <span key={i} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-sky-50 to-blue-50 text-[#00477f] text-xs sm:text-sm rounded-full font-medium border border-sky-100">
+                                {exp}
+                              </span>
+                            ))}
+                          </div>
+                        </section>
+
+                        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+                          {/* Education */}
+                          <section className="bg-white border border-stone-200 rounded-xl sm:rounded-2xl p-4 sm:p-5">
+                            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#00477f]/10 flex items-center justify-center">
+                                <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f]" />
+                              </div>
+                              <h3 className="font-semibold text-slate-900 text-sm sm:text-base">{t.team.education}</h3>
+                            </div>
+                            <ul className="space-y-2 sm:space-y-2.5">
+                              {doctor.education.map((edu, i) => (
+                                <li key={i} className="text-slate-700 text-xs sm:text-sm flex items-start gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00477f] mt-1.5 shrink-0"></span>
+                                  <span className="leading-relaxed">{edu}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </section>
+
+                          {/* Certifications */}
+                          <section className="bg-white border border-stone-200 rounded-xl sm:rounded-2xl p-4 sm:p-5">
+                            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#00477f]/10 flex items-center justify-center">
+                                <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f]" />
+                              </div>
+                              <h3 className="font-semibold text-slate-900 text-sm sm:text-base">{t.team.certifications}</h3>
+                            </div>
+                            <ul className="space-y-2 sm:space-y-2.5">
+                              {doctor.certifications.map((cert, i) => (
+                                <li key={i} className="text-slate-700 text-xs sm:text-sm flex items-start gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00477f] mt-1.5 shrink-0"></span>
+                                  <span className="leading-relaxed">{cert}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </section>
                         </div>
-                      </section>
 
-                      <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                        {/* Education */}
-                        <section>
-                          <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
-                            <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
-                            {t.team.education}
-                          </h3>
-                          <ul className="space-y-1.5 sm:space-y-2">
-                            {doctor.education.map((edu, i) => (
-                              <li key={i} className="text-slate-700 text-xs sm:text-sm flex items-start gap-2">
-                                <span className="text-[#00477f] mt-1">•</span>
-                                {edu}
-                              </li>
-                            ))}
-                          </ul>
-                        </section>
-
-                        {/* Certifications */}
-                        <section>
-                          <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
-                            <Award className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
-                            {t.team.certifications}
-                          </h3>
-                          <ul className="space-y-1.5 sm:space-y-2">
-                            {doctor.certifications.map((cert, i) => (
-                              <li key={i} className="text-slate-700 text-xs sm:text-sm flex items-start gap-2">
-                                <span className="text-[#00477f] mt-1">•</span>
-                                {cert}
-                              </li>
-                            ))}
-                          </ul>
-                        </section>
+                        <Button 
+                          onClick={() => {
+                            setOpenTeamDialogs(prev => ({ ...prev, [index]: false }));
+                            setTimeout(scrollToContact, 100);
+                          }}
+                          className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-6 text-sm sm:text-lg font-semibold shadow-lg shadow-[#00477f]/20"
+                        >
+                          {t.contact.bookAppointment}
+                        </Button>
                       </div>
-
-                      <Button 
-                        onClick={() => {
-                          setOpenTeamDialogs(prev => ({ ...prev, [index]: false }));
-                          setTimeout(scrollToContact, 100);
-                        }}
-                        className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-6 text-sm sm:text-lg font-semibold shadow-lg shadow-[#00477f]/20"
-                      >
-                        {t.contact.bookAppointment}
-                      </Button>
                     </div>
                   </DialogContent>
                 </Dialog>
