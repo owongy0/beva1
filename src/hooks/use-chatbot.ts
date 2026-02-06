@@ -335,29 +335,53 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
   }, [lang, categoryNames, addMessage, showTyping]);
 
   const handleOptionClick = useCallback((option: QuickReplyOption) => {
-    // Add user message
-    addMessage({
-      role: 'user',
-      content: option.label,
-      type: 'text',
-    });
-
     // Handle based on action type
     switch (option.action) {
       case 'select_body_area':
+        // Add user message for body area selection
+        addMessage({
+          role: 'user',
+          content: option.label,
+          type: 'text',
+        });
         handleBodyAreaSelect(option.value);
         break;
       case 'select_symptom':
         if (option.value === 'continue') {
+          // Add user message showing selected symptoms
+          const selectedLabels = conversationState.selectedSymptoms.map(symptomId => {
+            for (const area of bodyAreas) {
+              const symptom = area.symptoms.find(s => s.id === symptomId);
+              if (symptom) return symptom.label[lang];
+            }
+            return symptomId;
+          }).join(', ');
+          
+          addMessage({
+            role: 'user',
+            content: selectedLabels || (lang === 'zh-TW' ? '繼續' : 'Continue'),
+            type: 'text',
+          });
           handleContinueToDuration();
         } else {
+          // Toggle symptom selection without adding message
           handleSymptomSelect(option.value);
         }
         break;
       case 'select_duration':
+        addMessage({
+          role: 'user',
+          content: option.label,
+          type: 'text',
+        });
         handleDurationSelect(option.value);
         break;
       case 'select_severity':
+        addMessage({
+          role: 'user',
+          content: option.label,
+          type: 'text',
+        });
         handleSeveritySelect(option.value);
         break;
       case 'view_condition':

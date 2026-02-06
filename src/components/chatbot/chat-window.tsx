@@ -97,11 +97,31 @@ export function ChatWindow({ lang, categoryNames, onViewTreatment, onClose }: Ch
             {/* Render quick replies for bot messages */}
             {message.role === 'bot' && message.type === 'quick_replies' && message.options && (
               <div className={`${message.role === 'bot' ? 'ml-11' : 'mr-11'}`}>
-                <QuickReplies
-                  options={message.options}
-                  selectedValues={getSelectedValues()}
-                  onOptionClick={handleOptionClick}
-                />
+                {conversationState.step === 'symptoms' ? (
+                  // Symptom selection with continue button below
+                  <QuickReplies
+                    options={message.options}
+                    selectedValues={getSelectedValues()}
+                    onOptionClick={handleOptionClick}
+                    showContinue={true}
+                    continueLabel={lang === 'zh-TW' ? '繼續 →' : 'Continue →'}
+                    onContinue={() => {
+                      const continueOption = message.options?.find(opt => opt.id === 'continue');
+                      if (continueOption) {
+                        handleOptionClick(continueOption);
+                      }
+                    }}
+                    lang={lang}
+                  />
+                ) : (
+                  // Other steps - normal quick replies
+                  <QuickReplies
+                    options={message.options}
+                    selectedValues={getSelectedValues()}
+                    onOptionClick={handleOptionClick}
+                    lang={lang}
+                  />
+                )}
               </div>
             )}
 
