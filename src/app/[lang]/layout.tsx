@@ -33,6 +33,14 @@ export async function generateMetadata({
   return {
     title: dict.metadata.title,
     description: dict.metadata.description,
+    icons: {
+      icon: [
+        { url: '/bevafavicon.webp?v=2', type: 'image/webp' },
+      ],
+      apple: [
+        { url: '/bevafavicon.webp?v=2', type: 'image/webp' },
+      ],
+    },
   }
 }
 

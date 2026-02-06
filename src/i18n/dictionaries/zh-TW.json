@@ -477,9 +477,12 @@
     "address": "香港尖沙咀亞士厘道21號21樓",
     "phone": "+852 2345 6789",
     "email": "info@beva.com.hk",
+    "whatsapp": "+852 9876 5432",
     "hours": "星期一至五：上午9:00 - 下午6:00",
     "bookAppointment": "預約門診",
-    "location": "我們的位置"
+    "location": "我們的位置",
+    "whatsappLabel": "WhatsApp查詢",
+    "whatsappDesc": "發送訊息給我們作快速查詢"
   },
   "faq": {
     "title": "常見問題",

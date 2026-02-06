@@ -477,9 +477,12 @@
     "address": "21/F, 21 Ashley Road, Tsim Sha Tsui, Hong Kong",
     "phone": "+852 2345 6789",
     "email": "info@beva.com.hk",
+    "whatsapp": "+852 9876 5432",
     "hours": "Mon - Fri: 9:00 AM - 6:00 PM",
     "bookAppointment": "Book an Appointment",
-    "location": "Our Location"
+    "location": "Our Location",
+    "whatsappLabel": "WhatsApp Us",
+    "whatsappDesc": "Send us a message for quick inquiries"
   },
   "faq": {
     "title": "Frequently Asked Questions",
