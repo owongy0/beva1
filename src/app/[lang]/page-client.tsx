@@ -40,6 +40,7 @@ import { TestimonialCarousel } from '@/components/testimonial-carousel';
 import { SectionHeader } from '@/components/section-header';
 import { Footer } from '@/components/footer';
 import { ChatWidget } from '@/components/chatbot';
+import { TeamGrid } from '@/components/team-grid';
 
 // Dynamically import the map component to avoid SSR issues
 const ClinicMap = dynamic(() => import('@/components/map').then((mod) => mod.ClinicMap), {
@@ -58,7 +59,6 @@ interface HomePageClientProps {
 
 export default function HomePageClient({ lang, dictionary }: HomePageClientProps) {
   const [openDialogs, setOpenDialogs] = useState<Record<number, boolean>>({});
-  const [openTeamDialogs, setOpenTeamDialogs] = useState<Record<number, boolean>>({});
 
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -269,198 +269,11 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             subtitle={t.team.subtitle} 
           />
           
-          {/* Horizontal Scroll Carousel */}
-          <div className="relative">
-            {/* Scroll Buttons - Hidden on mobile */}
-            <button 
-              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: -300, behavior: 'smooth' })}
-              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -ml-2 lg:ml-0"
-            >
-              ←
-            </button>
-            <button 
-              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: 300, behavior: 'smooth' })}
-              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -mr-2 lg:mr-0"
-            >
-              →
-            </button>
-
-            {/* Scroll Container */}
-            <div 
-              id="team-scroll"
-              className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-1 sm:px-8"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {t.team.members.map((doctor, index) => (
-                <Dialog 
-                  key={index}
-                  open={openTeamDialogs[index]} 
-                  onOpenChange={(open) => setOpenTeamDialogs(prev => ({ ...prev, [index]: open }))}
-                >
-                  <DialogTrigger asChild>
-                    <div className="snap-center shrink-0 w-[280px] sm:w-[320px] lg:w-[380px]">
-                      <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-stone-100 h-full">
-                        {/* Photo Placeholder */}
-                        <div className="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-stone-100 to-stone-200 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center group-hover:from-sky-100 group-hover:to-blue-200 transition-all duration-500">
-                          <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-400 group-hover:text-[#00477f]">
-                            {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
-                          </span>
-                        </div>
-
-                        {/* Name & Title */}
-                        <div className="text-center mb-3 sm:mb-4">
-                          <h3 className="font-bold text-slate-900 text-lg sm:text-xl lg:text-2xl mb-1 group-hover:text-[#00477f] transition-colors">
-                            {doctor.name}
-                          </h3>
-                          <p className="text-[#00477f] font-medium text-sm sm:text-base">{doctor.title}</p>
-                          <p className="text-slate-500 text-xs sm:text-sm">{doctor.specialty}</p>
-                        </div>
-
-                        {/* Experience Badge */}
-                        <div className="flex justify-center mb-4 sm:mb-6">
-                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-stone-50 rounded-full text-xs sm:text-sm text-slate-700 font-medium">
-                            {doctor.experience}
-                          </span>
-                        </div>
-
-                        {/* Quote */}
-                        <p className="text-slate-500 text-center text-xs sm:text-sm italic mb-6 sm:mb-8 leading-relaxed line-clamp-2">
-                          &ldquo;{doctor.bio.substring(0, 80)}...&rdquo;
-                        </p>
-
-                        {/* Actions */}
-                        <div className="space-y-2 sm:space-y-3">
-                          <Button 
-                            variant="outline" 
-                            className="w-full border-[#00477f] text-[#00477f] hover:bg-sky-50 py-4 sm:py-5 text-sm sm:text-base"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setOpenTeamDialogs(prev => ({ ...prev, [index]: true }));
-                            }}
-                          >
-                            {lang === 'zh-TW' ? '查看簡介' : 'View Profile'}
-                          </Button>
-                          <Button 
-                            className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-5 text-sm sm:text-base"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              scrollToContact();
-                            }}
-                          >
-                            {t.contact.bookAppointment}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </DialogTrigger>
-
-                  {/* Detail Modal */}
-                  <DialogContent className="max-w-3xl w-full h-full sm:h-auto sm:max-h-[90vh] overflow-hidden p-0 sm:rounded-2xl">
-                    {/* Modal Header with Close */}
-                    <DialogHeader className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex flex-row items-start justify-between gap-3 text-left">
-                      <div className="flex items-start gap-3 sm:gap-6">
-                        <div className="w-14 h-14 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-sky-100 to-blue-200 rounded-full flex items-center justify-center shrink-0">
-                          <span className="text-xl sm:text-2xl lg:text-3xl font-light text-[#00477f]">
-                            {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0 pt-1 text-left">
-                          <DialogTitle className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-0.5 leading-tight text-left">{doctor.name}</DialogTitle>
-                          <p className="text-[#00477f] font-medium text-sm sm:text-base lg:text-lg">{doctor.title}</p>
-                          <p className="text-slate-500 text-xs sm:text-sm">{doctor.specialty} • {doctor.experience}</p>
-                        </div>
-                      </div>
-                      <DialogClose asChild>
-                        <button className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 hover:scale-105 active:scale-95 flex items-center justify-center transition-all shrink-0">
-                          <X className="w-4 h-4 text-slate-600" />
-                        </button>
-                      </DialogClose>
-                    </DialogHeader>
-
-                    <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
-                      <div className="space-y-6 sm:space-y-8">
-                        {/* Bio */}
-                        <section className="bg-stone-50/50 rounded-xl sm:rounded-2xl p-4 sm:p-5">
-                          <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                            <div className="w-1 h-4 sm:h-5 bg-[#00477f] rounded-full"></div>
-                            <h3 className="font-semibold text-slate-900 text-base sm:text-lg">
-                              {lang === 'zh-TW' ? '簡介' : 'About'}
-                            </h3>
-                          </div>
-                          <p className="text-slate-700 text-sm leading-relaxed pl-3">{doctor.bio}</p>
-                        </section>
-
-                        {/* Expertise */}
-                        <section>
-                          <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#00477f]/10 flex items-center justify-center">
-                              <Stethoscope className="w-4 h-4 sm:w-4 sm:h-4 text-[#00477f]" />
-                            </div>
-                            <h3 className="font-semibold text-slate-900 text-base sm:text-lg">{t.team.expertise}</h3>
-                          </div>
-                          <div className="flex flex-wrap gap-2 pl-2">
-                            {doctor.expertise.map((exp, i) => (
-                              <span key={i} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-sky-50 to-blue-50 text-[#00477f] text-xs sm:text-sm rounded-full font-medium border border-sky-100">
-                                {exp}
-                              </span>
-                            ))}
-                          </div>
-                        </section>
-
-                        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                          {/* Education */}
-                          <section className="bg-white border border-stone-200 rounded-xl sm:rounded-2xl p-4 sm:p-5">
-                            <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#00477f]/10 flex items-center justify-center">
-                                <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f]" />
-                              </div>
-                              <h3 className="font-semibold text-slate-900 text-sm sm:text-base">{t.team.education}</h3>
-                            </div>
-                            <ul className="space-y-2 sm:space-y-2.5">
-                              {doctor.education.map((edu, i) => (
-                                <li key={i} className="text-slate-700 text-xs sm:text-sm flex items-start gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00477f] mt-1.5 shrink-0"></span>
-                                  <span className="leading-relaxed">{edu}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </section>
-
-                          {/* Certifications */}
-                          <section className="bg-white border border-stone-200 rounded-xl sm:rounded-2xl p-4 sm:p-5">
-                            <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#00477f]/10 flex items-center justify-center">
-                                <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f]" />
-                              </div>
-                              <h3 className="font-semibold text-slate-900 text-sm sm:text-base">{t.team.certifications}</h3>
-                            </div>
-                            <ul className="space-y-2 sm:space-y-2.5">
-                              {doctor.certifications.map((cert, i) => (
-                                <li key={i} className="text-slate-700 text-xs sm:text-sm flex items-start gap-2">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00477f] mt-1.5 shrink-0"></span>
-                                  <span className="leading-relaxed">{cert}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </section>
-                        </div>
-
-                        <Button 
-                          onClick={() => {
-                            setOpenTeamDialogs(prev => ({ ...prev, [index]: false }));
-                            setTimeout(scrollToContact, 100);
-                          }}
-                          className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-6 text-sm sm:text-lg font-semibold shadow-lg shadow-[#00477f]/20"
-                        >
-                          {t.contact.bookAppointment}
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              ))}
-            </div>
-          </div>
+          <TeamGrid 
+            lang={lang} 
+            t={t} 
+            onBookAppointment={scrollToContact}
+          />
         </div>
       </section>
 

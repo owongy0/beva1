@@ -418,6 +418,56 @@
           "Chronic Subdural Hematoma Treatment",
           "Cerebrovascular Disorders"
         ]
+      },
+      {
+        "name": "Dr. Sarah Chen",
+        "title": "Senior Consultant",
+        "specialty": "Neurointerventional Surgery",
+        "experience": "16+ years experience",
+        "bio": "Dr. Chen is an expert in neurointerventional surgery with specialized training in stroke treatment and cerebrovascular disorders. She has pioneered several techniques in mechanical thrombectomy and is dedicated to improving stroke outcomes for patients across the Asia-Pacific region.",
+        "education": [
+          "MD, Columbia University College of Physicians",
+          "Residency in Neurology, New York-Presbyterian Hospital",
+          "Fellowship in Neurointerventional Surgery, University of Toronto",
+          "Board Certified in Neurology and Neurointerventional Surgery"
+        ],
+        "certifications": [
+          "Fellow, American Academy of Neurology (AAN)",
+          "Member, Society of Vascular and Interventional Neurology (SVIN)",
+          "Diplomate, American Board of Psychiatry and Neurology",
+          "Certified Neurointerventional Surgeon"
+        ],
+        "expertise": [
+          "Acute Stroke Intervention",
+          "Cerebral Angioplasty",
+          "Intracranial Stenting",
+          "Neurovascular Imaging"
+        ]
+      },
+      {
+        "name": "Dr. Michael Lau",
+        "title": "Consultant Physician",
+        "specialty": "Interventional Neuroradiology",
+        "experience": "14+ years experience",
+        "bio": "Dr. Lau specializes in the diagnosis and minimally invasive treatment of disorders of the brain and spine. His expertise includes spinal interventions, pain management procedures, and advanced imaging techniques. He is committed to providing personalized care with the latest technological advancements.",
+        "education": [
+          "MD, University of Cambridge",
+          "Residency in Radiology, Imperial College London",
+          "Fellowship in Interventional Neuroradiology, Karolinska Institute",
+          "Board Certified in Diagnostic and Interventional Radiology"
+        ],
+        "certifications": [
+          "Fellow, Royal College of Radiologists (FRCR)",
+          "Member, European Society of Neuroradiology (ESNR)",
+          "Diplomate, European Board of Neuroradiology",
+          "Certified in Interventional Spine Procedures"
+        ],
+        "expertise": [
+          "Spinal Interventions",
+          "Vertebroplasty",
+          "Pain Management",
+          "Diagnostic Neuroradiology"
+        ]
       }
     ]
   },
