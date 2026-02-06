@@ -254,7 +254,7 @@ export function getBodyAreaOptions(lang: Locale): QuickReplyOption[] {
   const directOptions: QuickReplyOption[] = [
     {
       id: 'direct_hemorrhoids',
-      label: lang === 'zh-TW' ? '🩸 痔瘡 (直腸出血/肛門疼痛)' : '🩸 Hemorrhoids (Rectal bleeding/Anal pain)',
+      label: lang === 'zh-TW' ? '肛門 (痔瘡/直腸出血)' : 'Anus (Hemorrhoids/Rectal bleeding)',
       value: 'hemorrhoids',
       action: 'select_body_area' as const
     }
