@@ -107,9 +107,18 @@ export default async function LocaleLayout({
                 </a>
               </nav>
               
-              {/* Desktop Right Section: Language + User */}
+              {/* Desktop Right Section: Language + Bookings (if logged in) + User */}
               <div className="hidden md:flex items-center gap-4">
                 <LanguageSwitcher currentLang={lang as 'en' | 'zh-TW'} dictionary={{ language: dict.language }} />
+                {user && (
+                  <Link
+                    href={`/${lang}/bookings`}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#00477f]/10 text-[#00477f] rounded-lg font-medium hover:bg-[#00477f]/20 transition-colors"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    {t.myBookings}
+                  </Link>
+                )}
                 <UserNav lang={lang as 'en' | 'zh-TW'} dict={dict} />
               </div>
               

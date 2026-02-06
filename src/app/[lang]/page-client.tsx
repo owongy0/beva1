@@ -116,96 +116,134 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {t.procedures.items.map((procedure, index) => {
-              return (
-                <Dialog 
-                  key={index}
-                  open={openDialogs[index]} 
-                  onOpenChange={(open) => setOpenDialogs(prev => ({ ...prev, [index]: open }))}
-                >
-                  <DialogTrigger asChild>
-                    <button className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
-                      {/* Title */}
-                      <h3 className="font-bold text-slate-900 text-lg leading-tight mb-3 group-hover:text-[#00477f] transition-colors">
-                        {procedure.title}
-                      </h3>
-                      
-                      {/* Short description */}
-                      <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-grow">
-                        {procedure.shortDescription}
-                      </p>
-                      
-                      {/* Learn more link */}
-                      <div className="flex items-center gap-2 text-[#00477f] font-medium text-sm pt-4 border-t border-slate-100 group-hover:border-[#00477f]/20 transition-colors">
-                        <span>{lang === 'zh-TW' ? '了解更多' : 'Learn more'}</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </button>
-                  </DialogTrigger>
-                  
-                  <DialogContent className="max-w-4xl w-[95vw] max-h-[85vh] overflow-y-auto">
-                    <DialogHeader className="pb-6 border-b">
-                      <div>
-                        <DialogTitle className="text-2xl font-bold text-slate-900">{procedure.title}</DialogTitle>
-                        <p className="text-slate-500 mt-2">{procedure.shortDescription}</p>
-                      </div>
-                    </DialogHeader>
+          {/* Category Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {t.procedures.categories.map((category, catIndex) => (
+              <Dialog 
+                key={catIndex}
+                open={openDialogs[catIndex]} 
+                onOpenChange={(open) => setOpenDialogs(prev => ({ ...prev, [catIndex]: open }))}
+              >
+                <DialogTrigger asChild>
+                  <button className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
+                    {/* Category Title */}
+                    <h3 className="font-bold text-slate-900 text-xl leading-tight mb-3 group-hover:text-[#00477f] transition-colors">
+                      {category.name}
+                    </h3>
                     
-                    <div className="pt-8 space-y-8">
-                      <section>
-                        <h3 className="text-lg font-semibold text-slate-900 mb-4">
-                          {lang === 'zh-TW' ? '概述' : 'Overview'}
-                        </h3>
-                        <p className="text-slate-600 leading-relaxed">{procedure.fullDescription}</p>
-                      </section>
-
-                      <section>
-                        <h3 className="text-lg font-semibold text-slate-900 mb-4">
-                          {lang === 'zh-TW' ? '治療優點' : 'Benefits'}
-                        </h3>
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {procedure.benefits.map((benefit, i) => (
-                            <li key={i} className="flex items-start gap-3 bg-slate-50 rounded-lg p-3">
-                              <Check className="w-5 h-5 text-[#00477f] mt-0.5 shrink-0" />
-                              <span className="text-slate-600 text-sm">{benefit}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </section>
-
-                      <section className="bg-gradient-to-r from-[#f8fafc] to-[#e6eef5] rounded-xl p-6">
-                        <h3 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                          <Clock className="w-5 h-5 text-[#00477f]" />
-                          {lang === 'zh-TW' ? '康復時間' : 'Recovery'}
-                        </h3>
-                        <p className="text-slate-600">{procedure.recovery}</p>
-                      </section>
-
-                      {/* Placeholder for future video/content */}
-                      <section className="border-2 border-dashed border-slate-200 rounded-xl p-12 text-center bg-slate-50/50">
-                        <div className="text-slate-400">
-                          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Stethoscope className="w-8 h-8 text-slate-300" />
-                          </div>
-                          <p className="text-sm">{lang === 'zh-TW' ? '視頻與詳細資料即將推出' : 'Video and detailed materials coming soon'}</p>
-                        </div>
-                      </section>
-
-                      <Button 
-                        onClick={() => {
-                          setOpenDialogs(prev => ({ ...prev, [index]: false }));
-                          setTimeout(scrollToContact, 100);
-                        }}
-                        className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
-                      >
-                        {t.contact.bookAppointment}
-                      </Button>
+                    {/* Description */}
+                    <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-grow">
+                      {category.description}
+                    </p>
+                    
+                    {/* Treatment Count */}
+                    <div className="text-xs text-slate-400 mb-4">
+                      {category.treatments.length} {lang === 'zh-TW' ? '項治療' : 'treatments'}
                     </div>
-                  </DialogContent>
-                </Dialog>
-              );
-            })}
+                    
+                    {/* View Treatments Link */}
+                    <div className="flex items-center gap-2 text-[#00477f] font-medium text-sm pt-4 border-t border-slate-100 group-hover:border-[#00477f]/20 transition-colors">
+                      <span>{t.procedures.viewTreatments}</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </button>
+                </DialogTrigger>
+                
+                <DialogContent className="max-w-5xl w-[95vw] max-h-[90vh] overflow-y-auto p-0">
+                  {/* Category Header */}
+                  <div className="sticky top-0 bg-white border-b px-6 py-4 z-10">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold text-slate-900">{category.name}</DialogTitle>
+                      <p className="text-slate-500 text-sm mt-1">{category.description}</p>
+                    </DialogHeader>
+                  </div>
+                  
+                  {/* Treatments List */}
+                  <div className="p-6 space-y-4">
+                    {category.treatments.map((treatment, treatIndex) => (
+                      <Dialog key={treatIndex}>
+                        <DialogTrigger asChild>
+                          <button className="w-full text-left bg-slate-50 hover:bg-[#f0f5fa] rounded-xl p-5 transition-colors group">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-slate-900 text-lg group-hover:text-[#00477f] transition-colors">
+                                  {treatment.title}
+                                </h4>
+                                <p className="text-slate-500 text-sm mt-1 line-clamp-2">
+                                  {treatment.shortDescription}
+                                </p>
+                              </div>
+                              <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-[#00477f] shrink-0 mt-1" />
+                            </div>
+                          </button>
+                        </DialogTrigger>
+                        
+                        <DialogContent className="max-w-3xl w-[95vw] max-h-[85vh] overflow-y-auto">
+                          <DialogHeader className="pb-4 border-b">
+                            <DialogTitle className="text-xl font-bold text-slate-900">{treatment.title}</DialogTitle>
+                            <p className="text-slate-500 text-sm mt-1">{treatment.shortDescription}</p>
+                          </DialogHeader>
+                          
+                          <div className="pt-6 space-y-6">
+                            <section>
+                              <h3 className="text-base font-semibold text-slate-900 mb-3">
+                                {lang === 'zh-TW' ? '概述' : 'Overview'}
+                              </h3>
+                              <p className="text-slate-600 text-sm leading-relaxed">{treatment.fullDescription}</p>
+                            </section>
+
+                            <section>
+                              <h3 className="text-base font-semibold text-slate-900 mb-3">
+                                {lang === 'zh-TW' ? '治療優點' : 'Benefits'}
+                              </h3>
+                              <ul className="space-y-2">
+                                {treatment.benefits.map((benefit, i) => (
+                                  <li key={i} className="flex items-start gap-3 bg-slate-50 rounded-lg p-3">
+                                    <Check className="w-4 h-4 text-[#00477f] mt-0.5 shrink-0" />
+                                    <span className="text-slate-600 text-sm">{benefit}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </section>
+
+                            <section className="bg-gradient-to-r from-[#f8fafc] to-[#e6eef5] rounded-xl p-4">
+                              <h3 className="text-base font-semibold text-slate-900 mb-2 flex items-center gap-2">
+                                <Clock className="w-4 h-4 text-[#00477f]" />
+                                {lang === 'zh-TW' ? '康復時間' : 'Recovery'}
+                              </h3>
+                              <p className="text-slate-600 text-sm">{treatment.recovery}</p>
+                            </section>
+
+                            <Button 
+                              onClick={() => {
+                                setOpenDialogs(prev => ({ ...prev, [catIndex]: false }));
+                                setTimeout(scrollToContact, 100);
+                              }}
+                              className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-5 text-base font-semibold"
+                            >
+                              {t.contact.bookAppointment}
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    ))}
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="sticky bottom-0 bg-white border-t px-6 py-4">
+                    <Button 
+                      onClick={() => {
+                        setOpenDialogs(prev => ({ ...prev, [catIndex]: false }));
+                        setTimeout(scrollToContact, 100);
+                      }}
+                      className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-5 text-base font-semibold"
+                    >
+                      {t.contact.bookAppointment}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            ))}
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@
     "description": "Minimally invasive treatments for brain, spine and body conditions. Book a consultation with our experienced specialists."
   },
   "nav": {
-    "procedures": "Procedures",
+    "procedures": "Treatments",
     "about": "About",
     "contact": "Contact",
     "faq": "FAQ",
@@ -18,156 +18,275 @@
     "title": "Advanced Treatments for Brain, Spine and Body Conditions",
     "subtitle": "Minimally invasive options for faster recovery and improved outcomes.",
     "bookConsultation": "Book A Consultation",
-    "ourProcedures": "Our Procedures"
+    "ourProcedures": "Our Treatments"
   },
   "procedures": {
-    "title": "Our Procedures",
-    "subtitle": "Highly specialised treatments delivered by experienced specialists",
-    "learnMore": "Learn More",
-    "close": "Close",
-    "items": [
+    "title": "Our Treatments",
+    "subtitle": "Comprehensive endovascular and interventional treatments organized by specialty",
+    "viewTreatments": "View Treatments",
+    "categories": [
       {
-        "title": "Cerebral Aneurysm Treatment",
-        "shortDescription": "Advanced coiling and flow diversion techniques to treat brain aneurysms with minimal invasiveness.",
-        "fullDescription": "Our cerebral aneurysm treatment uses state-of-the-art endovascular techniques to repair weakened blood vessels in the brain. We offer coiling, flow diversion, and stent-assisted procedures tailored to each patient's specific condition.",
-        "benefits": [
-          "Minimally invasive approach through a small groin incision",
-          "No open brain surgery required",
-          "Shorter hospital stays - often just 1-2 days",
-          "Faster recovery compared to traditional surgery",
-          "Reduced risk of complications"
-        ],
-        "recovery": "Most patients return to normal activities within 1-2 weeks. Follow-up imaging is performed at 3, 6, and 12 months to ensure the aneurysm remains secure."
+        "id": "neurovascular",
+        "name": "Neurovascular",
+        "description": "Advanced minimally invasive treatments for brain aneurysms, stroke, and cerebrovascular conditions.",
+        "treatments": [
+          {
+            "title": "Cerebral Aneurysm Embolization",
+            "shortDescription": "Minimally invasive treatment for brain aneurysms using advanced coiling and flow diversion techniques.",
+            "fullDescription": "Cerebral aneurysm embolization is a minimally invasive procedure to treat weakened, bulging areas in brain blood vessels. Using catheters navigated through blood vessels from the groin, we deploy platinum coils or flow diverters to seal off the aneurysm, preventing rupture and hemorrhagic stroke without open brain surgery.",
+            "benefits": [
+              "No open brain surgery or skull removal required",
+              "Tiny incision in the groin - less than 5mm",
+              "Most patients discharged within 24-48 hours",
+              "Return to normal activities in 1-2 weeks",
+              "Lower risk than surgical clipping for many aneurysm types"
+            ],
+            "recovery": "Most patients stay overnight for observation. Mild groin discomfort for 2-3 days. Return to work and normal activities within 1-2 weeks. Follow-up angiography at 3, 6, and 12 months to confirm aneurysm occlusion."
+          },
+          {
+            "title": "Acute Stroke Revascularization",
+            "shortDescription": "Emergency mechanical thrombectomy to restore blood flow during acute ischemic stroke.",
+            "fullDescription": "Acute stroke revascularization (mechanical thrombectomy) is an emergency procedure to remove blood clots blocking brain arteries during an acute ischemic stroke. Using catheter-based devices, we physically extract the clot to restore blood flow, dramatically improving outcomes when performed within 6-24 hours of symptom onset.",
+            "benefits": [
+              "Significantly reduces disability from stroke",
+              "Effective up to 24 hours after symptom onset in selected patients",
+              "Minimally invasive - no open surgery",
+              "Immediate restoration of blood flow",
+              "Can be combined with clot-busting medications"
+            ],
+            "recovery": "Recovery depends on stroke severity and timing of treatment. Patients typically stay in hospital for 3-7 days. Rehabilitation including physical, occupational, and speech therapy often begins during hospitalization. Full recovery may take weeks to months."
+          },
+          {
+            "title": "Carotid Artery Stenting",
+            "shortDescription": "Stent placement to open narrowed carotid arteries and prevent stroke.",
+            "fullDescription": "Carotid artery stenting is a minimally invasive procedure to treat carotid artery stenosis (narrowing), a major cause of stroke. We place a small mesh tube (stent) in the narrowed artery to keep it open, using embolic protection devices to catch any debris and prevent stroke during the procedure.",
+            "benefits": [
+              "Prevents stroke by improving blood flow to the brain",
+              "Smaller incision than traditional carotid surgery",
+              "Lower risk of nerve injury and wound complications",
+              "Suitable for high-risk surgical patients",
+              "Quick return to normal activities"
+            ],
+            "recovery": "Overnight observation in hospital. Most patients return to normal activities within a few days. Dual antiplatelet medications are required for at least 3 months. Regular ultrasound follow-up at 1, 6, and 12 months."
+          },
+          {
+            "title": "Chronic Subdural Hematoma Embolization",
+            "shortDescription": "MMA embolization to treat and prevent recurrent chronic subdural hematoma.",
+            "fullDescription": "Chronic subdural hematoma (cSDH) embolization treats collections of blood on the brain's surface by blocking the middle meningeal artery (MMA) that supplies the hematoma membrane. This stops bleeding and prevents recurrence, often avoiding the need for surgical drainage or reducing recurrence after drainage.",
+            "benefits": [
+              "Non-surgical alternative to burr hole drainage",
+              "Significantly reduces recurrence rates from 30% to under 5%",
+              "Can be done under local anesthesia",
+              "Same-day or overnight procedure",
+              "Highly effective for recurrent cSDH cases"
+            ],
+            "recovery": "Most patients discharged same day or next day. Mild headache possible for 2-3 days. Follow-up CT scans at 4-8 weeks show hematoma resolution. Success rate exceeds 90% for preventing recurrence."
+          },
+          {
+            "title": "Brain AVM & Dural Fistula Treatment",
+            "shortDescription": "Endovascular embolization for arteriovenous malformations and dural arteriovenous fistulas.",
+            "fullDescription": "We treat brain arteriovenous malformations (AVM) and dural arteriovenous fistulas (dAVF) using embolization - injecting special materials to block abnormal blood vessel connections. Our trans-venous approach can reach complex lesions through the venous system when arterial access is challenging.",
+            "benefits": [
+              "Minimally invasive alternative to open surgery",
+              "Can treat deep-seated lesions unreachable by surgery",
+              "Lower risk of intra-procedural bleeding",
+              "May cure the lesion or reduce size before radiosurgery",
+              "Preserves normal brain tissue"
+            ],
+            "recovery": "Hospital stay of 1-3 days depending on complexity. Recovery varies based on lesion size and location. Follow-up angiography at 3-6 months. Some AVMs may require staged treatments or adjunctive radiosurgery."
+          }
+        ]
       },
       {
-        "title": "Carotid Artery Stenting",
-        "shortDescription": "Restore blood flow to the brain with our advanced carotid stenting procedure.",
-        "fullDescription": "Carotid artery stenting is a minimally invasive procedure to open narrowed carotid arteries that supply blood to the brain. We use embolic protection devices and advanced stent technology to ensure safety and efficacy.",
-        "benefits": [
-          "Prevents stroke by improving blood flow to the brain",
-          "Smaller incision than traditional carotid endarterectomy",
-          "Lower risk of nerve injury and wound complications",
-          "Suitable for patients who are high-risk for open surgery",
-          "Quick return to daily activities"
-        ],
-        "recovery": "Patients typically stay overnight for observation. Most return to normal activities within a few days, with follow-up ultrasound imaging at regular intervals."
+        "id": "neuromodulation",
+        "name": "Neuromodulation",
+        "description": "Implantable device therapies for movement disorders, sleep apnea, and neurological conditions.",
+        "treatments": [
+          {
+            "title": "Deep Brain Stimulation (DBS)",
+            "shortDescription": "Neuromodulation therapy for Parkinson's disease, movement disorders, and psychiatric conditions.",
+            "fullDescription": "Deep Brain Stimulation (DBS) involves implanting electrodes in specific brain areas to deliver electrical impulses that regulate abnormal brain activity. FDA-approved for Parkinson's disease, essential tremor, dystonia, and obsessive-compulsive disorder. Emerging applications include depression and post-stroke recovery.",
+            "benefits": [
+              "Significant reduction in Parkinson's motor symptoms",
+              "Reduces medication needs and related side effects",
+              "Reversible and adjustable treatment",
+              "Improves quality of life and daily function",
+              "Effective when medications become less effective"
+            ],
+            "recovery": "Hospital stay of 1-2 days for implantation. Device programming begins 2-4 weeks after surgery. Regular follow-up visits for optimization. Battery typically lasts 3-5 years and is replaced in a minor procedure."
+          },
+          {
+            "title": "Hypoglossal Nerve Stimulation",
+            "shortDescription": "Implantable device therapy for moderate-to-severe obstructive sleep apnea.",
+            "fullDescription": "Hypoglossal nerve stimulation (Inspire therapy) treats obstructive sleep apnea (OSA) by stimulating the nerve that controls tongue movement. During sleep, the implanted device delivers mild stimulation to prevent the tongue from blocking the airway, activated by a handheld remote before sleep.",
+            "benefits": [
+              "Effective alternative for CPAP-intolerant patients",
+              "Reduces sleep apnea events by 50-80%",
+              "Improves sleep quality and daytime alertness",
+              "No mask or hose required",
+              "Clinically proven long-term effectiveness"
+            ],
+            "recovery": "Outpatient surgical procedure. Soft diet for 2-3 weeks. Device activated after 1 month. Sleep study at 2 months to optimize settings. Most patients see significant improvement within the first few months."
+          }
+        ]
       },
       {
-        "title": "Chronic Subdural Hematoma (cSDH)",
-        "shortDescription": "Effective minimally invasive treatment for chronic subdural hematoma with Middle Meningeal Artery (MMA) embolization.",
-        "fullDescription": "Chronic subdural hematoma (cSDH) is a collection of blood on the brain's surface beneath the outer covering. Our innovative MMA embolization procedure addresses the root cause by blocking the blood vessels that feed the hematoma membrane, preventing recurrence.",
-        "benefits": [
-          "Non-surgical alternative to burr hole drainage",
-          "Significantly reduces recurrence rates",
-          "Performed under local anesthesia with sedation",
-          "Same-day or overnight procedure",
-          "Particularly effective for recurrent cSDH cases"
-        ],
-        "recovery": "Recovery is typically rapid, with most patients discharged the same day or next day. Follow-up CT scans monitor hematoma resolution over 4-8 weeks."
+        "id": "urogenital",
+        "name": "Urogenital & Pelvic",
+        "description": "Minimally invasive treatments for uterine fibroids, prostate enlargement, varicose veins, and pelvic conditions.",
+        "treatments": [
+          {
+            "title": "Uterine Fibroid Embolization",
+            "shortDescription": "Non-surgical treatment for uterine fibroids causing heavy bleeding and pain.",
+            "fullDescription": "Uterine artery embolization (UAE) treats symptomatic uterine fibroids by blocking blood flow to the fibroids, causing them to shrink. Small particles are injected through a catheter to occlude the uterine arteries while preserving the uterus. Highly effective for heavy menstrual bleeding and bulk symptoms.",
+            "benefits": [
+              "Avoids hysterectomy - uterus preserved",
+              "No abdominal incisions or scarring",
+              "Return to work in 1-2 weeks",
+              "Highly effective for heavy bleeding (90% success)",
+              "Lower complication rates than surgery"
+            ],
+            "recovery": "Same-day discharge. Cramping for 2-3 days managed with medication. Return to normal activities within 1-2 weeks. MRI at 3-6 months confirms fibroid shrinkage by 40-60%."
+          },
+          {
+            "title": "Prostate Artery Embolization",
+            "shortDescription": "Minimally invasive treatment for enlarged prostate (BPH) urinary symptoms.",
+            "fullDescription": "Prostate artery embolization (PAE) treats benign prostatic hyperplasia (BPH) by blocking blood flow to the prostate gland, causing it to shrink. This relieves urinary symptoms including frequency, urgency, weak stream, and nighttime urination without the risks of TURP surgery or sexual side effects.",
+            "benefits": [
+              "Preserves sexual function and ejaculation",
+              "No catheter or only brief catheterization",
+              "Outpatient procedure - same day discharge",
+              "No risk of urinary incontinence",
+              "Effective for prostates up to 150cc"
+            ],
+            "recovery": "Same-day discharge. Mild pelvic discomfort for 2-3 days. Temporary urinary symptoms may worsen initially. Improvement begins at 2-4 weeks with maximum benefit at 3-6 months."
+          },
+          {
+            "title": "Pelvic Congestion & Varicocele Embolization",
+            "shortDescription": "Vein embolization for pelvic congestion syndrome and male varicocele.",
+            "fullDescription": "Ovarian vein embolization treats pelvic congestion syndrome (chronic pelvic pain due to varicose veins in the pelvis) by blocking refluxing ovarian veins. Varicocele embolization treats enlarged scrotal veins causing pain and infertility. Both procedures offer minimally invasive alternatives to surgery.",
+            "benefits": [
+              "85-95% success rate for pain relief",
+              "Outpatient procedure",
+              "Preserves fertility in varicocele treatment",
+              "No surgical scars",
+              "Rapid return to normal activities"
+            ],
+            "recovery": "Same-day discharge. Mild pelvic/groin discomfort for 1-2 days. Return to work within 2-3 days. Symptom improvement over 2-4 weeks. Follow-up ultrasound at 3 months confirms vein occlusion."
+          },
+          {
+            "title": "Varicose Vein Treatment",
+            "shortDescription": "Advanced minimally invasive options for varicose veins and chronic venous insufficiency.",
+            "fullDescription": "We offer comprehensive varicose vein treatment including endovenous laser ablation (EVLA), radiofrequency ablation (RFA), mechanochemical ablation (MOCA), ultrasound-guided foam sclerotherapy, and ambulatory phlebectomy. These treatments close or remove faulty veins, redirecting blood flow to healthy veins.",
+            "benefits": [
+              "No general anesthesia required",
+              "Walk-in, walk-out procedures",
+              "Immediate return to normal activities",
+              "Excellent cosmetic results",
+              "Relieves pain, swelling, and heaviness"
+            ],
+            "recovery": "All procedures are outpatient. Wear compression stockings for 1-2 weeks. Walking encouraged immediately. Minor bruising resolves in 1-2 weeks. Follow-up ultrasound at 6 weeks."
+          }
+        ]
       },
       {
-        "title": "Dural Arteriovenous Fistula",
-        "shortDescription": "Trans-venous treatment for abnormal connections between arteries and veins in the brain's dura.",
-        "fullDescription": "Dural arteriovenous fistula (dAVF) is an abnormal connection between arteries and veins within the dura mater surrounding the brain. Our trans-venous approach allows precise closure of these fistulas through the venous system, often providing a safer and more complete treatment than traditional arterial approaches.",
-        "benefits": [
-          "Direct venous access to the fistula site",
-          "More complete closure of complex fistulas",
-          "Reduced risk of arterial puncture complications",
-          "Lower radiation exposure compared to arterial approaches",
-          "Can treat multiple feeders through a single venous access"
-        ],
-        "recovery": "Most patients stay 1-2 nights for monitoring. Gradual return to normal activities over 1-2 weeks with follow-up angiography at 3-6 months."
+        "id": "gastrointestinal",
+        "name": "Gastrointestinal",
+        "description": "Non-surgical treatments for hemorrhoids and other GI conditions.",
+        "treatments": [
+          {
+            "title": "Hemorrhoidal Artery Embolization",
+            "shortDescription": "Non-surgical treatment for symptomatic internal hemorrhoids.",
+            "fullDescription": "Hemorrhoidal artery embolization (HAE) treats bleeding internal hemorrhoids by blocking the arterial blood supply. Small coils or particles are injected into the superior rectal arteries, reducing blood flow to the hemorrhoids and causing them to shrink. No cutting or removal of tissue.",
+            "benefits": [
+              "No surgery, cuts, or stitches",
+              "Minimal pain compared to hemorrhoidectomy",
+              "Outpatient procedure - home same day",
+              "Return to work in 24-48 hours",
+              "Can treat all hemorrhoid grades"
+            ],
+            "recovery": "Same-day discharge. Mild rectal pressure for 1-2 days. Bleeding typically stops within days and resolves within 1-2 weeks. Avoid heavy lifting for 1 week. High success rate over 80%."
+          }
+        ]
       },
       {
-        "title": "Brain AVM",
-        "shortDescription": "Trans-venous embolization for arteriovenous malformations in the brain.",
-        "fullDescription": "Brain arteriovenous malformation (AVM) is a tangle of abnormal blood vessels connecting arteries and veins. Our specialized trans-venous embolization technique treats specific types of AVMs through the venous drainage system, offering an alternative when arterial access is challenging or risky.",
-        "benefits": [
-          "Alternative for AVMs with difficult arterial access",
-          "Reduced risk of intra-procedural bleeding",
-          "Can reach deep-seated AVMs safely",
-          "Lower complication rates for select AVM types",
-          "May be combined with surgery or radiosurgery"
-        ],
-        "recovery": "Hospital stay is typically 2-3 days. Recovery varies based on AVM size and location, with most patients returning to normal activities within 2-4 weeks."
+        "id": "musculoskeletal",
+        "name": "Musculoskeletal",
+        "description": "Innovative embolization treatments for knee arthritis and chronic foot pain.",
+        "treatments": [
+          {
+            "title": "Genicular Artery Embolization",
+            "shortDescription": "Targeted embolization for knee osteoarthritis pain.",
+            "fullDescription": "Genicular artery embolization (GAE) treats chronic knee pain from osteoarthritis by reducing inflammation in the knee joint. Tiny particles block abnormal blood vessels in the knee lining that contribute to inflammation and pain, offering relief for patients not ready for knee replacement surgery.",
+            "benefits": [
+              "Delays or avoids knee replacement surgery",
+              "No joint implants or hardware",
+              "Outpatient procedure",
+              "Can be repeated if needed",
+              "Preserves all future treatment options"
+            ],
+            "recovery": "Same-day discharge. Mild knee discomfort for 2-3 days. Pain relief typically begins within 2-4 weeks as inflammation subsides. Maximum benefit at 3 months. Success rate of 70-80% for pain reduction."
+          },
+          {
+            "title": "Plantar Fasciitis Embolization",
+            "shortDescription": "Minimally invasive treatment for chronic plantar fasciitis heel pain.",
+            "fullDescription": "Plantar fasciitis embolization (PFE) treats chronic heel pain that hasn't responded to conservative treatments like orthotics, physical therapy, or injections. Small particles block abnormal blood vessels in the plantar fascia, reducing inflammation and pain while allowing normal tissue healing.",
+            "benefits": [
+              "Non-surgical alternative",
+              "No lengthy immobilization required",
+              "Outpatient procedure",
+              "Quick return to walking activities",
+              "Effective when other treatments fail"
+            ],
+            "recovery": "Same-day discharge. Mild foot discomfort for a few days. Gradual improvement in pain over 2-6 weeks. Return to normal activities immediately. Physical therapy may enhance results."
+          }
+        ]
       },
       {
-        "title": "Hemorrhoid Embolization",
-        "shortDescription": "Non-surgical treatment for internal hemorrhoids using targeted arterial embolization.",
-        "fullDescription": "Hemorrhoid embolization is a minimally invasive alternative to surgery for treating symptomatic internal hemorrhoids. By blocking the blood supply to the hemorrhoidal arteries, this procedure reduces swelling and bleeding without the pain and recovery time of traditional hemorrhoidectomy.",
-        "benefits": [
-          "No surgery, cuts, or stitches required",
-          "Minimal pain compared to hemorrhoidectomy",
-          "Outpatient procedure - home same day",
-          "Quick return to normal activities",
-          "Can treat multiple hemorrhoids in one session"
-        ],
-        "recovery": "Most patients resume normal activities within 24-48 hours. Minor discomfort may occur for a few days. Bleeding typically reduces within 1-2 weeks as hemorrhoids shrink."
-      },
-      {
-        "title": "Prostate Artery Embolization",
-        "shortDescription": "Minimally invasive treatment for enlarged prostate (BPH) without surgery.",
-        "fullDescription": "Prostate artery embolization (PAE) treats benign prostatic hyperplasia (BPH) by blocking blood flow to the prostate gland. This shrinks the enlarged prostate and relieves urinary symptoms including frequent urination, weak stream, and nighttime urination without the risks of traditional surgery.",
-        "benefits": [
-          "Preserves sexual function (unlike TURP)",
-          "No catheter or only brief catheterization",
-          "Outpatient procedure",
-          "No risk of urinary incontinence",
-          "Faster recovery than surgical options"
-        ],
-        "recovery": "Outpatient procedure with same-day discharge. Mild pelvic discomfort for 2-3 days. Urinary symptoms improve gradually over 2-4 weeks as the prostate shrinks."
-      },
-      {
-        "title": "Uterine Fibroid Embolization",
-        "shortDescription": "Non-surgical treatment for uterine fibroids to reduce heavy bleeding and pain.",
-        "fullDescription": "Uterine fibroid embolization (UFE) treats symptomatic fibroids that cause heavy menstrual bleeding, pelvic pain, and pressure symptoms. Small particles are injected to block blood flow to the fibroids, causing them to shrink while preserving the uterus.",
-        "benefits": [
-          "Avoids hysterectomy - uterus preserved",
-          "No abdominal incisions or scarring",
-          "Return to work in 1-2 weeks",
-          "Highly effective for heavy bleeding",
-          "Lower complication rates than surgery"
-        ],
-        "recovery": "Same-day discharge with some cramping for 2-3 days managed with medication. Return to normal activities within 1-2 weeks. MRI follow-up at 3-6 months shows fibroid shrinkage."
-      },
-      {
-        "title": "Genicular Artery Embolization",
-        "shortDescription": "Targeted treatment for knee arthritis pain when other treatments fail.",
-        "fullDescription": "Genicular artery embolization (GAE) treats chronic knee pain from osteoarthritis by reducing inflammation in the knee joint. This procedure blocks tiny blood vessels around the knee that contribute to inflammation and pain, offering relief for patients not ready for or unsuitable for knee replacement surgery.",
-        "benefits": [
-          "Delays or avoids knee replacement surgery",
-          "No joint implants or hardware",
-          "Minimal recovery time",
-          "Can be repeated if needed",
-          "Preserves all future treatment options"
-        ],
-        "recovery": "Outpatient procedure with same-day discharge. Mild knee discomfort for 2-3 days. Pain relief typically begins within 2-4 weeks as inflammation subsides."
-      },
-      {
-        "title": "Foot Artery Embolization",
-        "shortDescription": "Minimally invasive treatment for chronic plantar fasciitis and foot pain.",
-        "fullDescription": "Foot artery embolization treats chronic foot pain, including plantar fasciitis that has not responded to conservative treatments. By targeting specific arteries in the foot, this procedure reduces inflammation and pain in the plantar fascia, allowing patients to walk comfortably again.",
-        "benefits": [
-          "Non-surgical alternative for chronic foot pain",
-          "No lengthy immobilization required",
-          "Outpatient procedure",
-          "Quick return to walking activities",
-          "Effective when other treatments fail"
-        ],
-        "recovery": "Same-day discharge with minimal restrictions. Mild foot discomfort for a few days. Gradual improvement in pain over 2-6 weeks as inflammation reduces."
-      },
-      {
-        "title": "EVAR & TEVAR",
-        "shortDescription": "Endovascular repair of aortic aneurysms using advanced stent graft technology.",
-        "fullDescription": "Endovascular Aortic Repair (EVAR) and Thoracic Endovascular Aortic Repair (TEVAR) are minimally invasive alternatives to open aortic surgery. We use custom-fitted stent grafts to reinforce weakened areas of the aorta without major chest or abdominal surgery.",
-        "benefits": [
-          "Avoids large surgical incisions and chest/abdominal opening",
-          "Dramatically reduced blood loss",
-          "Shorter ICU and hospital stays",
-          "Lower mortality risk compared to open repair",
-          "Suitable for elderly and high-risk surgical patients"
-        ],
-        "recovery": "Most patients stay 2-3 days in hospital. Return to normal activities typically occurs within 2-4 weeks. Lifelong CT surveillance is required to monitor the stent graft."
+        "id": "vascular",
+        "name": "Oncology & Major Vascular",
+        "description": "Comprehensive treatments for cancer, peripheral artery disease, and aortic conditions.",
+        "treatments": [
+          {
+            "title": "Oncology Interventions",
+            "shortDescription": "Minimally invasive treatments for cancer including chemoembolization and ablation.",
+            "fullDescription": "Our oncology interventions include transarterial chemoembolization (TACE) for liver tumors, radioembolization (Y-90) for liver cancer, tumor ablation (radiofrequency and microwave) for liver, lung, and kidney tumors, and palliative procedures for pain and symptom control. These treatments target tumors directly while sparing healthy tissue.",
+            "benefits": [
+              "Targets tumors directly with high local drug concentration",
+              "Preserves healthy surrounding tissue",
+              "Can be repeated multiple times",
+              "Outpatient or short hospital stay",
+              "May downstage tumors for surgery"
+            ],
+            "recovery": "Varies by procedure. TACE and ablation typically require overnight stay. Post-embolization syndrome (fever, nausea) may occur for 2-3 days. Return to normal activities in 1-2 weeks. Imaging follow-up at 4-6 weeks."
+          },
+          {
+            "title": "Peripheral Vascular Revascularization",
+            "shortDescription": "Angioplasty and stenting for peripheral artery disease and limb salvage.",
+            "fullDescription": "Peripheral vascular revascularization treats narrowed or blocked arteries in the legs, arms, and kidneys. We use angioplasty (balloon dilation), stenting, and atherectomy to restore blood flow, relieving claudication (leg pain with walking), preventing limb amputation, and treating renovascular hypertension.",
+            "benefits": [
+              "Relieves leg pain and improves walking distance",
+              "Prevents limb loss in critical ischemia",
+              "Controls renovascular hypertension",
+              "Minimally invasive - no large surgical incisions",
+              "Quick recovery compared to bypass surgery"
+            ],
+            "recovery": "Most procedures are outpatient or overnight stay. Groin access site heals in 3-5 days. Return to normal activities in 1 week. Antiplatelet medications required. Regular duplex ultrasound surveillance."
+          },
+          {
+            "title": "Visceral & Aortic Disease Treatment",
+            "shortDescription": "Comprehensive treatment for aortic aneurysms and visceral vascular conditions.",
+            "fullDescription": "We treat aortic diseases including abdominal and thoracic aortic aneurysms using EVAR and TEVAR (endovascular stent grafts). We also manage visceral vascular diseases including splenic, hepatic, and renal artery aneurysms, mesenteric ischemia, and visceral artery stenosis using angioplasty, stenting, and embolization.",
+            "benefits": [
+              "Avoids major open chest/abdominal surgery",
+              "Lower mortality and complication rates",
+              "Shorter hospital stays",
+              "Suitable for high-risk surgical patients",
+              "Preserves organ function"
+            ],
+            "recovery": "EVAR/TEVAR typically requires 2-3 day hospital stay. Return to normal activities in 2-4 weeks. Lifelong CT surveillance required. Visceral interventions are often outpatient. Regular imaging follow-up essential."
+          }
+        ]
       }
     ]
   },
