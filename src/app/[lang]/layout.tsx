@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import '../globals.css'
 import Link from 'next/link'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from '@/components/ui/sheet'
@@ -374,6 +375,7 @@ export default async function LocaleLayout({
           </header>
           {children}
           <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
