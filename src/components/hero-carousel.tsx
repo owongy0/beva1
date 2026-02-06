@@ -104,13 +104,6 @@ export function HeroCarousel({ lang, t }: HeroCarouselProps) {
           />
         ))}
       </div>
-      
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden md:block">
-        <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
-          <div className="w-1 h-2 bg-white/60 rounded-full animate-bounce" />
-        </div>
-      </div>
     </section>
   );
 }
