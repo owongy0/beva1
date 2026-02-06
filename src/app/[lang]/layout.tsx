@@ -4,8 +4,8 @@ import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import '../globals.css'
 import Link from 'next/link'
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
-import { Menu, Stethoscope, Users, Phone, HelpCircle, Calendar, LayoutDashboard, LogIn, Home } from 'lucide-react'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from '@/components/ui/sheet'
+import { Menu, Stethoscope, Users, Phone, HelpCircle, Calendar, LayoutDashboard, LogIn, Home, X } from 'lucide-react'
 import { i18n } from '@/i18n/config'
 import { getDictionary } from '@/i18n/get-dictionary'
 import { LanguageSwitcher } from '@/components/language-switcher'
@@ -132,9 +132,9 @@ export default async function LocaleLayout({
                       <span className="sr-only">{dict.nav.menu}</span>
                     </button>
                   </SheetTrigger>
-                  <SheetContent side="right" className="w-[320px] bg-white p-0">
-                    {/* Header with Logo */}
-                    <div className="p-6 border-b bg-gray-50">
+                  <SheetContent side="right" className="w-[280px] sm:w-[320px] bg-white p-0">
+                    {/* Header with Logo and Close */}
+                    <div className="p-4 sm:p-6 border-b bg-gray-50 flex items-center justify-between">
                       <SheetTitle className="text-left">
                         <Link href={`/${lang}`} className="flex items-center">
                           <Image 
@@ -142,46 +142,51 @@ export default async function LocaleLayout({
                             alt="BEVA Clinic" 
                             width={120} 
                             height={40} 
-                            className="h-10 w-auto"
+                            className="h-8 sm:h-10 w-auto"
                           />
                         </Link>
                       </SheetTitle>
+                      <SheetClose asChild>
+                        <button className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors">
+                          <X className="w-4 h-4 text-gray-600" />
+                        </button>
+                      </SheetClose>
                     </div>
                     
-                    <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-200px)]">
+                    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto max-h-[calc(100vh-180px)]">
                       {/* Explore Section */}
                       <div>
-                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3">
                           {t.explore}
                         </h3>
-                        <nav className="flex flex-col gap-1">
+                        <nav className="flex flex-col gap-0.5 sm:gap-1">
                           <MobileNavLink 
                             href={`/${lang}`} 
-                            icon={<Home className="w-5 h-5" />}
+                            icon={<Home className="w-4 h-4 sm:w-5 sm:h-5" />}
                           >
                             {t.home}
                           </MobileNavLink>
                           <MobileNavLink 
                             href={`/${lang}#procedures`} 
-                            icon={<Stethoscope className="w-5 h-5" />}
+                            icon={<Stethoscope className="w-4 h-4 sm:w-5 sm:h-5" />}
                           >
                             {dict.nav.procedures}
                           </MobileNavLink>
                           <MobileNavLink 
                             href={`/${lang}#about`} 
-                            icon={<Users className="w-5 h-5" />}
+                            icon={<Users className="w-4 h-4 sm:w-5 sm:h-5" />}
                           >
                             {dict.nav.about}
                           </MobileNavLink>
                           <MobileNavLink 
                             href={`/${lang}#contact`} 
-                            icon={<Phone className="w-5 h-5" />}
+                            icon={<Phone className="w-4 h-4 sm:w-5 sm:h-5" />}
                           >
                             {dict.nav.contact}
                           </MobileNavLink>
                           <MobileNavLink 
                             href={`/${lang}#faq`} 
-                            icon={<HelpCircle className="w-5 h-5" />}
+                            icon={<HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />}
                           >
                             {dict.nav.faq}
                           </MobileNavLink>
@@ -190,15 +195,15 @@ export default async function LocaleLayout({
 
                       {/* Account Section */}
                       <div>
-                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3">
                           {t.account}
                         </h3>
-                        <nav className="flex flex-col gap-1">
+                        <nav className="flex flex-col gap-0.5 sm:gap-1">
                           {user ? (
                             <>
                               <MobileNavLink 
                                 href={`/${lang}/bookings`} 
-                                icon={<Calendar className="w-5 h-5" />}
+                                icon={<Calendar className="w-4 h-4 sm:w-5 sm:h-5" />}
                                 className="text-[#00477f]"
                               >
                                 {t.myBookings}
@@ -206,7 +211,7 @@ export default async function LocaleLayout({
                               {isAdmin && (
                                 <MobileNavLink 
                                   href={`/${lang}/admin`} 
-                                  icon={<LayoutDashboard className="w-5 h-5" />}
+                                  icon={<LayoutDashboard className="w-4 h-4 sm:w-5 sm:h-5" />}
                                   className="text-purple-600"
                                 >
                                   {t.adminDashboard}
@@ -216,7 +221,7 @@ export default async function LocaleLayout({
                           ) : (
                             <MobileNavLink 
                               href={`/${lang}/login`} 
-                              icon={<LogIn className="w-5 h-5" />}
+                              icon={<LogIn className="w-4 h-4 sm:w-5 sm:h-5" />}
                               className="text-[#00477f]"
                             >
                               {t.signIn}
@@ -226,17 +231,17 @@ export default async function LocaleLayout({
                       </div>
 
                       {/* Quick Contact */}
-                      <div className="pt-4 border-t">
-                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                      <div className="pt-3 sm:pt-4 border-t">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 sm:mb-3">
                           {t.quickContact}
                         </h3>
                         <a 
-                          href="tel:+85223456789"
-                          className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
+                          href={`tel:${dict.contact.phone.replace(/\s/g, '')}`}
+                          className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-blue-50 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
                         >
-                          <Phone className="w-5 h-5" />
-                          <div>
-                            <p className="font-medium">+852 2345 6789</p>
+                          <Phone className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                          <div className="min-w-0">
+                            <p className="font-medium text-sm">{dict.contact.phone}</p>
                             <p className="text-xs text-blue-600">{t.callUs}</p>
                           </div>
                         </a>
@@ -269,12 +274,14 @@ function MobileNavLink({
   className?: string
 }) {
   return (
-    <a 
-      href={href}
-      className={`flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-black transition-colors ${className}`}
-    >
-      <span className="text-gray-400">{icon}</span>
-      <span className="font-medium">{children}</span>
-    </a>
+    <SheetClose asChild>
+      <a 
+        href={href}
+        className={`flex items-center gap-2 sm:gap-3 px-2.5 sm:px-3 py-2.5 sm:py-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-black transition-colors min-h-[44px] ${className}`}
+      >
+        <span className="text-gray-400">{icon}</span>
+        <span className="font-medium text-sm sm:text-base">{children}</span>
+      </a>
+    </SheetClose>
   )
 }

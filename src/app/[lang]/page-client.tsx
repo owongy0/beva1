@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
 
 import {
@@ -26,6 +27,16 @@ import {
   ArrowRight,
   Mail,
   User,
+  X,
+  ChevronLeft,
+  Brain,
+  Activity,
+  Heart,
+  Bone,
+  Microscope,
+  Search,
+  ChevronLeft as ArrowLeftIcon,
+  ChevronRight as ArrowRightIcon,
 } from 'lucide-react';
 import {
   Accordion,
@@ -35,6 +46,135 @@ import {
 } from '@/components/ui/accordion';
 import { Locale } from '@/i18n/config';
 import { Dictionary } from '@/i18n/get-dictionary';
+
+// Category icon mapping
+const categoryIcons: Record<string, React.ReactNode> = {
+  neurovascular: <Brain className="w-6 h-6" />,
+  neuromodulation: <Activity className="w-6 h-6" />,
+  urogenital: <Heart className="w-6 h-6" />,
+  gastrointestinal: <Search className="w-6 h-6" />,
+  musculoskeletal: <Bone className="w-6 h-6" />,
+  vascular: <Microscope className="w-6 h-6" />,
+};
+
+// Hero Carousel Component
+function HeroCarousel({ lang, t }: { lang: Locale; t: Dictionary }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const images = [
+    '/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg',
+    '/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg',
+    '/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg',
+  ];
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  // Auto-scroll every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [nextSlide]);
+
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-slate-50 via-gray-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+          {/* Left - Text Content */}
+          <div className="space-y-4 sm:space-y-6 md:space-y-8 text-center md:text-left order-2 md:order-1">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1] text-slate-900 tracking-tight">
+              {t.hero.title}
+            </h1>
+            
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed max-w-xl mx-auto md:mx-0">
+              {t.hero.subtitle}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 justify-center md:justify-start">
+              <Button 
+                onClick={scrollToContact}
+                className="bg-[#00477f] text-white hover:bg-[#003d70] px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-semibold shadow-lg shadow-[#00477f]/20 transition-all hover:shadow-xl hover:shadow-[#00477f]/30 w-full sm:w-auto"
+              >
+                {t.hero.bookConsultation}
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => document.getElementById('procedures')?.scrollIntoView({ behavior: 'smooth' })}
+                className="border-2 border-[#00477f] text-[#00477f] hover:bg-[#f0f5fa] px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-semibold transition-all w-full sm:w-auto"
+              >
+                {t.hero.ourProcedures}
+              </Button>
+            </div>
+          </div>
+          
+          {/* Right - Image Carousel */}
+          <div className="relative order-1 md:order-2">
+            <div className="aspect-[4/3] bg-gray-100 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-200 shadow-lg relative">
+              {/* Images */}
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    index === currentSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  <img 
+                    src={img}
+                    alt={`BEVA Clinic - Slide ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+              
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+              
+              {/* Navigation Arrows */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
+                aria-label="Previous slide"
+              >
+                <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
+                aria-label="Next slide"
+              >
+                <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
+              </button>
+              
+              {/* Dots Indicator */}
+              <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all ${
+                      index === currentSlide 
+                        ? 'bg-white w-4 sm:w-5' 
+                        : 'bg-white/60 hover:bg-white/80'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 // Dynamically import the map component to avoid SSR issues
 const ClinicMap = dynamic(() => import('@/components/map').then((mod) => mod.ClinicMap), {
@@ -67,57 +207,22 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
 
   return (
     <main className="bg-white text-slate-900">
-      {/* Hero Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-slate-50 via-gray-50 to-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left - Text Content */}
-            <div className="space-y-8">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] text-slate-900 tracking-tight">
-                {t.hero.title}
-              </h1>
-              
-              <p className="text-xl text-slate-600 leading-relaxed max-w-xl">
-                {t.hero.subtitle}
-              </p>
-              
-              <div className="flex flex-wrap gap-4 pt-2">
-                <Button asChild className="bg-[#00477f] text-white hover:bg-[#00477f] px-8 py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20 transition-all hover:shadow-xl hover:shadow-[#00477f]/30">
-                  <a href="#contact">{t.hero.bookConsultation}</a>
-                </Button>
-                <Button asChild variant="outline" className="border-2 border-[#00477f] text-[#00477f] hover:bg-[#f0f5fa] px-8 py-6 text-lg font-semibold transition-all">
-                  <a href="#procedures">{t.hero.ourProcedures}</a>
-                </Button>
-              </div>
-            </div>
-            
-            {/* Right - Hero Image */}
-            <div className="relative">
-              <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
-                <img 
-                  src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg" 
-                  alt="BEVA Clinic Medical Facility" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Auto-scrolling Carousel */}
+      <HeroCarousel lang={lang} t={t} />
 
       {/* Procedures Section */}
-      <section id="procedures" className="py-24 bg-slate-50/50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.procedures.title}</h2>
-            <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+      <section id="procedures" className="py-12 sm:py-16 md:py-24 bg-slate-50/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.procedures.title}</h2>
+            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4">
               {t.procedures.subtitle}
             </p>
           </div>
 
           {/* Category Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {t.procedures.categories.map((category, catIndex) => (
               <Dialog 
                 key={catIndex}
@@ -125,93 +230,111 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                 onOpenChange={(open) => setOpenDialogs(prev => ({ ...prev, [catIndex]: open }))}
               >
                 <DialogTrigger asChild>
-                  <button className="group relative bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
+                  <button className="group relative bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
+                    {/* Category Icon */}
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00477f]/10 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-[#00477f]">
+                      {categoryIcons[category.id] || <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6" />}
+                    </div>
+                    
                     {/* Category Title */}
-                    <h3 className="font-bold text-slate-900 text-xl leading-tight mb-3 group-hover:text-[#00477f] transition-colors">
+                    <h3 className="font-bold text-slate-900 text-lg sm:text-xl leading-tight mb-2 sm:mb-3 group-hover:text-[#00477f] transition-colors">
                       {category.name}
                     </h3>
                     
                     {/* Description */}
-                    <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-grow">
+                    <p className="text-slate-500 text-sm leading-relaxed mb-3 sm:mb-4 flex-grow line-clamp-2 sm:line-clamp-none">
                       {category.description}
                     </p>
                     
                     {/* Treatment Count */}
-                    <div className="text-xs text-slate-400 mb-4">
+                    <div className="text-xs text-slate-400 mb-3 sm:mb-4">
                       {category.treatments.length} {lang === 'zh-TW' ? '項治療' : 'treatments'}
                     </div>
                     
                     {/* View Treatments Link */}
-                    <div className="flex items-center gap-2 text-[#00477f] font-medium text-sm pt-4 border-t border-slate-100 group-hover:border-[#00477f]/20 transition-colors">
+                    <div className="flex items-center gap-2 text-[#00477f] font-medium text-sm pt-3 sm:pt-4 border-t border-slate-100 group-hover:border-[#00477f]/20 transition-colors">
                       <span>{t.procedures.viewTreatments}</span>
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </button>
                 </DialogTrigger>
                 
-                <DialogContent className="max-w-5xl w-[95vw] max-h-[90vh] overflow-y-auto p-0">
-                  {/* Category Header */}
-                  <div className="sticky top-0 bg-white border-b px-6 py-4 z-10">
-                    <DialogHeader>
-                      <DialogTitle className="text-2xl font-bold text-slate-900">{category.name}</DialogTitle>
-                      <p className="text-slate-500 text-sm mt-1">{category.description}</p>
-                    </DialogHeader>
+                <DialogContent className="max-w-5xl w-full h-full sm:h-auto sm:max-h-[90vh] overflow-hidden p-0 sm:rounded-2xl">
+                  {/* Category Header with Close Button */}
+                  <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex items-center justify-between">
+                    <div>
+                      <DialogTitle className="text-lg sm:text-2xl font-bold text-slate-900">{category.name}</DialogTitle>
+                      <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 hidden sm:block">{category.description}</p>
+                    </div>
+                    <DialogClose asChild>
+                      <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                        <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600" />
+                      </button>
+                    </DialogClose>
                   </div>
                   
                   {/* Treatments List */}
-                  <div className="p-6 space-y-4">
+                  <div className="p-3 sm:p-6 space-y-2 sm:space-y-4 overflow-y-auto max-h-[calc(100vh-180px)] sm:max-h-[60vh]">
                     {category.treatments.map((treatment, treatIndex) => (
                       <Dialog key={treatIndex}>
                         <DialogTrigger asChild>
-                          <button className="w-full text-left bg-slate-50 hover:bg-[#f0f5fa] rounded-xl p-5 transition-colors group">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <h4 className="font-semibold text-slate-900 text-lg group-hover:text-[#00477f] transition-colors">
+                          <button className="w-full text-left bg-slate-50 hover:bg-[#f0f5fa] rounded-lg sm:rounded-xl p-3 sm:p-5 transition-colors group">
+                            <div className="flex items-start justify-between gap-3 sm:gap-4">
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-slate-900 text-sm sm:text-lg group-hover:text-[#00477f] transition-colors line-clamp-1">
                                   {treatment.title}
                                 </h4>
-                                <p className="text-slate-500 text-sm mt-1 line-clamp-2">
+                                <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 line-clamp-2">
                                   {treatment.shortDescription}
                                 </p>
                               </div>
-                              <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-[#00477f] shrink-0 mt-1" />
+                              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 group-hover:text-[#00477f] shrink-0 mt-0.5" />
                             </div>
                           </button>
                         </DialogTrigger>
                         
-                        <DialogContent className="max-w-3xl w-[95vw] max-h-[85vh] overflow-y-auto">
-                          <DialogHeader className="pb-4 border-b">
-                            <DialogTitle className="text-xl font-bold text-slate-900">{treatment.title}</DialogTitle>
-                            <p className="text-slate-500 text-sm mt-1">{treatment.shortDescription}</p>
-                          </DialogHeader>
+                        <DialogContent className="max-w-3xl w-full h-full sm:h-auto sm:max-h-[85vh] overflow-hidden p-0 sm:rounded-2xl">
+                          {/* Treatment Header with Close */}
+                          <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex items-start justify-between gap-3">
+                            <DialogHeader className="flex-1 text-left">
+                              <DialogTitle className="text-base sm:text-xl font-bold text-slate-900 leading-tight">{treatment.title}</DialogTitle>
+                              <p className="text-slate-500 text-xs sm:text-sm mt-0.5 line-clamp-2">{treatment.shortDescription}</p>
+                            </DialogHeader>
+                            <DialogClose asChild>
+                              <button className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors shrink-0">
+                                <X className="w-4 h-4 text-slate-600" />
+                              </button>
+                            </DialogClose>
+                          </div>
                           
-                          <div className="pt-6 space-y-6">
+                          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
                             <section>
-                              <h3 className="text-base font-semibold text-slate-900 mb-3">
+                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 mb-2 sm:mb-3">
                                 {lang === 'zh-TW' ? '概述' : 'Overview'}
                               </h3>
-                              <p className="text-slate-600 text-sm leading-relaxed">{treatment.fullDescription}</p>
+                              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">{treatment.fullDescription}</p>
                             </section>
 
                             <section>
-                              <h3 className="text-base font-semibold text-slate-900 mb-3">
+                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 mb-2 sm:mb-3">
                                 {lang === 'zh-TW' ? '治療優點' : 'Benefits'}
                               </h3>
-                              <ul className="space-y-2">
+                              <ul className="space-y-1.5 sm:space-y-2">
                                 {treatment.benefits.map((benefit, i) => (
-                                  <li key={i} className="flex items-start gap-3 bg-slate-50 rounded-lg p-3">
-                                    <Check className="w-4 h-4 text-[#00477f] mt-0.5 shrink-0" />
-                                    <span className="text-slate-600 text-sm">{benefit}</span>
+                                  <li key={i} className="flex items-start gap-2 sm:gap-3 bg-slate-50 rounded-lg p-2 sm:p-3">
+                                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f] mt-0.5 shrink-0" />
+                                    <span className="text-slate-600 text-xs sm:text-sm">{benefit}</span>
                                   </li>
                                 ))}
                               </ul>
                             </section>
 
-                            <section className="bg-gradient-to-r from-[#f8fafc] to-[#e6eef5] rounded-xl p-4">
-                              <h3 className="text-base font-semibold text-slate-900 mb-2 flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-[#00477f]" />
+                            <section className="bg-gradient-to-r from-[#f8fafc] to-[#e6eef5] rounded-lg sm:rounded-xl p-3 sm:p-4">
+                              <h3 className="text-sm sm:text-base font-semibold text-slate-900 mb-1.5 sm:mb-2 flex items-center gap-2">
+                                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00477f]" />
                                 {lang === 'zh-TW' ? '康復時間' : 'Recovery'}
                               </h3>
-                              <p className="text-slate-600 text-sm">{treatment.recovery}</p>
+                              <p className="text-slate-600 text-xs sm:text-sm">{treatment.recovery}</p>
                             </section>
 
                             <Button 
@@ -219,7 +342,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                                 setOpenDialogs(prev => ({ ...prev, [catIndex]: false }));
                                 setTimeout(scrollToContact, 100);
                               }}
-                              className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-5 text-base font-semibold"
+                              className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-5 text-sm sm:text-base font-semibold"
                             >
                               {t.contact.bookAppointment}
                             </Button>
@@ -230,13 +353,13 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                   </div>
                   
                   {/* Footer */}
-                  <div className="sticky bottom-0 bg-white border-t px-6 py-4">
+                  <div className="sticky bottom-0 bg-white border-t px-4 sm:px-6 py-3 sm:py-4">
                     <Button 
                       onClick={() => {
                         setOpenDialogs(prev => ({ ...prev, [catIndex]: false }));
                         setTimeout(scrollToContact, 100);
                       }}
-                      className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-5 text-base font-semibold"
+                      className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-5 text-sm sm:text-base font-semibold"
                     >
                       {t.contact.bookAppointment}
                     </Button>
@@ -248,146 +371,29 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section id="about" className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-              {lang === 'zh-TW' ? '為何選擇我們' : 'Why Choose Us'}
-            </h2>
-            <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              {lang === 'zh-TW' 
-                ? '我們結合專業醫療團隊、先進微創技術與以病人為本的服務理念，為您提供安全、有效的治療方案。'
-                : 'We combine expert medical teams, advanced minimally invasive techniques, and patient-centered care to deliver safe, effective treatments.'}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Expert Team */}
-            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
-                <Award className="w-7 h-7 text-[#00477f]" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {lang === 'zh-TW' ? '專科醫生團隊' : 'Specialist Doctors'}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '由資深血管介入專科醫生主理，具備豐富臨床經驗及國際專業認證。'
-                  : 'Led by experienced interventional specialists with international certifications and proven clinical expertise.'}
-              </p>
-            </div>
-
-            {/* Minimally Invasive */}
-            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
-                <Stethoscope className="w-7 h-7 text-[#00477f]" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {lang === 'zh-TW' ? '微創治療技術' : 'Minimally Invasive'}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '採用先進血管內治療，傷口細小、恢復快，無需傳統開刀手術。'
-                  : 'Advanced endovascular procedures with tiny incisions, faster recovery—no traditional open surgery needed.'}
-              </p>
-            </div>
-
-            {/* Same-Day Discharge */}
-            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
-                <Clock className="w-7 h-7 text-[#00477f]" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {lang === 'zh-TW' ? '即日出院' : 'Same-Day Discharge'}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '多數治療可於日間中心完成，當天即可回家休息，減少住院時間。'
-                  : 'Most procedures done at our day procedure centre—return home the same day with minimal hospital stay.'}
-              </p>
-            </div>
-
-            {/* Personalised Care */}
-            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
-                <User className="w-7 h-7 text-[#00477f]" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {lang === 'zh-TW' ? '個人化治療方案' : 'Personalised Care'}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '根據每位病人的情況制定專屬治療計劃，確保最佳治療效果。'
-                  : 'Tailored treatment plans based on your specific condition for optimal outcomes and peace of mind.'}
-              </p>
-            </div>
-
-            {/* Modern Facilities */}
-            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
-                <MapPin className="w-7 h-7 text-[#00477f]" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {lang === 'zh-TW' ? '現代化醫療設施' : 'Modern Facilities'}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '配備先進醫療設備的日間治療中心，提供安全舒適的治療環境。'
-                  : 'State-of-the-art day procedure centre equipped with advanced medical technology in a comfortable setting.'}
-              </p>
-            </div>
-
-            {/* Comprehensive Support */}
-            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
-                <Phone className="w-7 h-7 text-[#00477f]" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {lang === 'zh-TW' ? '全程跟進服務' : 'Ongoing Support'}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '從諮詢到術後跟進，提供全程醫療支援，解答您的所有疑問。'
-                  : 'From initial consultation through recovery, we provide continuous support and answer all your questions.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <Button 
-              onClick={scrollToContact}
-              className="bg-[#00477f] text-white hover:bg-[#003d70] px-12 py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
-            >
-              {t.contact.bookAppointment}
-            </Button>
-          </div>
-        </div>
-      </section>
       {/* Meet Our Team Section */}
-      <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.team.title}</h2>
-            <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+      <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.team.title}</h2>
+            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4">
               {t.team.subtitle}
             </p>
           </div>
           
           {/* Horizontal Scroll Carousel */}
           <div className="relative">
-            {/* Scroll Buttons */}
+            {/* Scroll Buttons - Hidden on mobile */}
             <button 
-              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: -400, behavior: 'smooth' })}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -ml-4 lg:ml-0"
+              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: -300, behavior: 'smooth' })}
+              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -ml-2 lg:ml-0"
             >
               ←
             </button>
             <button 
-              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: 400, behavior: 'smooth' })}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -mr-4 lg:mr-0"
+              onClick={() => document.getElementById('team-scroll')?.scrollBy({ left: 300, behavior: 'smooth' })}
+              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg items-center justify-center text-slate-600 hover:text-[#00477f] hover:shadow-xl transition-all -mr-2 lg:mr-0"
             >
               →
             </button>
@@ -395,7 +401,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             {/* Scroll Container */}
             <div 
               id="team-scroll"
-              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-8"
+              className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 px-1 sm:px-8"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {t.team.members.map((doctor, index) => (
@@ -405,41 +411,41 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                   onOpenChange={(open) => setOpenTeamDialogs(prev => ({ ...prev, [index]: open }))}
                 >
                   <DialogTrigger asChild>
-                    <div className="snap-center shrink-0 w-[320px] sm:w-[380px]">
-                      <div className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-slate-100 h-full">
+                    <div className="snap-center shrink-0 w-[280px] sm:w-[320px] lg:w-[380px]">
+                      <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-slate-100 h-full">
                         {/* Photo Placeholder */}
-                        <div className="w-32 h-32 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full mx-auto mb-6 flex items-center justify-center group-hover:from-[#e6eef5] group-hover:to-[#d1e3f6] transition-all duration-500">
-                          <span className="text-4xl font-light text-slate-400 group-hover:text-[#00477f]">
+                        <div className="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center group-hover:from-[#e6eef5] group-hover:to-[#d1e3f6] transition-all duration-500">
+                          <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-400 group-hover:text-[#00477f]">
                             {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
                           </span>
                         </div>
 
                         {/* Name & Title */}
-                        <div className="text-center mb-4">
-                          <h3 className="font-bold text-slate-900 text-2xl mb-1 group-hover:text-[#00477f] transition-colors">
+                        <div className="text-center mb-3 sm:mb-4">
+                          <h3 className="font-bold text-slate-900 text-lg sm:text-xl lg:text-2xl mb-1 group-hover:text-[#00477f] transition-colors">
                             {doctor.name}
                           </h3>
-                          <p className="text-[#00477f] font-medium">{doctor.title}</p>
-                          <p className="text-slate-500 text-sm">{doctor.specialty}</p>
+                          <p className="text-[#00477f] font-medium text-sm sm:text-base">{doctor.title}</p>
+                          <p className="text-slate-500 text-xs sm:text-sm">{doctor.specialty}</p>
                         </div>
 
                         {/* Experience Badge */}
-                        <div className="flex justify-center mb-6">
-                          <span className="px-4 py-2 bg-slate-50 rounded-full text-sm text-slate-600 font-medium">
+                        <div className="flex justify-center mb-4 sm:mb-6">
+                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-50 rounded-full text-xs sm:text-sm text-slate-600 font-medium">
                             {doctor.experience}
                           </span>
                         </div>
 
                         {/* Quote */}
-                        <p className="text-slate-500 text-center text-sm italic mb-8 leading-relaxed">
-                          "{doctor.bio.substring(0, 100)}..."
+                        <p className="text-slate-500 text-center text-xs sm:text-sm italic mb-6 sm:mb-8 leading-relaxed line-clamp-2">
+                          "{doctor.bio.substring(0, 80)}..."
                         </p>
 
                         {/* Actions */}
-                        <div className="space-y-3">
+                        <div className="space-y-2 sm:space-y-3">
                           <Button 
                             variant="outline" 
-                            className="w-full border-[#00477f] text-[#00477f] hover:bg-[#f0f5fa]"
+                            className="w-full border-[#00477f] text-[#00477f] hover:bg-[#f0f5fa] py-4 sm:py-5 text-sm sm:text-base"
                             onClick={(e) => {
                               e.stopPropagation();
                               setOpenTeamDialogs(prev => ({ ...prev, [index]: true }));
@@ -448,7 +454,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                             {lang === 'zh-TW' ? '查看簡介' : 'View Profile'}
                           </Button>
                           <Button 
-                            className="w-full bg-[#00477f] text-white hover:bg-[#003d70]"
+                            className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-5 text-sm sm:text-base"
                             onClick={(e) => {
                               e.stopPropagation();
                               scrollToContact();
@@ -462,56 +468,62 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                   </DialogTrigger>
 
                   {/* Detail Modal */}
-                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader className="pb-6 border-b">
-                      <div className="flex items-start gap-6">
-                        <div className="w-24 h-24 bg-gradient-to-br from-[#e6eef5] to-[#d1e3f6] rounded-full flex items-center justify-center shrink-0">
-                          <span className="text-3xl font-light text-[#00477f]">
+                  <DialogContent className="max-w-3xl w-full h-full sm:h-auto sm:max-h-[90vh] overflow-hidden p-0 sm:rounded-2xl">
+                    {/* Modal Header with Close */}
+                    <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-3 sm:py-4 z-10 flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3 sm:gap-6">
+                        <div className="w-14 h-14 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-[#e6eef5] to-[#d1e3f6] rounded-full flex items-center justify-center shrink-0">
+                          <span className="text-xl sm:text-2xl lg:text-3xl font-light text-[#00477f]">
                             {doctor.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
                           </span>
                         </div>
-                        <div className="flex-1">
-                          <DialogTitle className="text-3xl font-bold text-slate-900 mb-1">{doctor.name}</DialogTitle>
-                          <p className="text-[#00477f] font-medium text-lg">{doctor.title}</p>
-                          <p className="text-slate-500">{doctor.specialty} • {doctor.experience}</p>
+                        <div className="flex-1 min-w-0 pt-1">
+                          <DialogTitle className="text-lg sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-0.5 leading-tight">{doctor.name}</DialogTitle>
+                          <p className="text-[#00477f] font-medium text-sm sm:text-base lg:text-lg">{doctor.title}</p>
+                          <p className="text-slate-500 text-xs sm:text-sm">{doctor.specialty} • {doctor.experience}</p>
                         </div>
                       </div>
-                    </DialogHeader>
+                      <DialogClose asChild>
+                        <button className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors shrink-0">
+                          <X className="w-4 h-4 text-slate-600" />
+                        </button>
+                      </DialogClose>
+                    </div>
 
-                    <div className="pt-6 space-y-8">
+                    <div className="p-4 sm:p-6 space-y-5 sm:space-y-8 overflow-y-auto max-h-[calc(100vh-140px)] sm:max-h-[60vh]">
                       {/* Bio */}
                       <section>
-                        <h3 className="font-semibold text-slate-900 mb-3 text-lg">
+                        <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 text-base sm:text-lg">
                           {lang === 'zh-TW' ? '簡介' : 'About'}
                         </h3>
-                        <p className="text-slate-600 leading-relaxed">{doctor.bio}</p>
+                        <p className="text-slate-600 text-sm leading-relaxed">{doctor.bio}</p>
                       </section>
 
                       {/* Expertise */}
                       <section>
-                        <h3 className="font-semibold text-slate-900 mb-3 text-lg flex items-center gap-2">
-                          <Stethoscope className="w-5 h-5 text-[#00477f]" />
+                        <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 text-base sm:text-lg flex items-center gap-2">
+                          <Stethoscope className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
                           {t.team.expertise}
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {doctor.expertise.map((exp, i) => (
-                            <span key={i} className="px-4 py-2 bg-[#f0f5fa] text-[#00477f] text-sm rounded-full font-medium">
+                            <span key={i} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#f0f5fa] text-[#00477f] text-xs sm:text-sm rounded-full font-medium">
                               {exp}
                             </span>
                           ))}
                         </div>
                       </section>
 
-                      <div className="grid md:grid-cols-2 gap-6">
+                      <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                         {/* Education */}
                         <section>
-                          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                            <GraduationCap className="w-5 h-5 text-[#00477f]" />
+                          <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+                            <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
                             {t.team.education}
                           </h3>
-                          <ul className="space-y-2">
+                          <ul className="space-y-1.5 sm:space-y-2">
                             {doctor.education.map((edu, i) => (
-                              <li key={i} className="text-slate-600 text-sm flex items-start gap-2">
+                              <li key={i} className="text-slate-600 text-xs sm:text-sm flex items-start gap-2">
                                 <span className="text-[#00477f] mt-1">•</span>
                                 {edu}
                               </li>
@@ -521,13 +533,13 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
 
                         {/* Certifications */}
                         <section>
-                          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                            <Award className="w-5 h-5 text-[#00477f]" />
+                          <h3 className="font-semibold text-slate-900 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+                            <Award className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
                             {t.team.certifications}
                           </h3>
-                          <ul className="space-y-2">
+                          <ul className="space-y-1.5 sm:space-y-2">
                             {doctor.certifications.map((cert, i) => (
-                              <li key={i} className="text-slate-600 text-sm flex items-start gap-2">
+                              <li key={i} className="text-slate-600 text-xs sm:text-sm flex items-start gap-2">
                                 <span className="text-[#00477f] mt-1">•</span>
                                 {cert}
                               </li>
@@ -541,7 +553,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                           setOpenTeamDialogs(prev => ({ ...prev, [index]: false }));
                           setTimeout(scrollToContact, 100);
                         }}
-                        className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-6 text-lg font-semibold shadow-lg shadow-[#00477f]/20"
+                        className="w-full bg-[#00477f] text-white hover:bg-[#003d70] py-4 sm:py-6 text-sm sm:text-lg font-semibold shadow-lg shadow-[#00477f]/20"
                       >
                         {t.contact.bookAppointment}
                       </Button>
@@ -554,76 +566,164 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
         </div>
       </section>
 
+      {/* Why Choose Us Section with Image */}
+      <section id="about" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">
+              {lang === 'zh-TW' ? '為何選擇我們' : 'Why Choose Us'}
+            </h2>
+            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+            {/* Left - Image */}
+            <div className="order-1">
+              <div className="aspect-[4/3] bg-gray-100 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
+                <img 
+                  src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg" 
+                  alt="BEVA Clinic - Patient Care" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Right - Key Points */}
+            <div className="order-2 space-y-6 sm:space-y-8">
+              {/* Point 1: Expert Team */}
+              <div className="flex gap-4 sm:gap-5">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center shrink-0">
+                  <Award className="w-6 h-6 sm:w-7 sm:h-7 text-[#00477f]" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
+                    {lang === 'zh-TW' ? '專科醫生團隊' : 'Expert Specialist Team'}
+                  </h3>
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                    {lang === 'zh-TW'
+                      ? '由資深血管介入專科醫生主理，具備豐富臨床經驗及國際專業認證，為您提供最值得信賴的醫療服務。'
+                      : 'Led by experienced interventional specialists with international certifications and decades of proven clinical expertise you can trust.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Point 2: Minimally Invasive */}
+              <div className="flex gap-4 sm:gap-5">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center shrink-0">
+                  <Stethoscope className="w-6 h-6 sm:w-7 sm:h-7 text-[#00477f]" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
+                    {lang === 'zh-TW' ? '先進微創技術' : 'Advanced Minimally Invasive Techniques'}
+                  </h3>
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                    {lang === 'zh-TW'
+                      ? '採用最先進的血管內治療技術，傷口細小、恢復快速，大部份治療無需住院，讓您更快重回正常生活。'
+                      : 'Utilizing cutting-edge endovascular procedures with tiny incisions and faster recovery—most treatments require no hospital stay, so you can return to normal life sooner.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Point 3: Patient-Centered Care */}
+              <div className="flex gap-4 sm:gap-5">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center shrink-0">
+                  <User className="w-6 h-6 sm:w-7 sm:h-7 text-[#00477f]" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
+                    {lang === 'zh-TW' ? '以病人為本的服務' : 'Patient-Centered Care'}
+                  </h3>
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                    {lang === 'zh-TW'
+                      ? '從初次諮詢到術後跟進，我們提供全程個人化醫療支援，確保每位病人都獲得最適切的治療方案和貼心照顧。'
+                      : 'From initial consultation through recovery, we provide personalized medical support every step of the way, ensuring each patient receives the most appropriate treatment plan and attentive care.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 sm:mt-12 text-center">
+            <Button 
+              onClick={scrollToContact}
+              className="bg-[#00477f] text-white hover:bg-[#003d70] px-8 sm:px-12 py-5 sm:py-6 text-base sm:text-lg font-semibold shadow-lg shadow-[#00477f]/20 w-full sm:w-auto"
+            >
+              {t.contact.bookAppointment}
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.contact.title}</h2>
-            <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+      <section id="contact" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.contact.title}</h2>
+            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed px-4">
               {t.contact.subtitle}
             </p>
           </div>
           
-          <div className="grid lg:grid-cols-5 gap-8">
+          <div className="grid lg:grid-cols-5 gap-6 sm:gap-8">
             {/* Contact Info - Left Side */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="lg:col-span-2 space-y-5 sm:space-y-8">
               {/* Main CTA Card */}
-              <div className="bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-3xl p-8 text-white shadow-xl shadow-[#00477f]/20">
-                <h3 className="text-2xl font-bold mb-3">
+              <div className="bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 text-white shadow-xl shadow-[#00477f]/20">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3">
                   {lang === 'zh-TW' ? '預約諮詢' : 'Book a Consultation'}
                 </h3>
-                <p className="text-white/80 mb-6 leading-relaxed">
+                <p className="text-white/80 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                   {lang === 'zh-TW' 
                     ? '與我們的專科醫生團隊預約初步諮詢，討論您的治療選項。'
                     : 'Schedule an initial consultation with our specialist team to discuss your treatment options.'}
                 </p>
                 <Button 
-                  className="w-full bg-white text-[#00477f] hover:bg-slate-100 py-6 text-lg font-semibold"
+                  className="w-full bg-white text-[#00477f] hover:bg-slate-100 py-4 sm:py-5 md:py-6 text-base sm:text-lg font-semibold"
                   onClick={() => window.location.href = `tel:${t.contact.phone.replace(/\s/g, '')}`}
                 >
-                  <Phone className="w-5 h-5 mr-2" />
+                  <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   {t.contact.phone}
                 </Button>
               </div>
 
               {/* Info Items */}
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#e6eef5] rounded-xl flex items-center justify-center shrink-0">
-                    <MapPin className="w-6 h-6 text-[#00477f]" />
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#e6eef5] rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                    <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#00477f]" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-slate-900 mb-0.5 sm:mb-1 text-sm sm:text-base">
                       {lang === 'zh-TW' ? '診所地址' : 'Clinic Address'}
                     </h4>
-                    <p className="text-slate-600 leading-relaxed">
+                    <p className="text-slate-600 leading-relaxed text-xs sm:text-sm">
                       {t.contact.address}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#e6eef5] rounded-xl flex items-center justify-center shrink-0">
-                    <Clock className="w-6 h-6 text-[#00477f]" />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#e6eef5] rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#00477f]" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-slate-900 mb-0.5 sm:mb-1 text-sm sm:text-base">
                       {lang === 'zh-TW' ? '營業時間' : 'Operating Hours'}
                     </h4>
-                    <p className="text-slate-600">
+                    <p className="text-slate-600 text-xs sm:text-sm">
                       {t.contact.hours}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-[#e6eef5] rounded-xl flex items-center justify-center shrink-0">
-                    <Mail className="w-6 h-6 text-[#00477f]" />
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#e6eef5] rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                    <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#00477f]" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">Email</h4>
-                    <a href={`mailto:${t.contact.email}`} className="text-slate-600 hover:text-[#00477f] transition-colors">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-slate-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Email</h4>
+                    <a href={`mailto:${t.contact.email}`} className="text-slate-600 hover:text-[#00477f] transition-colors text-xs sm:text-sm break-all">
                       {t.contact.email}
                     </a>
                   </div>
@@ -632,8 +732,8 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             </div>
             
             {/* Map - Right Side */}
-            <div className="lg:col-span-3 h-[400px] lg:h-auto min-h-[400px]">
-              <div className="bg-slate-100 rounded-3xl overflow-hidden h-full border border-slate-200">
+            <div className="lg:col-span-3 h-[300px] sm:h-[350px] lg:h-auto min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
+              <div className="bg-slate-100 rounded-2xl sm:rounded-3xl overflow-hidden h-full border border-slate-200">
                 <ClinicMap />
               </div>
             </div>
@@ -642,12 +742,12 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-24 bg-gradient-to-b from-slate-50/50 to-white">
-        <div className="max-w-3xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">{t.faq.title}</h2>
-            <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
-            <p className="text-xl text-slate-600 leading-relaxed">
+      <section id="faq" className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-slate-50/50 to-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.faq.title}</h2>
+            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed px-4">
               {lang === 'zh-TW' ? '查找有關我們治療項目和服務的常見問題答案' : 'Find answers to common questions about our procedures and services'}
             </p>
           </div>
@@ -655,10 +755,10 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
           <Accordion type="single" collapsible className="w-full">
             {t.faq.items.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border-gray-200">
-                <AccordionTrigger className="text-left font-medium text-black hover:no-underline">
+                <AccordionTrigger className="text-left font-medium text-sm sm:text-base text-black hover:no-underline py-3 sm:py-4">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600">
+                <AccordionContent className="text-gray-600 text-xs sm:text-sm leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -668,23 +768,23 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-100 text-slate-800 py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
+      <footer className="bg-slate-100 text-slate-800 py-10 sm:py-12 md:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 mb-8 sm:mb-10">
             <div className="md:col-span-5">
               <img 
                 src="/BEVA1.svg" 
                 alt="BEVA Clinic" 
-                className="h-12 w-auto mb-4"
+                className="h-10 sm:h-12 w-auto mb-3 sm:mb-4"
               />
-              <p className="text-slate-600 text-sm leading-relaxed max-w-sm">
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-sm">
                 {t.footer.aboutText}
               </p>
             </div>
             
             <div className="md:col-span-3 md:col-start-7">
-              <h4 className="font-bold text-lg mb-4 text-[#00477f]">{t.footer.quickLinks}</h4>
-              <ul className="space-y-2 text-slate-700">
+              <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-[#00477f]">{t.footer.quickLinks}</h4>
+              <ul className="space-y-1.5 sm:space-y-2 text-slate-700 text-xs sm:text-sm">
                 <li><a href={`/${lang}#procedures`} className="hover:text-[#00477f] transition-colors">{t.nav.procedures}</a></li>
                 <li><a href={`/${lang}#about`} className="hover:text-[#00477f] transition-colors">{t.nav.about}</a></li>
                 <li><a href={`/${lang}#contact`} className="hover:text-[#00477f] transition-colors">{t.nav.contact}</a></li>
@@ -693,24 +793,24 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             </div>
             
             <div className="md:col-span-4">
-              <h4 className="font-bold text-lg mb-4 text-[#00477f]">{t.footer.contactInfo}</h4>
-              <ul className="space-y-2 text-slate-700 text-sm">
-                <li>{t.contact.address}</li>
+              <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-[#00477f]">{t.footer.contactInfo}</h4>
+              <ul className="space-y-1.5 sm:space-y-2 text-slate-700 text-xs sm:text-sm">
+                <li className="break-words">{t.contact.address}</li>
                 <li className="text-[#00477f] font-semibold">{t.contact.phone}</li>
-                <li>{t.contact.email}</li>
+                <li className="break-all">{t.contact.email}</li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-slate-300 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-slate-600 text-sm">
+          <div className="border-t border-slate-300 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+            <p className="text-slate-600 text-xs sm:text-sm text-center sm:text-left">
               {t.footer.copyright}
             </p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-[#00477f] text-sm transition-colors">
+            <div className="flex gap-4 sm:gap-6">
+              <a href="#" className="text-gray-400 hover:text-[#00477f] text-xs sm:text-sm transition-colors">
                 {lang === 'zh-TW' ? '私隱政策' : 'Privacy Policy'}
               </a>
-              <a href="#" className="text-gray-400 hover:text-[#00477f] text-sm transition-colors">
+              <a href="#" className="text-gray-400 hover:text-[#00477f] text-xs sm:text-sm transition-colors">
                 {lang === 'zh-TW' ? '服務條款' : 'Terms of Service'}
               </a>
             </div>
