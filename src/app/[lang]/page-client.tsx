@@ -39,6 +39,7 @@ import { HeroCarousel } from '@/components/hero-carousel';
 import { TestimonialCarousel } from '@/components/testimonial-carousel';
 import { SectionHeader } from '@/components/section-header';
 import { Footer } from '@/components/footer';
+import { ChatWidget } from '@/components/chatbot';
 
 // Dynamically import the map component to avoid SSR issues
 const ClinicMap = dynamic(() => import('@/components/map').then((mod) => mod.ClinicMap), {
@@ -64,6 +65,19 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
   };
 
   const t = dictionary;
+
+  const openTreatmentDialog = (categoryIndex: number) => {
+    setOpenDialogs(prev => ({ ...prev, [categoryIndex]: true }));
+  };
+
+  // Category names for chatbot
+  const categoryNames: Record<string, Record<Locale, string>> = {};
+  t.procedures.categories.forEach(cat => {
+    categoryNames[cat.id] = {
+      en: cat.name,
+      'zh-TW': cat.name
+    };
+  });
 
   return (
     <main className="bg-white text-slate-900">
@@ -628,6 +642,13 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
 
       {/* Footer */}
       <Footer lang={lang} t={t} />
+
+      {/* Chatbot Widget */}
+      <ChatWidget 
+        lang={lang} 
+        categoryNames={categoryNames}
+        onOpenTreatmentDialog={openTreatmentDialog}
+      />
     </main>
   );
 }
