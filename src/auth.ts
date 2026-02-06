@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { SupabaseAdapter } from "@auth/supabase-adapter"
-import { supabaseAdmin } from "./lib/supabase"
+import { getSupabaseAdmin } from "./lib/supabase"
 import bcrypt from "bcryptjs"
 
 export const {
@@ -30,7 +30,7 @@ export const {
         const password = credentials.password as string
 
         // Fetch user from Supabase
-        const { data: user, error } = await supabaseAdmin
+        const { data: user, error } = await getSupabaseAdmin()
           .from("users")
           .select("id, email, name, role, image, password_hash")
           .eq("email", email)

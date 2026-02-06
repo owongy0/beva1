@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { requireAdmin } from "@/lib/auth"
 import { getDictionary } from "@/i18n/get-dictionary"
 import { Locale } from "@/i18n/config"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import AppointmentsList from "./appointments-list"
 
 export async function generateMetadata({
@@ -27,7 +27,7 @@ export default async function AdminAppointmentsListPage({
   const dict = await getDictionary(lang as Locale)
 
   // Fetch all appointments with user info
-  const { data: appointments } = await supabaseAdmin
+  const { data: appointments } = await getSupabaseAdmin()
     .from("appointments")
     .select(`
       *,

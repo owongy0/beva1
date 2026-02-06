@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { requireAdmin } from "@/lib/auth"
 import { getDictionary } from "@/i18n/get-dictionary"
 import { Locale } from "@/i18n/config"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import { NewAppointmentForm } from "./new-appointment-form"
 
 export async function generateMetadata({
@@ -24,7 +24,7 @@ export default async function NewAppointmentPage({
   const { lang } = await params
   await requireAdmin()
 
-  const { data: users } = await supabaseAdmin
+  const { data: users } = await getSupabaseAdmin()
     .from("users")
     .select("id, email, name, hkid, phone")
     .eq("role", "user")

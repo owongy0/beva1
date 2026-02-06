@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import { auth } from "@/auth"
 
 // GET /api/admin/users/[id] - Get user details with appointments
@@ -16,7 +16,7 @@ export async function GET(
     const { id } = await params
 
     // Get user details
-    const { data: user, error: userError } = await supabaseAdmin
+    const { data: user, error: userError } = await getSupabaseAdmin()
       .from("users")
       .select("id, email, name, hkid, phone, role, created_at")
       .eq("id", id)
@@ -27,7 +27,7 @@ export async function GET(
     }
 
     // Get user's appointments
-    const { data: appointments, error: aptError } = await supabaseAdmin
+    const { data: appointments, error: aptError } = await getSupabaseAdmin()
       .from("appointments")
       .select("*")
       .eq("user_id", id)
@@ -65,7 +65,7 @@ export async function PUT(
 
     // Check if email is already taken by another user
     if (email) {
-      const { data: existing } = await supabaseAdmin
+      const { data: existing } = await getSupabaseAdmin()
         .from("users")
         .select("id")
         .eq("email", email)
@@ -80,7 +80,7 @@ export async function PUT(
       }
     }
 
-    const { data: user, error } = await supabaseAdmin
+    const { data: user, error } = await getSupabaseAdmin()
       .from("users")
       .update({
         name,

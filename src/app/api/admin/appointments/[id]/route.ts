@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import { auth } from "@/auth"
 
 // PUT /api/admin/appointments/[id] - Update appointment details
@@ -17,7 +17,7 @@ export async function PUT(
     const body = await request.json()
     const { title, doctor, date, time, location, description } = body
 
-    const { data: appointment, error } = await supabaseAdmin
+    const { data: appointment, error } = await getSupabaseAdmin()
       .from("appointments")
       .update({
         title,
@@ -69,7 +69,7 @@ export async function PATCH(
       )
     }
 
-    const { data: appointment, error } = await supabaseAdmin
+    const { data: appointment, error } = await getSupabaseAdmin()
       .from("appointments")
       .update({
         status,
@@ -107,7 +107,7 @@ export async function DELETE(
 
     const { id } = await params
 
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from("appointments")
       .delete()
       .eq("id", id)

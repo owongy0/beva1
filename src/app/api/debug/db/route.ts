@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 
 export async function GET() {
   const results: Record<string, any> = {
@@ -13,7 +13,7 @@ export async function GET() {
 
   // Test 1: Basic connection
   try {
-    const { data, error } = await supabaseAdmin.from("users").select("count")
+    const { data, error } = await getSupabaseAdmin().from("users").select("count")
     if (error) {
       results.tests.connection = { status: "error", message: error.message }
     } else {
@@ -25,7 +25,7 @@ export async function GET() {
 
   // Test 2: Fetch actual users
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from("users")
       .select("id, email, name, role, password_hash")
       .limit(10)
@@ -51,7 +51,7 @@ export async function GET() {
 
   // Test 3: Check specific user
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await getSupabaseAdmin()
       .from("users")
       .select("*")
       .eq("email", "admin@beva.com")

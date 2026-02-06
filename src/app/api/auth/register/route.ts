@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import bcrypt from "bcryptjs"
 
 export async function POST(request: Request) {
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     }
 
     // Check if user already exists
-    const { data: existingUser } = await supabaseAdmin
+    const { data: existingUser } = await getSupabaseAdmin()
       .from("users")
       .select("id")
       .eq("email", email)
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     const passwordHash = await bcrypt.hash(password, 12)
 
     // Create user (auto-verified - no email verification needed)
-    const { data: newUser, error: createError } = await supabaseAdmin
+    const { data: newUser, error: createError } = await getSupabaseAdmin()
       .from("users")
       .insert({
         email,

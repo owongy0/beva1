@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import bcrypt from "bcryptjs"
 
 export async function POST(request: Request) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
     
     // Try to fetch user
-    const { data: user, error } = await supabaseAdmin
+    const { data: user, error } = await getSupabaseAdmin()
       .from("users")
       .select("id, email, name, role, password_hash")
       .eq("email", email)

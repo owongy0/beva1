@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import { auth } from "@/auth"
 
 export async function GET() {
@@ -12,7 +12,7 @@ export async function GET() {
       )
     }
 
-    const { data: appointments, error } = await supabaseAdmin
+    const { data: appointments, error } = await getSupabaseAdmin()
       .from("appointments")
       .select('*')
       .eq('user_id', session.user.id)

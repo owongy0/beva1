@@ -111,6 +111,50 @@ export interface Database {
           expires?: string
         }
       }
+      appointments: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          doctor: string
+          appointment_date: string
+          appointment_time: string
+          location: string
+          description: string | null
+          status: 'scheduled' | 'completed' | 'cancelled'
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          doctor: string
+          appointment_date: string
+          appointment_time: string
+          location: string
+          description?: string | null
+          status?: 'scheduled' | 'completed' | 'cancelled'
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          doctor?: string
+          appointment_date?: string
+          appointment_time?: string
+          location?: string
+          description?: string | null
+          status?: 'scheduled' | 'completed' | 'cancelled'
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

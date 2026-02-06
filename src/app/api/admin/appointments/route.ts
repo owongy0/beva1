@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 import { auth } from "@/auth"
 
 // GET /api/admin/appointments - Get all appointments
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get("userId")
 
-    let query = supabaseAdmin
+    let query = getSupabaseAdmin()
       .from("appointments")
       .select(`
         *,
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: appointment, error } = await supabaseAdmin
+    const { data: appointment, error } = await getSupabaseAdmin()
       .from("appointments")
       .insert({
         user_id: userId,
