@@ -63,7 +63,7 @@ export function ClinicMap() {
       center={[CLINIC_LOCATION.lat, CLINIC_LOCATION.lng]}
       zoom={16}
       scrollWheelZoom={false}
-      className="w-full h-full min-h-[400px] rounded-lg"
+      className="w-full h-full min-h-[400px] rounded-lg isolate"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -5,10 +5,13 @@ import { Analytics } from '@vercel/analytics/next'
 import '../globals.css'
 import Link from 'next/link'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
-import { Menu } from 'lucide-react'
+import { Menu, Stethoscope, Users, Phone, HelpCircle, Calendar, LayoutDashboard, LogIn, Home } from 'lucide-react'
 import { i18n } from '@/i18n/config'
 import { getDictionary } from '@/i18n/get-dictionary'
 import { LanguageSwitcher } from '@/components/language-switcher'
+import { UserNav } from '@/components/user-nav'
+import { Providers } from '../providers'
+import { auth } from '@/auth'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -42,108 +45,227 @@ export default async function LocaleLayout({
 }) {
   const { lang } = await params
   const dict = await getDictionary(lang as 'en' | 'zh-TW')
+  const session = await auth()
+  const user = session?.user
+  const isAdmin = user?.role === 'admin'
+
+  const t = {
+    menu: lang === 'zh-TW' ? '選單' : 'Menu',
+    explore: lang === 'zh-TW' ? '瀏覽' : 'Explore',
+    account: lang === 'zh-TW' ? '帳戶' : 'Account',
+    quickContact: lang === 'zh-TW' ? '快速聯絡' : 'Quick Contact',
+    home: lang === 'zh-TW' ? '首頁' : 'Home',
+    myBookings: lang === 'zh-TW' ? '我的預約' : 'My Bookings',
+    adminDashboard: lang === 'zh-TW' ? '管理員控制台' : 'Admin Dashboard',
+    signIn: lang === 'zh-TW' ? '登入' : 'Sign In',
+    callUs: lang === 'zh-TW' ? '致電我們' : 'Call Us',
+  }
 
   return (
     <html lang={lang} className="scroll-smooth">
       <body className={`${inter.variable} font-sans antialiased bg-white text-black`}>
-        <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-          <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            
-            {/* Logo */}
-            <a href="#" className="flex items-center cursor-pointer">
-              <Image 
-                src="/BEVA1.svg" 
-                alt="BEVA Clinic" 
-                width={150} 
-                height={50} 
-                className="h-12 w-auto"
-              />
-            </a>
-            
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
-              <a 
-                href={`/${lang}#procedures`} 
-                className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
-              >
-                {dict.nav.procedures}
-              </a>
-              <a 
-                href={`/${lang}#about`} 
-                className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
-              >
-                {dict.nav.about}
-              </a>
-              <a 
-                href={`/${lang}#contact`} 
-                className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
-              >
-                {dict.nav.contact}
-              </a>
-              <a 
-                href={`/${lang}#faq`} 
-                className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
-              >
-                {dict.nav.faq}
-              </a>
-            </nav>
-            
-            {/* Desktop Language */}
-            <div className="hidden md:flex items-center gap-4">
-              <LanguageSwitcher currentLang={lang as 'en' | 'zh-TW'} dictionary={{ language: dict.language }} />
+        <Providers>
+          <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+            <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+              
+              {/* Logo */}
+              <Link href={`/${lang}`} className="flex items-center cursor-pointer">
+                <Image 
+                  src="/BEVA1.svg" 
+                  alt="BEVA Clinic" 
+                  width={150} 
+                  height={50} 
+                  className="h-12 w-auto"
+                />
+              </Link>
+              
+              {/* Desktop Navigation */}
+              <nav className="hidden md:flex items-center gap-6">
+                <a 
+                  href={`/${lang}#procedures`} 
+                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                >
+                  {dict.nav.procedures}
+                </a>
+                <a 
+                  href={`/${lang}#about`} 
+                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                >
+                  {dict.nav.about}
+                </a>
+                <a 
+                  href={`/${lang}#contact`} 
+                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                >
+                  {dict.nav.contact}
+                </a>
+                <a 
+                  href={`/${lang}#faq`} 
+                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                >
+                  {dict.nav.faq}
+                </a>
+              </nav>
+              
+              {/* Desktop Right Section: Language + User */}
+              <div className="hidden md:flex items-center gap-4">
+                <LanguageSwitcher currentLang={lang as 'en' | 'zh-TW'} dictionary={{ language: dict.language }} />
+                <UserNav lang={lang as 'en' | 'zh-TW'} dict={dict} />
+              </div>
+              
+              {/* Mobile Menu */}
+              <div className="md:hidden flex items-center gap-2">
+                <LanguageSwitcher currentLang={lang as 'en' | 'zh-TW'} dictionary={{ language: dict.language }} />
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <button className="p-2 text-black hover:bg-gray-100 rounded-md transition-colors">
+                      <Menu className="h-6 w-6" />
+                      <span className="sr-only">{dict.nav.menu}</span>
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent side="right" className="w-[320px] bg-white p-0">
+                    {/* Header with Logo */}
+                    <div className="p-6 border-b bg-gray-50">
+                      <SheetTitle className="text-left">
+                        <Link href={`/${lang}`} className="flex items-center">
+                          <Image 
+                            src="/BEVA1.svg" 
+                            alt="BEVA Clinic" 
+                            width={120} 
+                            height={40} 
+                            className="h-10 w-auto"
+                          />
+                        </Link>
+                      </SheetTitle>
+                    </div>
+                    
+                    <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-200px)]">
+                      {/* Explore Section */}
+                      <div>
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                          {t.explore}
+                        </h3>
+                        <nav className="flex flex-col gap-1">
+                          <MobileNavLink 
+                            href={`/${lang}`} 
+                            icon={<Home className="w-5 h-5" />}
+                          >
+                            {t.home}
+                          </MobileNavLink>
+                          <MobileNavLink 
+                            href={`/${lang}#procedures`} 
+                            icon={<Stethoscope className="w-5 h-5" />}
+                          >
+                            {dict.nav.procedures}
+                          </MobileNavLink>
+                          <MobileNavLink 
+                            href={`/${lang}#about`} 
+                            icon={<Users className="w-5 h-5" />}
+                          >
+                            {dict.nav.about}
+                          </MobileNavLink>
+                          <MobileNavLink 
+                            href={`/${lang}#contact`} 
+                            icon={<Phone className="w-5 h-5" />}
+                          >
+                            {dict.nav.contact}
+                          </MobileNavLink>
+                          <MobileNavLink 
+                            href={`/${lang}#faq`} 
+                            icon={<HelpCircle className="w-5 h-5" />}
+                          >
+                            {dict.nav.faq}
+                          </MobileNavLink>
+                        </nav>
+                      </div>
+
+                      {/* Account Section */}
+                      <div>
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                          {t.account}
+                        </h3>
+                        <nav className="flex flex-col gap-1">
+                          {user ? (
+                            <>
+                              <MobileNavLink 
+                                href={`/${lang}/bookings`} 
+                                icon={<Calendar className="w-5 h-5" />}
+                                className="text-[#00477f]"
+                              >
+                                {t.myBookings}
+                              </MobileNavLink>
+                              {isAdmin && (
+                                <MobileNavLink 
+                                  href={`/${lang}/admin`} 
+                                  icon={<LayoutDashboard className="w-5 h-5" />}
+                                  className="text-purple-600"
+                                >
+                                  {t.adminDashboard}
+                                </MobileNavLink>
+                              )}
+                            </>
+                          ) : (
+                            <MobileNavLink 
+                              href={`/${lang}/login`} 
+                              icon={<LogIn className="w-5 h-5" />}
+                              className="text-[#00477f]"
+                            >
+                              {t.signIn}
+                            </MobileNavLink>
+                          )}
+                        </nav>
+                      </div>
+
+                      {/* Quick Contact */}
+                      <div className="pt-4 border-t">
+                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                          {t.quickContact}
+                        </h3>
+                        <a 
+                          href="tel:+85223456789"
+                          className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
+                        >
+                          <Phone className="w-5 h-5" />
+                          <div>
+                            <p className="font-medium">+852 2345 6789</p>
+                            <p className="text-xs text-blue-600">{t.callUs}</p>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
+              
             </div>
-            
-            {/* Mobile Menu */}
-            <div className="md:hidden flex items-center gap-2">
-              <LanguageSwitcher currentLang={lang as 'en' | 'zh-TW'} dictionary={{ language: dict.language }} />
-              <Sheet>
-                <SheetTrigger asChild>
-                  <button className="p-2 text-black">
-                    <Menu className="h-6 w-6" />
-                    <span className="sr-only">{dict.nav.menu}</span>
-                  </button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-[300px] bg-white">
-                  <SheetTitle className="text-left text-lg font-bold text-black mb-6">
-                    {dict.nav.menu}
-                  </SheetTitle>
-                  
-                  {/* Mobile Nav Links */}
-                  <nav className="flex flex-col gap-4">
-                    <a 
-                      href={`/${lang}#procedures`} 
-                      className="text-lg font-medium text-gray-700 hover:text-black transition-colors"
-                    >
-                      {dict.nav.procedures}
-                    </a>
-                    <a 
-                      href={`/${lang}#about`} 
-                      className="text-lg font-medium text-gray-700 hover:text-black transition-colors"
-                    >
-                      {dict.nav.about}
-                    </a>
-                    <a 
-                      href={`/${lang}#contact`} 
-                      className="text-lg font-medium text-gray-700 hover:text-black transition-colors"
-                    >
-                      {dict.nav.contact}
-                    </a>
-                    <a 
-                      href={`/${lang}#faq`} 
-                      className="text-lg font-medium text-gray-700 hover:text-black transition-colors"
-                    >
-                      {dict.nav.faq}
-                    </a>
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </div>
-            
-          </div>
-        </header>
-        {children}
-        <Analytics />
+          </header>
+          {children}
+          <Analytics />
+        </Providers>
       </body>
     </html>
+  )
+}
+
+// Mobile Nav Link Component
+function MobileNavLink({ 
+  href, 
+  children, 
+  icon,
+  className = ""
+}: { 
+  href: string
+  children: React.ReactNode
+  icon: React.ReactNode
+  className?: string
+}) {
+  return (
+    <a 
+      href={href}
+      className={`flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-black transition-colors ${className}`}
+    >
+      <span className="text-gray-400">{icon}</span>
+      <span className="font-medium">{children}</span>
+    </a>
   )
 }
