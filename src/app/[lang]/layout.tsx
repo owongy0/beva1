@@ -83,25 +83,25 @@ export default async function LocaleLayout({
               <nav className="hidden md:flex items-center gap-6">
                 <a 
                   href={`/${lang}#procedures`} 
-                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                  className="relative text-sm font-medium text-gray-700 hover:text-black transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-current after:transition-all hover:after:w-full"
                 >
                   {dict.nav.procedures}
                 </a>
                 <a 
                   href={`/${lang}#about`} 
-                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                  className="relative text-sm font-medium text-gray-700 hover:text-black transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-current after:transition-all hover:after:w-full"
                 >
                   {dict.nav.about}
                 </a>
                 <a 
                   href={`/${lang}#contact`} 
-                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                  className="relative text-sm font-medium text-gray-700 hover:text-black transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-current after:transition-all hover:after:w-full"
                 >
                   {dict.nav.contact}
                 </a>
                 <a 
                   href={`/${lang}#faq`} 
-                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                  className="relative text-sm font-medium text-gray-700 hover:text-black transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-current after:transition-all hover:after:w-full"
                 >
                   {dict.nav.faq}
                 </a>
@@ -113,7 +113,7 @@ export default async function LocaleLayout({
                 {user && (
                   <Link
                     href={`/${lang}/bookings`}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#00477f]/10 text-[#00477f] rounded-lg font-medium hover:bg-[#00477f]/20 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#00477f]/10 text-[#00477f] rounded-lg text-sm font-medium hover:bg-[#00477f]/20 transition-colors"
                   >
                     <Calendar className="w-4 h-4" />
                     {t.myBookings}

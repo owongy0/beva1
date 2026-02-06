@@ -15,10 +15,10 @@
     "loggedInAs": "Logged in as"
   },
   "hero": {
-    "title": "Advanced Treatments for Brain, Spine and Body Conditions",
-    "subtitle": "Minimally invasive options for faster recovery and improved outcomes.",
-    "bookConsultation": "Book A Consultation",
-    "ourProcedures": "Our Treatments"
+    "title": "Advanced Minimally Invasive Treatment for Brain and Body",
+    "subtitle": "Specialised endovascular procedures for cerebrovascular and vascular conditions—delivering precise care with minimal intervention for optimal outcomes.",
+    "bookConsultation": "Book a Specialist Consultation",
+    "ourProcedures": "Explore Treatments"
   },
   "procedures": {
     "title": "Our Treatments",
@@ -435,28 +435,44 @@
     "title": "Frequently Asked Questions",
     "items": [
       {
-        "question": "What is endovascular treatment?",
-        "answer": "Endovascular treatment is a minimally invasive procedure performed inside blood vessels using thin tubes called catheters. Instead of open surgery, doctors access the treatment area through a small puncture, typically in the groin. This approach offers faster recovery, less pain, and fewer complications compared to traditional surgery."
+        "question": "What is endovascular treatment and how does it differ from traditional surgery?",
+        "answer": "Endovascular treatment is a minimally invasive approach where procedures are performed inside blood vessels using thin catheters inserted through a small puncture (typically in the groin or wrist). Unlike traditional open surgery, there are no large incisions, no need to remove skull sections for brain procedures, and no organ removal for conditions like uterine fibroids. This means significantly less pain, minimal scarring, shorter hospital stays (often same-day discharge), and faster return to normal activities—typically within days rather than weeks or months."
       },
       {
-        "question": "How do I know if I'm a candidate for endovascular treatment?",
-        "answer": "Suitability depends on your specific condition, overall health, and the anatomy of your blood vessels. During your consultation, our specialists will review your medical history, perform necessary imaging studies, and discuss whether endovascular treatment is appropriate for you. We treat each patient individually to determine the best approach."
+        "question": "What conditions do you treat at BEVA Clinic?",
+        "answer": "We specialize in comprehensive endovascular treatments across multiple specialties: Neurovascular conditions (brain aneurysms, stroke, carotid artery disease, AVMs), Neuromodulation (Deep Brain Stimulation for Parkinson's disease, sleep apnea treatment), Urogenital and Pelvic conditions (uterine fibroids, enlarged prostate, varicose veins), Gastrointestinal issues (hemorrhoids), Musculoskeletal problems (knee osteoarthritis, plantar fasciitis), and Oncology/Vascular conditions (liver tumors, peripheral artery disease, aortic aneurysms). Our diverse expertise allows us to treat complex conditions that may not be suitable for traditional surgery."
       },
       {
-        "question": "Is the consultation fee covered by insurance?",
-        "answer": "Many insurance plans cover specialist consultations and endovascular procedures. We recommend contacting your insurance provider to verify coverage. Our administrative team can also assist with insurance inquiries and provide necessary documentation for claims."
+        "question": "Am I a candidate for endovascular treatment instead of traditional surgery?",
+        "answer": "Many patients who are candidates for traditional surgery can also benefit from endovascular alternatives. Factors we evaluate include your specific diagnosis, vascular anatomy from imaging studies (CT, MRI, or angiography), overall health status, and previous treatments. Endovascular options are particularly beneficial for patients who are high-risk for open surgery, have conditions in difficult-to-reach anatomical locations, or wish to preserve organs (such as avoiding hysterectomy for fibroids). During your consultation, our specialists will review your complete medical history and imaging to recommend the optimal treatment approach."
       },
       {
-        "question": "How long does recovery typically take?",
-        "answer": "Recovery times vary depending on the procedure and individual factors. Most endovascular procedures allow patients to return home the same day or after an overnight stay. Many patients resume normal activities within 1-2 weeks, which is significantly faster than recovery from open surgery."
+        "question": "What should I expect during the procedure?",
+        "answer": "Most procedures are performed under local anesthesia with sedation, meaning you'll be comfortable but awake. A tiny puncture (under 5mm) is made in the groin or wrist to access blood vessels. Using real-time X-ray guidance, catheters are navigated to the treatment site. Procedures typically take 1-3 hours depending on complexity. You'll feel minimal discomfort—mostly pressure at the access site. After completion, the puncture is sealed with a special closure device or pressure dressing. Most patients can go home the same day or after overnight observation."
       },
       {
-        "question": "What should I expect during my first visit?",
-        "answer": "Your first visit includes a comprehensive medical evaluation, review of any previous imaging or test results, and a detailed discussion of your condition. Our specialists will explain treatment options, answer your questions, and develop a personalized care plan. Please bring your ID, insurance information, and a list of current medications."
+        "question": "How should I prepare for my procedure?",
+        "answer": "Preparation varies by procedure type. Generally, you'll need to fast for 6-8 hours before the procedure. We may ask you to temporarily stop certain medications like blood thinners (under medical supervision). Arrange for someone to drive you home, as you cannot drive for 24 hours after sedation. Wear comfortable clothing and bring a list of current medications, allergies, and previous imaging results. Our team will provide detailed pre-procedure instructions specific to your treatment during your consultation."
       },
       {
-        "question": "Do you offer second opinions?",
-        "answer": "Yes, we regularly provide second opinions for patients seeking additional guidance on their diagnosis or treatment options. Our specialists can review your case, imaging studies, and medical records to offer an expert perspective on the best course of action."
+        "question": "What is the recovery process like?",
+        "answer": "Recovery is typically rapid compared to traditional surgery. Most patients experience mild discomfort at the access site (groin or wrist) for 2-3 days. You can usually resume light activities within 24-48 hours and return to work within 1-2 weeks. Specific restrictions include avoiding heavy lifting (over 5kg) and strenuous exercise for about one week. You'll have follow-up appointments at 1-4 weeks post-procedure, with imaging studies (ultrasound, CT, or MRI) scheduled at 3-6 months to confirm treatment success. Detailed recovery timelines are provided for each specific treatment."
+      },
+      {
+        "question": "Are endovascular procedures safe? What are the risks?",
+        "answer": "Endovascular procedures are generally very safe with complication rates significantly lower than open surgery. Common minor effects include bruising at the puncture site and mild discomfort. Serious complications are rare (typically under 2-3%) and may include bleeding, infection, blood vessel injury, or reaction to contrast dye. Our specialists use advanced imaging guidance and protective devices (like embolic protection filters) to minimize risks. We conduct thorough pre-procedure assessments to ensure you're a suitable candidate and discuss all potential risks specific to your condition during consultation."
+      },
+      {
+        "question": "Will my insurance cover endovascular treatments?",
+        "answer": "Most major insurance plans cover endovascular procedures, particularly when they are medically necessary alternatives to traditional surgery. Coverage varies by insurer and specific procedure. Our administrative team can help verify your benefits, obtain pre-authorization if required, and provide detailed cost estimates. We accept various international insurance plans and can assist with documentation for claims. For self-pay patients, we provide transparent pricing with no hidden fees. Contact us for a personalized insurance verification."
+      },
+      {
+        "question": "How do I choose between different treatment options for my condition?",
+        "answer": "Our specialists take time to explain all appropriate treatment options for your specific condition, including endovascular approaches, traditional surgery, medications, or watchful waiting. We discuss the benefits, risks, recovery times, and success rates of each option. Our goal is to empower you with information to make an informed decision that aligns with your health goals and lifestyle."
+      },
+      {
+        "question": "What follow-up care is required after treatment?",
+        "answer": "Follow-up care ensures optimal outcomes and monitors treatment effectiveness. Typically, you'll have an initial check-up 1-2 weeks post-procedure to assess the access site and recovery. Imaging follow-ups (ultrasound, CT, or MRI) are scheduled at 3-6 months and annually thereafter to confirm the treatment's success—such as confirming aneurysm occlusion, fibroid shrinkage, or vein closure. For implantable devices like DBS or sleep apnea stimulators, programming appointments optimize settings. Our team provides a personalized follow-up schedule and remains available for questions throughout your recovery."
       }
     ]
   },

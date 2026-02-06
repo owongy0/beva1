@@ -40,9 +40,9 @@ export function HeroCarousel({ lang, t }: HeroCarouselProps) {
   return (
     <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-stone-50 via-stone-100/50 to-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-5 gap-8 md:gap-10 lg:gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
           {/* Left - Text Content */}
-          <div className="md:col-span-2 space-y-4 sm:space-y-5 text-center md:text-left order-2 md:order-1">
+          <div className="space-y-4 sm:space-y-5 text-center md:text-left order-2 md:order-1 min-w-0">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.15] text-slate-900 tracking-tight">
               {t.hero.title}
             </h1>
@@ -69,7 +69,7 @@ export function HeroCarousel({ lang, t }: HeroCarouselProps) {
           </div>
           
           {/* Right - Image Carousel */}
-          <div className="md:col-span-3 relative order-1 md:order-2">
+          <div className="relative order-1 md:order-2">
             <div className="aspect-[4/3] bg-stone-100 rounded-xl sm:rounded-2xl overflow-hidden border border-stone-200 shadow-lg relative">
               {/* Images */}
               {images.map((img, index) => (

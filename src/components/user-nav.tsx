@@ -86,7 +86,7 @@ export function UserNav({ lang, dict }: UserNavProps) {
         </div>
         <DropdownMenuSeparator />
         
-        <DropdownMenuItem asChild className="bg-[#00477f]/5 text-[#00477f] font-medium">
+        <DropdownMenuItem asChild className="bg-[#00477f]/5 text-[#00477f]">
           <Link href={`/${lang}/bookings`} className="cursor-pointer">
             <Calendar className="mr-2 h-4 w-4" />
             {dict.nav.myBookings}
