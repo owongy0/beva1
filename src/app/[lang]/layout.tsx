@@ -132,7 +132,7 @@ export default async function LocaleLayout({
                       <span className="sr-only">{dict.nav.menu}</span>
                     </button>
                   </SheetTrigger>
-                  <SheetContent side="right" className="w-[280px] sm:w-[320px] bg-white p-0">
+                  <SheetContent side="right" className="w-[280px] sm:w-[320px] bg-white p-0" showCloseButton={false}>
                     {/* Header with Logo and Close */}
                     <div className="p-4 sm:p-6 border-b bg-gray-50 flex items-center justify-between">
                       <SheetTitle className="text-left">
