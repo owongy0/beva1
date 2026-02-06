@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Locale } from '@/i18n/config';
 import { Dictionary } from '@/i18n/get-dictionary';
 
@@ -38,91 +37,78 @@ export function HeroCarousel({ lang, t }: HeroCarouselProps) {
   };
 
   return (
-    <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-stone-50 via-stone-100/50 to-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
-          {/* Left - Text Content */}
-          <div className="space-y-4 sm:space-y-5 text-center md:text-left order-2 md:order-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.15] text-slate-900 tracking-tight">
+    <section className="relative min-h-[600px] sm:min-h-[700px] md:min-h-[800px] flex items-end">
+      {/* Background Images - Full bleed */}
+      {images.map((img, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            index === currentSlide ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <img 
+            src={img}
+            alt={`BEVA Clinic - Slide ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ))}
+      
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-slate-900/40" />
+      
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 md:pt-48 pb-20 sm:pb-24 md:pb-28">
+        <div className="max-w-2xl">
+          {/* Text Content */}
+          <div className="space-y-5 sm:space-y-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-white tracking-tight">
               {t.hero.title}
             </h1>
             
-            <p className="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed max-w-md mx-auto md:mx-0">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed max-w-lg">
               {t.hero.subtitle}
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-3 pt-1 justify-center md:justify-start">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button 
                 onClick={scrollToContact}
-                className="bg-[#00477f] text-white hover:bg-[#003d70] px-5 sm:px-6 py-4 sm:py-5 text-sm sm:text-base font-semibold shadow-lg shadow-[#00477f]/20 transition-all hover:shadow-xl hover:shadow-[#00477f]/30 w-full sm:w-auto"
+                className="bg-[#00477f] text-white hover:bg-[#003d70] px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold shadow-lg shadow-[#00477f]/30 transition-all hover:shadow-xl hover:shadow-[#00477f]/40 w-full sm:w-auto"
               >
                 {t.hero.bookConsultation}
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => document.getElementById('procedures')?.scrollIntoView({ behavior: 'smooth' })}
-                className="border-2 border-[#00477f] text-[#00477f] hover:bg-sky-50 px-5 sm:px-6 py-4 sm:py-5 text-sm sm:text-base font-semibold transition-all w-full sm:w-auto"
+                className="border-2 border-white text-white hover:bg-white/10 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold transition-all w-full sm:w-auto bg-transparent"
               >
                 {t.hero.ourProcedures}
               </Button>
             </div>
           </div>
-          
-          {/* Right - Image Carousel */}
-          <div className="relative order-1 md:order-2">
-            <div className="aspect-[4/3] bg-stone-100 rounded-xl sm:rounded-2xl overflow-hidden border border-stone-200 shadow-lg relative">
-              {/* Images */}
-              {images.map((img, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    index === currentSlide ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
-                  <img 
-                    src={img}
-                    alt={`BEVA Clinic - Slide ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-              
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-              
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
-                aria-label="Next slide"
-              >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
-              </button>
-              
-              {/* Dots Indicator */}
-              <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
-                {images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all ${
-                      index === currentSlide 
-                        ? 'bg-white w-4 sm:w-5' 
-                        : 'bg-white/60 hover:bg-white/80'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+        </div>
+      </div>
+      
+      {/* Dots Indicator - Bottom center */}
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-2.5 h-2.5 rounded-full transition-all ${
+              index === currentSlide 
+                ? 'bg-white w-8' 
+                : 'bg-white/50 hover:bg-white/70'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+      
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden md:block">
+        <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
+          <div className="w-1 h-2 bg-white/60 rounded-full animate-bounce" />
         </div>
       </div>
     </section>
