@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -14,7 +12,6 @@ import {
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog';
-
 import {
   Stethoscope,
   Award,
@@ -23,23 +20,10 @@ import {
   Phone,
   Clock,
   GraduationCap,
-  Sparkles,
   ArrowRight,
   Mail,
   User,
   X,
-  ChevronLeft,
-  Brain,
-  Activity,
-  Heart,
-  Bone,
-  Microscope,
-  Search,
-  ChevronLeft as ArrowLeftIcon,
-  ChevronRight as ArrowRightIcon,
-  Facebook,
-  Instagram,
-  Youtube,
 } from 'lucide-react';
 import {
   Accordion,
@@ -50,272 +34,11 @@ import {
 import { Locale } from '@/i18n/config';
 import { Dictionary } from '@/i18n/get-dictionary';
 
-// Category icon mapping
-const categoryIcons: Record<string, React.ReactNode> = {
-  neurovascular: <Brain className="w-6 h-6" />,
-  neuromodulation: <Activity className="w-6 h-6" />,
-  urogenital: <Heart className="w-6 h-6" />,
-  gastrointestinal: <Search className="w-6 h-6" />,
-  musculoskeletal: <Bone className="w-6 h-6" />,
-  vascular: <Microscope className="w-6 h-6" />,
-};
-
-// Hero Carousel Component
-function HeroCarousel({ lang, t }: { lang: Locale; t: Dictionary }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const images = [
-    '/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg',
-    '/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg',
-    '/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg',
-  ];
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % images.length);
-  }, [images.length]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
-
-  // Auto-scroll every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
-    return () => clearInterval(interval);
-  }, [nextSlide]);
-
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  return (
-    <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-stone-50 via-stone-100/50 to-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-5 gap-8 md:gap-10 lg:gap-12 items-center">
-          {/* Left - Text Content */}
-          <div className="md:col-span-2 space-y-4 sm:space-y-5 text-center md:text-left order-2 md:order-1">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.15] text-slate-900 tracking-tight">
-              {t.hero.title}
-            </h1>
-            
-            <p className="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed max-w-md mx-auto md:mx-0">
-              {t.hero.subtitle}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-3 pt-1 justify-center md:justify-start">
-              <Button 
-                onClick={scrollToContact}
-                className="bg-[#00477f] text-white hover:bg-[#003d70] px-5 sm:px-6 py-4 sm:py-5 text-sm sm:text-base font-semibold shadow-lg shadow-[#00477f]/20 transition-all hover:shadow-xl hover:shadow-[#00477f]/30 w-full sm:w-auto"
-              >
-                {t.hero.bookConsultation}
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => document.getElementById('procedures')?.scrollIntoView({ behavior: 'smooth' })}
-                className="border-2 border-[#00477f] text-[#00477f] hover:bg-sky-50 px-5 sm:px-6 py-4 sm:py-5 text-sm sm:text-base font-semibold transition-all w-full sm:w-auto"
-              >
-                {t.hero.ourProcedures}
-              </Button>
-            </div>
-          </div>
-          
-          {/* Right - Image Carousel */}
-          <div className="md:col-span-3 relative order-1 md:order-2">
-            <div className="aspect-[4/3] bg-stone-100 rounded-xl sm:rounded-2xl overflow-hidden border border-stone-200 shadow-lg relative">
-              {/* Images */}
-              {images.map((img, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                    index === currentSlide ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
-                  <img 
-                    src={img}
-                    alt={`BEVA Clinic - Slide ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-              
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-              
-              {/* Navigation Arrows */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
-                aria-label="Previous slide"
-              >
-                <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110"
-                aria-label="Next slide"
-              >
-                <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
-              </button>
-              
-              {/* Dots Indicator */}
-              <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
-                {images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all ${
-                      index === currentSlide 
-                        ? 'bg-white w-4 sm:w-5' 
-                        : 'bg-white/60 hover:bg-white/80'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Testimonial Carousel Component
-function TestimonialCarousel({ lang }: { lang: Locale }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  
-  const testimonials = [
-    {
-      quote: lang === 'zh-TW' 
-        ? 'BEVA診所的醫生非常專業，讓我在整個治療過程中感到非常安心。手術後恢復很快，第二天就能正常活動了。'
-        : 'The doctors at BEVA Clinic are extremely professional and made me feel at ease throughout my entire treatment. Recovery was remarkably fast—I was back to normal activities the very next day.',
-      name: lang === 'zh-TW' ? '陳女士' : 'Mrs. Chan',
-      treatment: lang === 'zh-TW' ? '子宮肌瘤栓塞術' : 'Uterine Fibroid Embolization',
-      rating: 5,
-    },
-    {
-      quote: lang === 'zh-TW'
-        ? '多年來的膝關節疼痛終於得到緩解。感謝BEVA團隊的細心照顧，現在我又可以和孫子一起散步了。'
-        : 'After years of chronic knee pain, I finally found relief. Thanks to the caring team at BEVA, I can now walk with my grandchildren again without discomfort.',
-      name: lang === 'zh-TW' ? '李先生' : 'Mr. Lee',
-      treatment: lang === 'zh-TW' ? '膝動脈栓塞術' : 'Genicular Artery Embolization',
-      rating: 5,
-    },
-    {
-      quote: lang === 'zh-TW'
-        ? '從預約到術後跟進，整個體驗都非常順暢。微創治療真的改變了我的生活，強烈推薦給有類似問題的朋友。'
-        : 'From booking to post-procedure follow-up, the entire experience was seamless. The minimally invasive treatment truly transformed my life—I highly recommend BEVA to anyone facing similar issues.',
-      name: lang === 'zh-TW' ? '張先生' : 'Mr. Cheung',
-      treatment: lang === 'zh-TW' ? '前列腺動脈栓塞術' : 'Prostate Artery Embolization',
-      rating: 5,
-    },
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
-
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  return (
-    <div className="order-1">
-      <div className="bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden min-h-[320px] sm:min-h-[380px] flex flex-col">
-        {/* Quote Icon */}
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 opacity-20">
-          <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 sm:w-16 sm:h-16">
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-          </svg>
-        </div>
-        
-        {/* Header */}
-        <div className="mb-4 sm:mb-6">
-          <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs sm:text-sm font-medium">
-            {lang === 'zh-TW' ? '病人分享' : 'Patient Stories'}
-          </span>
-        </div>
-
-        {/* Testimonial Content */}
-        <div className="flex-1 flex flex-col justify-center">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className={`transition-all duration-500 ${
-                index === currentIndex 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 translate-x-8 absolute pointer-events-none'
-              }`}
-            >
-              {/* Stars */}
-              <div className="flex gap-1 mb-3 sm:mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              
-              {/* Quote */}
-              <blockquote className="text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
-                "{testimonial.quote}"
-              </blockquote>
-              
-              {/* Author */}
-              <div className="border-t border-white/20 pt-4">
-                <p className="font-semibold text-sm sm:text-base">{testimonial.name}</p>
-                <p className="text-white/70 text-xs sm:text-sm">{testimonial.treatment}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between mt-4 sm:mt-6 pt-4 border-t border-white/20">
-          {/* Arrows */}
-          <div className="flex gap-2">
-            <button
-              onClick={prevTestimonial}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-              aria-label="Previous testimonial"
-            >
-              <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            <button
-              onClick={nextTestimonial}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-              aria-label="Next testimonial"
-            >
-              <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-          </div>
-          
-          {/* Dots */}
-          <div className="flex gap-2">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex 
-                    ? 'bg-white w-4' 
-                    : 'bg-white/40 hover:bg-white/60'
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+// Extracted components
+import { HeroCarousel } from '@/components/hero-carousel';
+import { TestimonialCarousel } from '@/components/testimonial-carousel';
+import { SectionHeader } from '@/components/section-header';
+import { Footer } from '@/components/footer';
 
 // Dynamically import the map component to avoid SSR issues
 const ClinicMap = dynamic(() => import('@/components/map').then((mod) => mod.ClinicMap), {
@@ -331,10 +54,6 @@ interface HomePageClientProps {
   lang: Locale;
   dictionary: Dictionary;
 }
-
-
-
-
 
 export default function HomePageClient({ lang, dictionary }: HomePageClientProps) {
   const [openDialogs, setOpenDialogs] = useState<Record<number, boolean>>({});
@@ -354,13 +73,10 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       {/* Procedures Section */}
       <section id="procedures" className="py-12 sm:py-16 md:py-24 bg-stone-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.procedures.title}</h2>
-            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed px-4">
-              {t.procedures.subtitle}
-            </p>
-          </div>
+          <SectionHeader 
+            title={t.procedures.title} 
+            subtitle={t.procedures.subtitle} 
+          />
 
           {/* Category Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -371,7 +87,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                 onOpenChange={(open) => setOpenDialogs(prev => ({ ...prev, [catIndex]: open }))}
               >
                 <DialogTrigger asChild>
-                  <button className="group relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
+                  <button className="group relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
                     {/* Category Image */}
                     <div className="aspect-[2/1] overflow-hidden bg-stone-100">
                       <img 
@@ -403,7 +119,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                       <p className="text-slate-500 text-xs sm:text-sm mt-0.5 sm:mt-1 hidden sm:block">{category.description}</p>
                     </div>
                     <DialogClose asChild>
-                      <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                      <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors">
                         <X className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600" />
                       </button>
                     </DialogClose>
@@ -437,7 +153,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                               <p className="text-slate-500 text-xs sm:text-sm mt-0.5 line-clamp-2">{treatment.shortDescription}</p>
                             </DialogHeader>
                             <DialogClose asChild>
-                              <button className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors shrink-0">
+                              <button className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors shrink-0">
                                 <X className="w-4 h-4 text-slate-600" />
                               </button>
                             </DialogClose>
@@ -488,7 +204,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                     ))}
                   </div>
                   
-                  {/* Footer */}
+                  {/* Dialog Footer */}
                   <div className="sticky bottom-0 bg-white border-t px-4 sm:px-6 py-3 sm:py-4">
                     <Button 
                       onClick={() => {
@@ -510,13 +226,10 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       {/* Meet Our Team Section */}
       <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-stone-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.team.title}</h2>
-            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed px-4">
-              {t.team.subtitle}
-            </p>
-          </div>
+          <SectionHeader 
+            title={t.team.title} 
+            subtitle={t.team.subtitle} 
+          />
           
           {/* Horizontal Scroll Carousel */}
           <div className="relative">
@@ -548,7 +261,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                 >
                   <DialogTrigger asChild>
                     <div className="snap-center shrink-0 w-[280px] sm:w-[320px] lg:w-[380px]">
-                      <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-slate-100 h-full">
+                      <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-stone-100 h-full">
                         {/* Photo Placeholder */}
                         <div className="w-20 h-20 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-stone-100 to-stone-200 rounded-full mx-auto mb-4 sm:mb-6 flex items-center justify-center group-hover:from-sky-100 group-hover:to-blue-200 transition-all duration-500">
                           <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-400 group-hover:text-[#00477f]">
@@ -574,7 +287,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
 
                         {/* Quote */}
                         <p className="text-slate-500 text-center text-xs sm:text-sm italic mb-6 sm:mb-8 leading-relaxed line-clamp-2">
-                          "{doctor.bio.substring(0, 80)}..."
+                          &ldquo;{doctor.bio.substring(0, 80)}...&rdquo;
                         </p>
 
                         {/* Actions */}
@@ -620,7 +333,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                         </div>
                       </div>
                       <DialogClose asChild>
-                        <button className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors shrink-0">
+                        <button className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center transition-colors shrink-0">
                           <X className="w-4 h-4 text-slate-600" />
                         </button>
                       </DialogClose>
@@ -806,13 +519,10 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       {/* Contact Section */}
       <section id="contact" className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3 md:mb-4 tracking-tight">{t.contact.title}</h2>
-            <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed px-4">
-              {t.contact.subtitle}
-            </p>
-          </div>
+          <SectionHeader 
+            title={t.contact.title} 
+            subtitle={t.contact.subtitle} 
+          />
           
           <div className="grid lg:grid-cols-5 gap-6 sm:gap-8">
             {/* Contact Info - Left Side */}
@@ -828,7 +538,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                     : 'Schedule an initial consultation with our specialist team to discuss your treatment options.'}
                 </p>
                 <Button 
-                  className="w-full bg-white text-[#00477f] hover:bg-slate-100 py-4 sm:py-5 md:py-6 text-base sm:text-lg font-semibold"
+                  className="w-full bg-white text-[#00477f] hover:bg-stone-100 py-4 sm:py-5 md:py-6 text-base sm:text-lg font-semibold"
                   onClick={() => window.location.href = `tel:${t.contact.phone.replace(/\s/g, '')}`}
                 >
                   <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -882,7 +592,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             
             {/* Map - Right Side */}
             <div className="lg:col-span-3 h-[300px] sm:h-[350px] lg:h-auto min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
-              <div className="bg-slate-100 rounded-2xl sm:rounded-3xl overflow-hidden h-full border border-slate-200">
+              <div className="bg-stone-100 rounded-2xl sm:rounded-3xl overflow-hidden h-full border border-stone-200">
                 <ClinicMap />
               </div>
             </div>
@@ -917,138 +627,7 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-stone-50 to-stone-100 text-slate-800 py-12 sm:py-16 md:py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 mb-10 sm:mb-12">
-            {/* Brand & About */}
-            <div className="md:col-span-5 lg:col-span-4">
-              <img 
-                src="/BEVA1.svg" 
-                alt="BEVA Clinic" 
-                className="h-10 sm:h-12 w-auto mb-4 sm:mb-5"
-              />
-              <p className="text-slate-700 text-sm leading-relaxed max-w-xs mb-6">
-                {t.footer.aboutText}
-              </p>
-              
-              {/* Social Links */}
-              <div>
-                <h4 className="font-semibold text-sm text-slate-900 mb-3">
-                  {lang === 'zh-TW' ? '關注我們' : 'Follow Us'}
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {/* Facebook */}
-                  <a 
-                    href="#" 
-                    className="w-10 h-10 bg-white rounded-full shadow-sm border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1877F2] hover:border-[#1877F2] hover:shadow-md transition-all duration-200"
-                    aria-label="Facebook"
-                  >
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  {/* Instagram */}
-                  <a 
-                    href="#" 
-                    className="w-10 h-10 bg-white rounded-full shadow-sm border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#E4405F] hover:border-[#E4405F] hover:shadow-md transition-all duration-200"
-                    aria-label="Instagram"
-                  >
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  {/* YouTube */}
-                  <a 
-                    href="#" 
-                    className="w-10 h-10 bg-white rounded-full shadow-sm border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#FF0000] hover:border-[#FF0000] hover:shadow-md transition-all duration-200"
-                    aria-label="YouTube"
-                  >
-                    <Youtube className="w-5 h-5" />
-                  </a>
-                  {/* WeChat */}
-                  <a 
-                    href="#" 
-                    className="w-10 h-10 bg-white rounded-full shadow-sm border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#07C160] hover:border-[#07C160] hover:shadow-md transition-all duration-200"
-                    aria-label="WeChat"
-                  >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.032zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
-                    </svg>
-                  </a>
-
-                </div>
-              </div>
-            </div>
-            
-            {/* Quick Links */}
-            <div className="md:col-span-3 md:col-start-7 lg:col-span-3 lg:col-start-6">
-              <h4 className="font-bold text-base sm:text-lg mb-4 sm:mb-5 text-[#00477f]">{t.footer.quickLinks}</h4>
-              <ul className="space-y-3 text-slate-700 text-sm">
-                <li>
-                  <a href={`/${lang}#procedures`} className="hover:text-[#00477f] transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 bg-slate-300 rounded-full group-hover:bg-[#00477f] transition-colors"></span>
-                    {t.nav.procedures}
-                  </a>
-                </li>
-                <li>
-                  <a href={`/${lang}#about`} className="hover:text-[#00477f] transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 bg-slate-300 rounded-full group-hover:bg-[#00477f] transition-colors"></span>
-                    {t.nav.about}
-                  </a>
-                </li>
-                <li>
-                  <a href={`/${lang}#contact`} className="hover:text-[#00477f] transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 bg-slate-300 rounded-full group-hover:bg-[#00477f] transition-colors"></span>
-                    {t.nav.contact}
-                  </a>
-                </li>
-                <li>
-                  <a href={`/${lang}#faq`} className="hover:text-[#00477f] transition-colors flex items-center gap-2 group">
-                    <span className="w-1.5 h-1.5 bg-slate-300 rounded-full group-hover:bg-[#00477f] transition-colors"></span>
-                    {t.nav.faq}
-                  </a>
-                </li>
-              </ul>
-            </div>
-            
-            {/* Contact Info */}
-            <div className="md:col-span-4 lg:col-span-3">
-              <h4 className="font-bold text-base sm:text-lg mb-4 sm:mb-5 text-[#00477f]">{t.footer.contactInfo}</h4>
-              <ul className="space-y-4 text-slate-700 text-sm">
-                <li className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#00477f] mt-0.5 shrink-0" />
-                  <span className="leading-relaxed">{t.contact.address}</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-[#00477f] shrink-0" />
-                  <a href={`tel:${t.contact.phone.replace(/\s/g, '')}`} className="text-[#00477f] font-semibold hover:underline">
-                    {t.contact.phone}
-                  </a>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Mail className="w-4 h-4 text-[#00477f] mt-0.5 shrink-0" />
-                  <a href={`mailto:${t.contact.email}`} className="hover:text-[#00477f] transition-colors break-all">
-                    {t.contact.email}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          {/* Bottom Bar */}
-          <div className="border-t border-slate-200 pt-6 sm:pt-8">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <p className="text-slate-500 text-xs sm:text-sm text-center sm:text-left">
-                {t.footer.copyright}
-              </p>
-              <div className="flex gap-6">
-                <a href="#" className="text-slate-400 hover:text-[#00477f] text-xs sm:text-sm transition-colors">
-                  {lang === 'zh-TW' ? '私隱政策' : 'Privacy Policy'}
-                </a>
-                <a href="#" className="text-slate-400 hover:text-[#00477f] text-xs sm:text-sm transition-colors">
-                  {lang === 'zh-TW' ? '服務條款' : 'Terms of Service'}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer lang={lang} t={t} />
     </main>
   );
 }

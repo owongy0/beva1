@@ -51,7 +51,7 @@ export function LanguageSwitcher({ currentLang, dictionary }: LanguageSwitcherPr
         <DropdownMenuItem asChild>
           <Link 
             href={`/en${pathWithoutLocale}`}
-            className={currentLang === 'en' ? 'font-semibold bg-slate-100' : ''}
+            className={currentLang === 'en' ? 'font-semibold bg-stone-100' : ''}
           >
             {dictionary.language.english}
           </Link>
@@ -59,7 +59,7 @@ export function LanguageSwitcher({ currentLang, dictionary }: LanguageSwitcherPr
         <DropdownMenuItem asChild>
           <Link 
             href={`/zh-TW${pathWithoutLocale}`}
-            className={currentLang === 'zh-TW' ? 'font-semibold bg-slate-100' : ''}
+            className={currentLang === 'zh-TW' ? 'font-semibold bg-stone-100' : ''}
           >
             {dictionary.language.chinese}
           </Link>
