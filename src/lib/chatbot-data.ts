@@ -62,12 +62,12 @@ export const bodyAreas: BodyArea[] = [
       { id: 'severe_headache', label: { en: 'Severe sudden headache', 'zh-TW': '突發嚴重頭痛' }, relatedConditions: ['cerebral_aneurysm', 'acute_stroke', 'csdh'], emergencyKeywords: ['thunderclap', 'worst headache'] },
       { id: 'vision_problems', label: { en: 'Vision problems / Double vision', 'zh-TW': '視力問題 / 重影' }, relatedConditions: ['cerebral_aneurysm', 'acute_stroke', 'carotid_stenosis'] },
       { id: 'neck_pain', label: { en: 'Neck pain / Stiffness', 'zh-TW': '頸部疼痛 / 僵硬' }, relatedConditions: ['cerebral_aneurysm', 'carotid_stenosis'] },
-      { id: 'stroke_symptoms', label: { en: 'Face drooping / Arm weakness / Speech difficulty', 'zh-TW': '面部下垂 / 手臂無力 / 言語困難' }, relatedConditions: ['acute_stroke', 'carotid_stenosis'], isEmergency: true, emergencyMessage: { en: 'These are stroke symptoms. Call emergency services immediately.', 'zh-TW': '這些是中風症狀。請立即致電緊急服務。' } },
-      { id: 'confusion', label: { en: 'Confusion / Memory loss', 'zh-TW': '神志不清 / 記憶力減退' }, relatedConditions: ['acute_stroke', 'csdh', 'dbs'], isEmergency: true, emergencyMessage: { en: 'Sudden confusion may indicate stroke. Seek emergency care.', 'zh-TW': '突發神志不清可能表示中風。請尋求緊急醫療。' } },
+      { id: 'stroke_symptoms', label: { en: 'Face drooping / Arm weakness / Speech difficulty', 'zh-TW': '面部下垂 / 手臂無力 / 言語困難' }, relatedConditions: ['acute_stroke', 'carotid_stenosis'] },
+      { id: 'confusion', label: { en: 'Confusion / Memory loss', 'zh-TW': '神志不清 / 記憶力減退' }, relatedConditions: ['acute_stroke', 'csdh', 'dbs'] },
       { id: 'balance_issues', label: { en: 'Balance problems / Dizziness', 'zh-TW': '平衡問題 / 頭暈' }, relatedConditions: ['acute_stroke', 'dbs', 'avm'] },
       { id: 'tremor', label: { en: 'Tremor / Shaking', 'zh-TW': '震顫 / 顫抖' }, relatedConditions: ['dbs'] },
       { id: 'rigidity', label: { en: 'Muscle stiffness / Rigidity', 'zh-TW': '肌肉僵硬 / 強直' }, relatedConditions: ['dbs'] },
-      { id: 'seizures', label: { en: 'Seizures', 'zh-TW': '癲癇發作' }, relatedConditions: ['avm', 'cerebral_aneurysm'], isEmergency: true },
+      { id: 'seizures', label: { en: 'Seizures', 'zh-TW': '癲癇發作' }, relatedConditions: ['avm', 'cerebral_aneurysm'] },
     ]
   },
   {
@@ -75,7 +75,7 @@ export const bodyAreas: BodyArea[] = [
     label: { en: 'Sleep / Breathing', 'zh-TW': '睡眠 / 呼吸' },
     symptoms: [
       { id: 'loud_snoring', label: { en: 'Loud snoring', 'zh-TW': '大聲打鼾' }, relatedConditions: ['sleep_apnea'] },
-      { id: 'breathing_pauses', label: { en: 'Breathing pauses during sleep', 'zh-TW': '睡眠時呼吸暫停' }, relatedConditions: ['sleep_apnea'], isEmergency: true, emergencyMessage: { en: 'Breathing pauses can be life-threatening. Seek immediate evaluation.', 'zh-TW': '呼吸暫停可能危及生命。請立即求醫。' } },
+      { id: 'breathing_pauses', label: { en: 'Breathing pauses during sleep', 'zh-TW': '睡眠時呼吸暫停' }, relatedConditions: ['sleep_apnea'] },
       { id: 'daytime_sleepiness', label: { en: 'Excessive daytime sleepiness', 'zh-TW': '日間過度嗜睡' }, relatedConditions: ['sleep_apnea'] },
       { id: 'morning_headaches', label: { en: 'Morning headaches', 'zh-TW': '晨起頭痛' }, relatedConditions: ['sleep_apnea'] },
       { id: 'cpap_intolerance', label: { en: 'Cannot tolerate CPAP machine', 'zh-TW': '無法耐受正壓呼吸機' }, relatedConditions: ['sleep_apnea'] },
@@ -111,7 +111,7 @@ export const bodyAreas: BodyArea[] = [
       { id: 'visible_varicose', label: { en: 'Visible varicose veins', 'zh-TW': '明顯靜脈曲張' }, relatedConditions: ['varicose_veins'] },
       { id: 'leg_pain_swelling', label: { en: 'Leg pain, swelling, heaviness', 'zh-TW': '腿部疼痛、腫脹、沉重感' }, relatedConditions: ['varicose_veins', 'peripheral_vascular'] },
       { id: 'walking_pain', label: { en: 'Leg pain when walking (relieved by rest)', 'zh-TW': '走路時腿痛（休息後緩解）' }, relatedConditions: ['peripheral_vascular'] },
-      { id: 'skin_changes', label: { en: 'Skin discoloration / ulcers on legs', 'zh-TW': '腿部皮膚變色/潰瘍' }, relatedConditions: ['peripheral_vascular', 'varicose_veins'], isEmergency: true, emergencyMessage: { en: 'Leg ulcers require prompt medical attention.', 'zh-TW': '腿部潰瘍需要及時醫療關注。' } },
+      { id: 'skin_changes', label: { en: 'Skin discoloration / ulcers on legs', 'zh-TW': '腿部皮膚變色/潰瘍' }, relatedConditions: ['peripheral_vascular', 'varicose_veins'] },
       { id: 'cold_feet', label: { en: 'Cold feet / Weak pulse', 'zh-TW': '腳部冰冷 / 脈搏微弱' }, relatedConditions: ['peripheral_vascular'] },
     ]
   },
@@ -138,22 +138,22 @@ export const bodyAreas: BodyArea[] = [
     id: 'abdomen',
     label: { en: 'Abdomen / Digestive', 'zh-TW': '腹部 / 消化' },
     symptoms: [
-      { id: 'hemorrhoid_bleeding', label: { en: 'Rectal bleeding', 'zh-TW': '直腸出血' }, relatedConditions: ['hemorrhoids'], isEmergency: true, emergencyMessage: { en: 'Significant bleeding requires immediate medical attention.', 'zh-TW': '大量出血需要立即醫療關注。' } },
+      { id: 'hemorrhoid_bleeding', label: { en: 'Rectal bleeding', 'zh-TW': '直腸出血' }, relatedConditions: ['hemorrhoids'] },
       { id: 'hemorrhoid_pain', label: { en: 'Pain/itching around anus', 'zh-TW': '肛門周圍疼痛/瘙癢' }, relatedConditions: ['hemorrhoids'] },
       { id: 'liver_tumor', label: { en: 'Liver tumor / Hepatocellular carcinoma', 'zh-TW': '肝腫瘤 / 肝癌' }, relatedConditions: ['oncology_intervention'] },
       { id: 'kidney_tumor', label: { en: 'Kidney tumor', 'zh-TW': '腎腫瘤' }, relatedConditions: ['oncology_intervention'] },
       { id: 'lung_tumor', label: { en: 'Lung tumor', 'zh-TW': '肺腫瘤' }, relatedConditions: ['oncology_intervention'] },
-      { id: 'abdominal_aorta', label: { en: 'Abdominal aortic aneurysm (diagnosed)', 'zh-TW': '腹主動脈瘤（已確診）' }, relatedConditions: ['aortic_disease'], isEmergency: true, emergencyMessage: { en: 'Aortic aneurysm requires immediate specialist evaluation.', 'zh-TW': '主動脈瘤需要立即專科評估。' } },
+      { id: 'abdominal_aorta', label: { en: 'Abdominal aortic aneurysm (diagnosed)', 'zh-TW': '腹主動脈瘤（已確診）' }, relatedConditions: ['aortic_disease'] },
     ]
   },
   {
     id: 'chest',
     label: { en: 'Chest / Torso', 'zh-TW': '胸部 / 軀幹' },
     symptoms: [
-      { id: 'chest_pain', label: { en: 'Chest pain', 'zh-TW': '胸痛' }, relatedConditions: [], isEmergency: true, emergencyMessage: { en: 'CHEST PAIN requires IMMEDIATE emergency care. Call emergency services now.', 'zh-TW': '胸痛需要立即緊急醫療。請立即致電緊急服務。' } },
-      { id: 'shortness_breath', label: { en: 'Shortness of breath', 'zh-TW': '呼吸困難' }, relatedConditions: ['aortic_disease', 'sleep_apnea'], isEmergency: true, emergencyMessage: { en: 'Severe shortness of breath requires immediate care.', 'zh-TW': '嚴重呼吸困難需要立即醫療。' } },
-      { id: 'thoracic_aorta', label: { en: 'Thoracic aortic aneurysm (diagnosed)', 'zh-TW': '胸主動脈瘤（已確診）' }, relatedConditions: ['aortic_disease'], isEmergency: true },
-      { id: 'back_pain', label: { en: 'Severe back pain (sudden)', 'zh-TW': '突發嚴重背痛' }, relatedConditions: ['aortic_disease'], isEmergency: true, emergencyMessage: { en: 'Sudden severe back pain may indicate aortic emergency.', 'zh-TW': '突發嚴重背痛可能表示主動脈急症。' } },
+      { id: 'chest_pain', label: { en: 'Chest pain', 'zh-TW': '胸痛' }, relatedConditions: [] },
+      { id: 'shortness_breath', label: { en: 'Shortness of breath', 'zh-TW': '呼吸困難' }, relatedConditions: ['aortic_disease', 'sleep_apnea'] },
+      { id: 'thoracic_aorta', label: { en: 'Thoracic aortic aneurysm (diagnosed)', 'zh-TW': '胸主動脈瘤（已確診）' }, relatedConditions: ['aortic_disease'] },
+      { id: 'back_pain', label: { en: 'Severe back pain (sudden)', 'zh-TW': '突發嚴重背痛' }, relatedConditions: ['aortic_disease'] },
     ]
   },
 ];
@@ -177,21 +177,11 @@ export const conditionMappings: ConditionMapping[] = [
   { id: 'plantar_fasciitis', categoryId: 'musculoskeletal', keywords: ['plantar fasciitis', 'heel pain', 'foot pain', 'pfe'], symptoms: ['heel_pain', 'heel_tenderness', 'treatment_failed'], bodyAreas: ['feet'] },
   { id: 'oncology_intervention', categoryId: 'vascular', keywords: ['liver cancer', 'liver tumor', 'tace', 'y-90', 'radioembolization', 'kidney tumor', 'lung tumor', 'ablation'], symptoms: ['liver_tumor', 'kidney_tumor', 'lung_tumor'], bodyAreas: ['abdomen', 'chest'] },
   { id: 'peripheral_vascular', categoryId: 'vascular', keywords: ['peripheral artery disease', 'pad', 'claudication', 'leg artery', 'peripheral vascular'], symptoms: ['walking_pain', 'leg_pain_swelling', 'cold_feet', 'skin_changes'], bodyAreas: ['legs'] },
-  { id: 'aortic_disease', categoryId: 'vascular', keywords: ['aortic aneurysm', 'aaa', 'taa', 'evar', 'tevar', 'aortic'], symptoms: ['abdominal_aorta', 'thoracic_aorta', 'back_pain'], bodyAreas: ['abdomen', 'chest'], emergencyKeywords: ['severe back pain', 'tearing pain'] },
+  { id: 'aortic_disease', categoryId: 'vascular', keywords: ['aortic aneurysm', 'aaa', 'taa', 'evar', 'tevar', 'aortic'], symptoms: ['abdominal_aorta', 'thoracic_aorta', 'back_pain'], bodyAreas: ['abdomen', 'chest'] },
 ];
 
-// Emergency keywords that trigger immediate alerts
-export const emergencyKeywords = [
-  { en: 'chest pain', 'zh-TW': '胸痛' },
-  { en: 'can\'t breathe', 'zh-TW': '無法呼吸' },
-  { en: 'unconscious', 'zh-TW': '昏迷' },
-  { en: 'severe bleeding', 'zh-TW': '大量出血' },
-  { en: 'stroke', 'zh-TW': '中風' },
-  { en: 'heart attack', 'zh-TW': '心臟病發' },
-  { en: 'face drooping', 'zh-TW': '面部下垂' },
-  { en: 'arm weakness', 'zh-TW': '手臂無力' },
-  { en: 'speech slurred', 'zh-TW': '口齒不清' },
-];
+// Emergency detection disabled to avoid scaring users
+export const emergencyKeywords: { en: string; 'zh-TW': string }[] = [];
 
 // Conversation flow steps
 export type ConversationStep = 
@@ -201,7 +191,6 @@ export type ConversationStep =
   | 'duration'
   | 'severity'
   | 'results'
-  | 'emergency'
   | 'complete';
 
 export interface ConversationState {
@@ -211,8 +200,6 @@ export interface ConversationState {
   duration?: string;
   severity?: string;
   matchedConditions: ConditionResult[];
-  isEmergency: boolean;
-  emergencyMessage?: string;
 }
 
 // Initial welcome messages
@@ -283,18 +270,8 @@ export function getSymptomOptions(lang: Locale, bodyAreaId: string): QuickReplyO
   }));
 }
 
-// Check for emergency symptoms
-export function checkEmergency(symptomIds: string[], lang: Locale): { isEmergency: boolean; message?: string } {
-  for (const area of bodyAreas) {
-    for (const symptom of area.symptoms) {
-      if (symptomIds.includes(symptom.id) && symptom.isEmergency) {
-        return {
-          isEmergency: true,
-          message: symptom.emergencyMessage?.[lang] || (lang === 'zh-TW' ? '這是緊急症狀。請立即尋求醫療協助。' : 'This is an emergency symptom. Please seek immediate medical attention.')
-        };
-      }
-    }
-  }
+// Emergency detection disabled to avoid scaring users - always returns false
+export function checkEmergency(_symptomIds: string[], _lang: Locale): { isEmergency: boolean; message?: string } {
   return { isEmergency: false };
 }
 

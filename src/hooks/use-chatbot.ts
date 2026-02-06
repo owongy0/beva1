@@ -11,7 +11,6 @@ import {
   getSymptomOptions,
   getDurationOptions,
   getSeverityOptions,
-  checkEmergency,
   matchConditions,
   getDisclaimer,
   bodyAreas,
@@ -43,7 +42,6 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
     step: 'welcome',
     selectedSymptoms: [],
     matchedConditions: [],
-    isEmergency: false,
   });
   const [isTyping, setIsTyping] = useState(false);
 
@@ -110,7 +108,6 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
       step: 'welcome',
       selectedSymptoms: [],
       matchedConditions: [],
-      isEmergency: false,
     });
 
     await showTyping(500);
@@ -231,44 +228,9 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
   const handleContinueToDuration = useCallback(async () => {
     const { selectedSymptoms } = conversationState;
     
-    // Check for emergency
-    const emergency = checkEmergency(selectedSymptoms, lang);
-    if (emergency.isEmergency) {
-      setConversationState(prev => ({
-        ...prev,
-        step: 'emergency',
-        isEmergency: true,
-        emergencyMessage: emergency.message,
-      }));
-
-      await showTyping(300);
-
-      addMessage({
-        role: 'bot',
-        content: emergency.message || '',
-        type: 'emergency',
-      });
-
-      await showTyping(500);
-
-      const emergencyDisclaimer = lang === 'zh-TW'
-        ? '請立即致電緊急服務熱線（香港：999）或前往最近的急症室。您的症狀可能需要立即醫療關注。'
-        : 'Please call emergency services immediately (Hong Kong: 999) or go to the nearest emergency room. Your symptoms may require immediate medical attention.';
-
-      addMessage({
-        role: 'bot',
-        content: emergencyDisclaimer,
-        type: 'text',
-      });
-
-      // Still show results for non-emergency conditions if any
-      if (selectedSymptoms.length > 0) {
-        await showTyping(600);
-        showResults(selectedSymptoms);
-      }
-      return;
-    }
-
+    // Note: Emergency detection has been removed to avoid scaring users
+    // The checkEmergency function always returns false
+    
     // Check if any symptoms selected
     if (selectedSymptoms.length === 0) {
       await showTyping(400);
