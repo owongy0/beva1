@@ -176,6 +176,144 @@ function HeroCarousel({ lang, t }: { lang: Locale; t: Dictionary }) {
   );
 }
 
+// Testimonial Carousel Component
+function TestimonialCarousel({ lang }: { lang: Locale }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  const testimonials = [
+    {
+      quote: lang === 'zh-TW' 
+        ? 'BEVA診所的醫生非常專業，讓我在整個治療過程中感到非常安心。手術後恢復很快，第二天就能正常活動了。'
+        : 'The doctors at BEVA Clinic are extremely professional and made me feel at ease throughout my entire treatment. Recovery was remarkably fast—I was back to normal activities the very next day.',
+      name: lang === 'zh-TW' ? '陳女士' : 'Mrs. Chan',
+      treatment: lang === 'zh-TW' ? '子宮肌瘤栓塞術' : 'Uterine Fibroid Embolization',
+      rating: 5,
+    },
+    {
+      quote: lang === 'zh-TW'
+        ? '多年來的膝關節疼痛終於得到緩解。感謝BEVA團隊的細心照顧，現在我又可以和孫子一起散步了。'
+        : 'After years of chronic knee pain, I finally found relief. Thanks to the caring team at BEVA, I can now walk with my grandchildren again without discomfort.',
+      name: lang === 'zh-TW' ? '李先生' : 'Mr. Lee',
+      treatment: lang === 'zh-TW' ? '膝動脈栓塞術' : 'Genicular Artery Embolization',
+      rating: 5,
+    },
+    {
+      quote: lang === 'zh-TW'
+        ? '從預約到術後跟進，整個體驗都非常順暢。微創治療真的改變了我的生活，強烈推薦給有類似問題的朋友。'
+        : 'From booking to post-procedure follow-up, the entire experience was seamless. The minimally invasive treatment truly transformed my life—I highly recommend BEVA to anyone facing similar issues.',
+      name: lang === 'zh-TW' ? '張先生' : 'Mr. Cheung',
+      treatment: lang === 'zh-TW' ? '前列腺動脈栓塞術' : 'Prostate Artery Embolization',
+      rating: 5,
+    },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  const nextTestimonial = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  return (
+    <div className="order-1">
+      <div className="bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden min-h-[320px] sm:min-h-[380px] flex flex-col">
+        {/* Quote Icon */}
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 opacity-20">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 sm:w-16 sm:h-16">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+          </svg>
+        </div>
+        
+        {/* Header */}
+        <div className="mb-4 sm:mb-6">
+          <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs sm:text-sm font-medium">
+            {lang === 'zh-TW' ? '病人分享' : 'Patient Stories'}
+          </span>
+        </div>
+
+        {/* Testimonial Content */}
+        <div className="flex-1 flex flex-col justify-center">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className={`transition-all duration-500 ${
+                index === currentIndex 
+                  ? 'opacity-100 translate-x-0' 
+                  : 'opacity-0 translate-x-8 absolute pointer-events-none'
+              }`}
+            >
+              {/* Stars */}
+              <div className="flex gap-1 mb-3 sm:mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              
+              {/* Quote */}
+              <blockquote className="text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
+                "{testimonial.quote}"
+              </blockquote>
+              
+              {/* Author */}
+              <div className="border-t border-white/20 pt-4">
+                <p className="font-semibold text-sm sm:text-base">{testimonial.name}</p>
+                <p className="text-white/70 text-xs sm:text-sm">{testimonial.treatment}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between mt-4 sm:mt-6 pt-4 border-t border-white/20">
+          {/* Arrows */}
+          <div className="flex gap-2">
+            <button
+              onClick={prevTestimonial}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+            <button
+              onClick={nextTestimonial}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+              aria-label="Next testimonial"
+            >
+              <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+          </div>
+          
+          {/* Dots */}
+          <div className="flex gap-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  index === currentIndex 
+                    ? 'bg-white w-4' 
+                    : 'bg-white/40 hover:bg-white/60'
+                }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Dynamically import the map component to avoid SSR issues
 const ClinicMap = dynamic(() => import('@/components/map').then((mod) => mod.ClinicMap), {
   ssr: false,
@@ -230,31 +368,26 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                 onOpenChange={(open) => setOpenDialogs(prev => ({ ...prev, [catIndex]: open }))}
               >
                 <DialogTrigger asChild>
-                  <button className="group relative bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
-                    {/* Category Icon */}
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00477f]/10 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-[#00477f]">
-                      {categoryIcons[category.id] || <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6" />}
+                  <button className="group relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
+                    {/* Category Image */}
+                    <div className="aspect-[2/1] overflow-hidden bg-gray-100">
+                      <img 
+                        src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg"
+                        alt={category.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
                     
-                    {/* Category Title */}
-                    <h3 className="font-bold text-slate-900 text-lg sm:text-xl leading-tight mb-2 sm:mb-3 group-hover:text-[#00477f] transition-colors">
-                      {category.name}
-                    </h3>
-                    
-                    {/* Description */}
-                    <p className="text-slate-500 text-sm leading-relaxed mb-3 sm:mb-4 flex-grow line-clamp-2 sm:line-clamp-none">
-                      {category.description}
-                    </p>
-                    
-                    {/* Treatment Count */}
-                    <div className="text-xs text-slate-400 mb-3 sm:mb-4">
-                      {category.treatments.length} {lang === 'zh-TW' ? '項治療' : 'treatments'}
-                    </div>
-                    
-                    {/* View Treatments Link */}
-                    <div className="flex items-center gap-2 text-[#00477f] font-medium text-sm pt-3 sm:pt-4 border-t border-slate-100 group-hover:border-[#00477f]/20 transition-colors">
-                      <span>{t.procedures.viewTreatments}</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {/* Category Info */}
+                    <div className="p-4 sm:p-5 flex items-center justify-between gap-3">
+                      <h3 className="font-semibold text-slate-900 text-base sm:text-lg leading-tight group-hover:text-[#00477f] transition-colors text-left">
+                        {category.name}
+                      </h3>
+                      
+                      {/* Arrow Icon */}
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#00477f] flex items-center justify-center shrink-0 group-hover:bg-[#00477f] transition-colors">
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f] group-hover:text-white transition-colors" />
+                      </div>
                     </div>
                   </button>
                 </DialogTrigger>
@@ -566,6 +699,27 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
         </div>
       </section>
 
+      {/* Full-Width Image Break Section */}
+      <section className="relative h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{ backgroundImage: 'url(/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg)' }}
+        />
+        <div className="absolute inset-0 bg-[#00477f]/60" />
+        <div className="relative h-full flex items-center justify-center px-4">
+          <div className="text-center text-white max-w-3xl">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+              {lang === 'zh-TW' ? '您的健康，是我們的首要使命' : 'Your Health Is Our Priority'}
+            </h3>
+            <p className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed">
+              {lang === 'zh-TW' 
+                ? '我們致力為每位病人提供最優質的醫療服務，讓您在舒適的環境中獲得最佳的治療效果。'
+                : 'We are dedicated to providing every patient with the highest quality medical care in a comfortable environment for the best possible outcomes.'}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Why Choose Us Section with Image */}
       <section id="about" className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -577,16 +731,8 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-            {/* Left - Image */}
-            <div className="order-1">
-              <div className="aspect-[4/3] bg-gray-100 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
-                <img 
-                  src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg" 
-                  alt="BEVA Clinic - Patient Care" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
+            {/* Left - Testimonial Carousel */}
+            <TestimonialCarousel lang={lang} />
 
             {/* Right - Key Points */}
             <div className="order-2 space-y-6 sm:space-y-8">
