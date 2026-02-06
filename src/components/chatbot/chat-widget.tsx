@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, X, Stethoscope } from 'lucide-react';
 import { Locale } from '@/lib/chatbot-data';
 import { useChatbot } from '@/hooks/use-chatbot';
 import { ChatWindow } from './chat-window';
@@ -14,9 +14,11 @@ interface ChatWidgetProps {
 
 export function ChatWidget({ lang, categoryNames, onOpenTreatmentDialog }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
 
   const toggleChat = useCallback(() => {
     setIsOpen(prev => !prev);
+    setShowPreview(false);
   }, []);
 
   const closeChat = useCallback(() => {
@@ -41,22 +43,59 @@ export function ChatWidget({ lang, categoryNames, onOpenTreatmentDialog }: ChatW
     }
   }, [onOpenTreatmentDialog]);
 
+  const previewTitle = lang === 'zh-TW' ? '不確定需要什麼治療？' : 'Not sure which treatment you need?';
+  const previewDesc = lang === 'zh-TW' 
+    ? '回答幾個簡單問題，我們會推薦適合您的治療項目' 
+    : 'Answer a few simple questions and we\'ll recommend suitable treatments for you';
+  const previewCta = lang === 'zh-TW' ? '立即開始 →' : 'Get Started →';
+
   return (
     <>
-      {/* Floating Button */}
+      {/* Preview Card + Floating Button */}
       {!isOpen && (
-        <button
-          onClick={toggleChat}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#00477f] text-white rounded-full shadow-lg hover:bg-[#003d70] hover:shadow-xl transition-all flex items-center justify-center group"
-          aria-label={lang === 'zh-TW' ? '開啟聊天' : 'Open chat'}
-        >
-          <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+          {/* Preview Card */}
+          {showPreview && (
+            <div 
+              className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4 max-w-[280px] animate-in fade-in slide-in-from-bottom-4 duration-300 cursor-pointer hover:shadow-2xl transition-shadow"
+              onClick={toggleChat}
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#00477f]/10 flex items-center justify-center shrink-0">
+                  <Stethoscope className="w-5 h-5 text-[#00477f]" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 text-sm mb-1">{previewTitle}</h4>
+                  <p className="text-gray-600 text-xs leading-relaxed mb-2">{previewDesc}</p>
+                  <span className="text-[#00477f] text-xs font-medium">{previewCta}</span>
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPreview(false);
+                  }}
+                  className="text-gray-400 hover:text-gray-600 -mt-1 -mr-1"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
           
-          {/* Tooltip */}
-          <span className="absolute right-full mr-3 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            {lang === 'zh-TW' ? '需要協助？' : 'Need help?'}
-          </span>
-        </button>
+          {/* Floating Button */}
+          <button
+            onClick={toggleChat}
+            className="w-14 h-14 bg-[#00477f] text-white rounded-full shadow-lg hover:bg-[#003d70] hover:shadow-xl transition-all flex items-center justify-center group"
+            aria-label={lang === 'zh-TW' ? '開啟聊天' : 'Open chat'}
+          >
+            <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            
+            {/* Tooltip */}
+            <span className="absolute right-full mr-3 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              {lang === 'zh-TW' ? '治療建議助手' : 'Treatment Advisor'}
+            </span>
+          </button>
+        </div>
       )}
 
       {/* Chat Window */}

@@ -140,6 +140,50 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
   }, [lang, addMessage, showTyping]);
 
   const handleBodyAreaSelect = useCallback(async (bodyAreaId: string) => {
+    // Handle direct condition shortcuts
+    if (bodyAreaId === 'hemorrhoids') {
+      setConversationState(prev => ({
+        ...prev,
+        step: 'symptoms',
+        selectedBodyArea: 'abdomen',
+      }));
+
+      await showTyping(500);
+
+      const symptomQuestion = lang === 'zh-TW'
+        ? `請問您有什麼痔瘡症狀？（可多選，完成後點擊「繼續」）`
+        : `What hemorrhoid symptoms are you experiencing? (Select all that apply, then click "Continue")`;
+
+      // Get only hemorrhoid-related symptoms
+      const abdomenArea = bodyAreas.find(a => a.id === 'abdomen');
+      const hemorrhoidSymptoms = abdomenArea?.symptoms.filter(s => 
+        s.relatedConditions.includes('hemorrhoids')
+      ) || [];
+      
+      const symptoms = hemorrhoidSymptoms.map(symptom => ({
+        id: `sym_${symptom.id}`,
+        label: symptom.label[lang],
+        value: symptom.id,
+        action: 'select_symptom' as const
+      }));
+      
+      // Add continue option
+      const continueOption: QuickReplyOption = {
+        id: 'continue',
+        label: lang === 'zh-TW' ? '繼續 →' : 'Continue →',
+        value: 'continue',
+        action: 'select_symptom',
+      };
+
+      addMessage({
+        role: 'bot',
+        content: symptomQuestion,
+        type: 'quick_replies',
+        options: [...symptoms, continueOption],
+      });
+      return;
+    }
+
     const area = bodyAreas.find(a => a.id === bodyAreaId);
     if (!area) return;
 

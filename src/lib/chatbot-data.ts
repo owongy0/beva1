@@ -249,14 +249,25 @@ export function getSeverityOptions(lang: Locale): QuickReplyOption[] {
   ];
 }
 
-// Get body area options
+// Get body area options - includes direct access options for common conditions
 export function getBodyAreaOptions(lang: Locale): QuickReplyOption[] {
-  return bodyAreas.map(area => ({
+  const directOptions: QuickReplyOption[] = [
+    {
+      id: 'direct_hemorrhoids',
+      label: lang === 'zh-TW' ? '🩸 痔瘡 (直腸出血/肛門疼痛)' : '🩸 Hemorrhoids (Rectal bleeding/Anal pain)',
+      value: 'hemorrhoids',
+      action: 'select_body_area' as const
+    }
+  ];
+  
+  const areaOptions: QuickReplyOption[] = bodyAreas.map(area => ({
     id: `area_${area.id}`,
     label: area.label[lang],
     value: area.id,
-    action: 'select_body_area'
+    action: 'select_body_area' as const
   }));
+  
+  return [...directOptions, ...areaOptions];
 }
 
 // Get symptoms for a body area
