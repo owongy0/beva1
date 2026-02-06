@@ -76,13 +76,30 @@ export function ChatWidget({ lang, categoryNames, onOpenTreatmentDialog }: ChatW
 
   return (
     <>
+      {/* CSS for fade-in animation */}
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+      
       {/* Preview Card + Floating Button */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-          {/* Preview Card - Only show after scrolling past treatments */}
+          {/* Preview Card - Only show after scrolling past treatments with fade-in */}
           {showPreview && hasScrolledPastTreatments && (
             <div 
-              className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4 max-w-[280px] animate-in fade-in slide-in-from-bottom-4 duration-300 cursor-pointer hover:shadow-2xl transition-shadow"
+              className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4 max-w-[280px] cursor-pointer hover:shadow-2xl transition-all duration-500 ease-out"
+              style={{
+                animation: 'fadeInUp 0.5s ease-out forwards',
+              }}
               onClick={toggleChat}
             >
               <div className="flex items-start gap-3">

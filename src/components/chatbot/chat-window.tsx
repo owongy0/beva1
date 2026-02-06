@@ -96,8 +96,8 @@ export function ChatWindow({ lang, categoryNames, onViewTreatment, onClose }: Ch
             
             {/* Render quick replies for bot messages */}
             {message.role === 'bot' && message.type === 'quick_replies' && message.options && (
-              <div className={`${message.role === 'bot' ? 'ml-11' : 'mr-11'}`}>
-                {conversationState.step === 'symptoms' ? (
+              <div className="ml-11">
+                {message.step === 'symptoms' ? (
                   // Symptom selection with continue button below
                   <QuickReplies
                     options={message.options}
@@ -117,7 +117,7 @@ export function ChatWindow({ lang, categoryNames, onViewTreatment, onClose }: Ch
                   // Other steps - normal quick replies
                   <QuickReplies
                     options={message.options}
-                    selectedValues={getSelectedValues()}
+                    selectedValues={[]}
                     onOptionClick={handleOptionClick}
                     lang={lang}
                   />

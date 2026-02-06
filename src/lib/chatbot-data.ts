@@ -7,9 +7,10 @@ export interface ChatMessage {
   id: string;
   role: 'user' | 'bot';
   content: string;
-  type?: 'text' | 'quick_replies' | 'results' | 'emergency';
+  type?: 'text' | 'quick_replies' | 'results';
   options?: QuickReplyOption[];
   results?: ConditionResult[];
+  step?: ConversationStep; // The step this message belongs to
   timestamp: number;
 }
 
@@ -39,9 +40,13 @@ export interface Symptom {
   id: string;
   label: Record<Locale, string>;
   relatedConditions: string[];
-  isEmergency?: boolean;
-  emergencyMessage?: Record<Locale, string>;
-  emergencyKeywords?: string[];
+  followUpQuestions?: FollowUpQuestion[];
+}
+
+export interface FollowUpQuestion {
+  id: string;
+  question: Record<Locale, string>;
+  options: { id: string; label: Record<Locale, string>; scoreModifier: Record<string, number> }[];
 }
 
 export interface ConditionMapping {
@@ -50,17 +55,50 @@ export interface ConditionMapping {
   keywords: string[];
   symptoms: string[];
   bodyAreas: string[];
-  emergencyKeywords?: string[];
+  requiredGender?: 'male' | 'female';
+  ageRanges?: string[];
+}
+
+// Decision tree branches
+export type ConversationStep = 
+  | 'welcome'
+  | 'body_area'
+  | 'gender_select'  // For pelvic branch
+  | 'symptoms'
+  | 'follow_up'
+  | 'duration'
+  | 'severity'
+  | 'results';
+
+export interface ConversationState {
+  step: ConversationStep;
+  selectedBodyArea?: string;
+  selectedGender?: 'male' | 'female';
+  selectedSymptoms: string[];
+  followUpAnswers: Record<string, string>;
+  duration?: string;
+  severity?: string;
+  matchedConditions: ConditionResult[];
 }
 
 // Body areas with their symptoms
 export const bodyAreas: BodyArea[] = [
   {
+    id: 'hemorrhoids',
+    label: { en: 'Anus', 'zh-TW': '肛門' },
+    symptoms: [
+      { id: 'rectal_bleeding', label: { en: 'Bleeding during/after bowel movements', 'zh-TW': '排便時/後出血' }, relatedConditions: ['hemorrhoids'] },
+      { id: 'anal_pain', label: { en: 'Pain or itching around anus', 'zh-TW': '肛門周圍疼痛或瘙癢' }, relatedConditions: ['hemorrhoids'] },
+      { id: 'anal_lump', label: { en: 'Lump/swelling near anus', 'zh-TW': '肛門附近腫塊/腫脹' }, relatedConditions: ['hemorrhoids'] },
+      { id: 'mucus_discharge', label: { en: 'Mucus discharge', 'zh-TW': '黏液分泌物' }, relatedConditions: ['hemorrhoids'] },
+    ]
+  },
+  {
     id: 'head_brain',
     label: { en: 'Head / Brain', 'zh-TW': '頭部 / 腦部' },
     symptoms: [
-      { id: 'severe_headache', label: { en: 'Severe sudden headache', 'zh-TW': '突發嚴重頭痛' }, relatedConditions: ['cerebral_aneurysm', 'acute_stroke', 'csdh'], emergencyKeywords: ['thunderclap', 'worst headache'] },
-      { id: 'vision_problems', label: { en: 'Vision problems / Double vision', 'zh-TW': '視力問題 / 重影' }, relatedConditions: ['cerebral_aneurysm', 'acute_stroke', 'carotid_stenosis'] },
+      { id: 'severe_headache', label: { en: 'Severe sudden headache (thunderclap)', 'zh-TW': '突發嚴重頭痛（雷擊樣）' }, relatedConditions: ['cerebral_aneurysm', 'csdh'] },
+      { id: 'vision_problems', label: { en: 'Vision problems / Double vision', 'zh-TW': '視力問題 / 重影' }, relatedConditions: ['cerebral_aneurysm', 'carotid_stenosis'] },
       { id: 'neck_pain', label: { en: 'Neck pain / Stiffness', 'zh-TW': '頸部疼痛 / 僵硬' }, relatedConditions: ['cerebral_aneurysm', 'carotid_stenosis'] },
       { id: 'stroke_symptoms', label: { en: 'Face drooping / Arm weakness / Speech difficulty', 'zh-TW': '面部下垂 / 手臂無力 / 言語困難' }, relatedConditions: ['acute_stroke', 'carotid_stenosis'] },
       { id: 'confusion', label: { en: 'Confusion / Memory loss', 'zh-TW': '神志不清 / 記憶力減退' }, relatedConditions: ['acute_stroke', 'csdh', 'dbs'] },
@@ -71,58 +109,32 @@ export const bodyAreas: BodyArea[] = [
     ]
   },
   {
-    id: 'sleep',
-    label: { en: 'Sleep / Breathing', 'zh-TW': '睡眠 / 呼吸' },
-    symptoms: [
-      { id: 'loud_snoring', label: { en: 'Loud snoring', 'zh-TW': '大聲打鼾' }, relatedConditions: ['sleep_apnea'] },
-      { id: 'breathing_pauses', label: { en: 'Breathing pauses during sleep', 'zh-TW': '睡眠時呼吸暫停' }, relatedConditions: ['sleep_apnea'] },
-      { id: 'daytime_sleepiness', label: { en: 'Excessive daytime sleepiness', 'zh-TW': '日間過度嗜睡' }, relatedConditions: ['sleep_apnea'] },
-      { id: 'morning_headaches', label: { en: 'Morning headaches', 'zh-TW': '晨起頭痛' }, relatedConditions: ['sleep_apnea'] },
-      { id: 'cpap_intolerance', label: { en: 'Cannot tolerate CPAP machine', 'zh-TW': '無法耐受正壓呼吸機' }, relatedConditions: ['sleep_apnea'] },
-    ]
-  },
-  {
-    id: 'pelvic_female',
-    label: { en: 'Pelvic (Female)', 'zh-TW': '盆腔（女性）' },
-    symptoms: [
-      { id: 'heavy_periods', label: { en: 'Heavy menstrual bleeding', 'zh-TW': '經血過多' }, relatedConditions: ['uterine_fibroids'] },
-      { id: 'pelvic_pain', label: { en: 'Pelvic pain / Pressure', 'zh-TW': '盆腔疼痛 / 壓迫感' }, relatedConditions: ['uterine_fibroids', 'pelvic_congestion'] },
-      { id: 'frequent_urination', label: { en: 'Frequent urination', 'zh-TW': '頻尿' }, relatedConditions: ['uterine_fibroids', 'prostate_enlargement'] },
-      { id: 'chronic_pelvic_pain', label: { en: 'Chronic pelvic pain (standing/walking worse)', 'zh-TW': '慢性盆腔疼痛（站立/行走時加重）' }, relatedConditions: ['pelvic_congestion'] },
-      { id: 'varicose_veins_pelvis', label: { en: 'Varicose veins in pelvic area', 'zh-TW': '盆腔靜脈曲張' }, relatedConditions: ['pelvic_congestion'] },
-    ]
-  },
-  {
-    id: 'pelvic_male',
-    label: { en: 'Pelvic (Male)', 'zh-TW': '盆腔（男性）' },
-    symptoms: [
-      { id: 'weak_stream', label: { en: 'Weak urine stream', 'zh-TW': '尿流無力' }, relatedConditions: ['prostate_enlargement'] },
-      { id: 'urgency', label: { en: 'Frequent/urgent need to urinate', 'zh-TW': '尿頻/尿急' }, relatedConditions: ['prostate_enlargement'] },
-      { id: 'nighttime_urination', label: { en: 'Nighttime urination (nocturia)', 'zh-TW': '夜尿' }, relatedConditions: ['prostate_enlargement'] },
-      { id: 'incomplete_emptying', label: { en: 'Feeling of incomplete bladder emptying', 'zh-TW': '排尿不盡感' }, relatedConditions: ['prostate_enlargement'] },
-      { id: 'scrotal_pain', label: { en: 'Scrotal pain / Swollen veins', 'zh-TW': '陰囊疼痛 / 靜脈腫脹' }, relatedConditions: ['varicocele'] },
-      { id: 'infertility', label: { en: 'Infertility issues', 'zh-TW': '不育問題' }, relatedConditions: ['varicocele'] },
-    ]
+    id: 'pelvic',
+    label: { en: 'Pelvic / Reproductive', 'zh-TW': '盆腔 / 生殖' },
+    symptoms: [] // Gender-specific symptoms handled separately
   },
   {
     id: 'legs',
     label: { en: 'Legs / Veins', 'zh-TW': '腿部 / 靜脈' },
     symptoms: [
-      { id: 'visible_varicose', label: { en: 'Visible varicose veins', 'zh-TW': '明顯靜脈曲張' }, relatedConditions: ['varicose_veins'] },
+      { id: 'visible_varicose', label: { en: 'Visible bulging/twisted veins', 'zh-TW': '明顯凸起/扭曲靜脈' }, relatedConditions: ['varicose_veins'] },
       { id: 'leg_pain_swelling', label: { en: 'Leg pain, swelling, heaviness', 'zh-TW': '腿部疼痛、腫脹、沉重感' }, relatedConditions: ['varicose_veins', 'peripheral_vascular'] },
-      { id: 'walking_pain', label: { en: 'Leg pain when walking (relieved by rest)', 'zh-TW': '走路時腿痛（休息後緩解）' }, relatedConditions: ['peripheral_vascular'] },
-      { id: 'skin_changes', label: { en: 'Skin discoloration / ulcers on legs', 'zh-TW': '腿部皮膚變色/潰瘍' }, relatedConditions: ['peripheral_vascular', 'varicose_veins'] },
+      { id: 'walking_pain', label: { en: 'Pain when walking (relieved by rest)', 'zh-TW': '走路時疼痛（休息後緩解）' }, relatedConditions: ['peripheral_vascular'] },
+      { id: 'skin_discoloration', label: { en: 'Skin discoloration (brown/black)', 'zh-TW': '皮膚變色（褐色/黑色）' }, relatedConditions: ['peripheral_vascular', 'varicose_veins'] },
+      { id: 'leg_ulcers', label: { en: 'Open sores/ulcers on legs', 'zh-TW': '腿部開放性傷口/潰瘍' }, relatedConditions: ['peripheral_vascular'] },
       { id: 'cold_feet', label: { en: 'Cold feet / Weak pulse', 'zh-TW': '腳部冰冷 / 脈搏微弱' }, relatedConditions: ['peripheral_vascular'] },
+      { id: 'restless_legs', label: { en: 'Restless legs', 'zh-TW': '不安腿' }, relatedConditions: ['varicose_veins'] },
     ]
   },
   {
     id: 'knees',
     label: { en: 'Knees', 'zh-TW': '膝蓋' },
     symptoms: [
-      { id: 'knee_pain', label: { en: 'Chronic knee pain', 'zh-TW': '慢性膝蓋疼痛' }, relatedConditions: ['knee_arthritis'] },
-      { id: 'knee_stiffness', label: { en: 'Knee stiffness (especially morning)', 'zh-TW': '膝蓋僵硬（尤其早晨）' }, relatedConditions: ['knee_arthritis'] },
-      { id: 'knee_swelling', label: { en: 'Knee swelling', 'zh-TW': '膝蓋腫脹' }, relatedConditions: ['knee_arthritis'] },
-      { id: 'not_ready_surgery', label: { en: 'Not ready for knee replacement', 'zh-TW': '尚未準備接受膝關節置換' }, relatedConditions: ['knee_arthritis'] },
+      { id: 'knee_activity_pain', label: { en: 'Pain with activity/exercise', 'zh-TW': '活動/運動時疼痛' }, relatedConditions: ['knee_arthritis'] },
+      { id: 'knee_rest_pain', label: { en: 'Pain at rest', 'zh-TW': '休息時疼痛' }, relatedConditions: ['knee_arthritis'] },
+      { id: 'knee_stiffness', label: { en: 'Morning stiffness (>30 mins)', 'zh-TW': '早晨僵硬（>30分鐘）' }, relatedConditions: ['knee_arthritis'] },
+      { id: 'knee_swelling', label: { en: 'Swelling', 'zh-TW': '腫脹' }, relatedConditions: ['knee_arthritis'] },
+      { id: 'knee_instability', label: { en: 'Instability/giving way', 'zh-TW': '不穩定/軟腳' }, relatedConditions: ['knee_arthritis'] },
     ]
   },
   {
@@ -130,104 +142,149 @@ export const bodyAreas: BodyArea[] = [
     label: { en: 'Feet', 'zh-TW': '足部' },
     symptoms: [
       { id: 'heel_pain', label: { en: 'Heel pain (especially morning)', 'zh-TW': '足跟疼痛（尤其早晨）' }, relatedConditions: ['plantar_fasciitis'] },
-      { id: 'heel_tenderness', label: { en: 'Tenderness in arch of foot', 'zh-TW': '足弓壓痛' }, relatedConditions: ['plantar_fasciitis'] },
-      { id: 'treatment_failed', label: { en: 'Failed orthotics/physical therapy', 'zh-TW': '矯形鞋墊/物理治療無效' }, relatedConditions: ['plantar_fasciitis'] },
+      { id: 'arch_pain', label: { en: 'Pain in arch of foot', 'zh-TW': '足弓疼痛' }, relatedConditions: ['plantar_fasciitis'] },
+      { id: 'ball_of_foot_pain', label: { en: 'Pain in ball of foot', 'zh-TW': '前足疼痛' }, relatedConditions: ['plantar_fasciitis'] },
+      { id: 'foot_pain_after_rest', label: { en: 'Pain after sitting for long periods', 'zh-TW': '久坐後疼痛' }, relatedConditions: ['plantar_fasciitis'] },
+      { id: 'foot_pain_after_activity', label: { en: 'Pain after activity/exercise', 'zh-TW': '活動/運動後疼痛' }, relatedConditions: ['plantar_fasciitis'] },
+    ]
+  },
+  {
+    id: 'sleep',
+    label: { en: 'Sleep / Breathing', 'zh-TW': '睡眠 / 呼吸' },
+    symptoms: [
+      { id: 'loud_snoring', label: { en: 'Loud snoring (observed by partner)', 'zh-TW': '大聲打鼾（伴侶觀察到）' }, relatedConditions: ['sleep_apnea'] },
+      { id: 'breathing_pauses', label: { en: 'Breathing pauses during sleep', 'zh-TW': '睡眠時呼吸暫停' }, relatedConditions: ['sleep_apnea'] },
+      { id: 'daytime_sleepiness', label: { en: 'Excessive daytime sleepiness', 'zh-TW': '日間過度嗜睡' }, relatedConditions: ['sleep_apnea'] },
+      { id: 'morning_headaches', label: { en: 'Morning headaches', 'zh-TW': '晨起頭痛' }, relatedConditions: ['sleep_apnea'] },
+      { id: 'cpap_intolerance', label: { en: 'Cannot tolerate CPAP machine', 'zh-TW': '無法耐受正壓呼吸機' }, relatedConditions: ['sleep_apnea'] },
     ]
   },
   {
     id: 'abdomen',
     label: { en: 'Abdomen / Digestive', 'zh-TW': '腹部 / 消化' },
     symptoms: [
-      { id: 'hemorrhoid_bleeding', label: { en: 'Rectal bleeding', 'zh-TW': '直腸出血' }, relatedConditions: ['hemorrhoids'] },
-      { id: 'hemorrhoid_pain', label: { en: 'Pain/itching around anus', 'zh-TW': '肛門周圍疼痛/瘙癢' }, relatedConditions: ['hemorrhoids'] },
-      { id: 'liver_tumor', label: { en: 'Liver tumor / Hepatocellular carcinoma', 'zh-TW': '肝腫瘤 / 肝癌' }, relatedConditions: ['oncology_intervention'] },
-      { id: 'kidney_tumor', label: { en: 'Kidney tumor', 'zh-TW': '腎腫瘤' }, relatedConditions: ['oncology_intervention'] },
-      { id: 'lung_tumor', label: { en: 'Lung tumor', 'zh-TW': '肺腫瘤' }, relatedConditions: ['oncology_intervention'] },
-      { id: 'abdominal_aorta', label: { en: 'Abdominal aortic aneurysm (diagnosed)', 'zh-TW': '腹主動脈瘤（已確診）' }, relatedConditions: ['aortic_disease'] },
+      { id: 'liver_tumor', label: { en: 'Known liver tumor/cancer', 'zh-TW': '已知肝腫瘤/癌症' }, relatedConditions: ['oncology_intervention'] },
+      { id: 'kidney_tumor', label: { en: 'Known kidney tumor', 'zh-TW': '已知腎腫瘤' }, relatedConditions: ['oncology_intervention'] },
+      { id: 'aaa_known', label: { en: 'Diagnosed abdominal aortic aneurysm', 'zh-TW': '已確診腹主動脈瘤' }, relatedConditions: ['aortic_disease'] },
     ]
   },
   {
     id: 'chest',
     label: { en: 'Chest / Torso', 'zh-TW': '胸部 / 軀幹' },
     symptoms: [
-      { id: 'chest_pain', label: { en: 'Chest pain', 'zh-TW': '胸痛' }, relatedConditions: [] },
-      { id: 'shortness_breath', label: { en: 'Shortness of breath', 'zh-TW': '呼吸困難' }, relatedConditions: ['aortic_disease', 'sleep_apnea'] },
-      { id: 'thoracic_aorta', label: { en: 'Thoracic aortic aneurysm (diagnosed)', 'zh-TW': '胸主動脈瘤（已確診）' }, relatedConditions: ['aortic_disease'] },
-      { id: 'back_pain', label: { en: 'Severe back pain (sudden)', 'zh-TW': '突發嚴重背痛' }, relatedConditions: ['aortic_disease'] },
+      { id: 'taa_known', label: { en: 'Diagnosed thoracic aortic aneurysm', 'zh-TW': '已確診胸主動脈瘤' }, relatedConditions: ['aortic_disease'] },
+      { id: 'lung_tumor', label: { en: 'Known lung tumor', 'zh-TW': '已知肺腫瘤' }, relatedConditions: ['oncology_intervention'] },
+      { id: 'chest_vascular_pain', label: { en: 'Chest pain with vascular history', 'zh-TW': '有血管病史的胸痛' }, relatedConditions: ['aortic_disease'] },
     ]
   },
 ];
 
-// Condition mappings to treatments
-export const conditionMappings: ConditionMapping[] = [
-  { id: 'cerebral_aneurysm', categoryId: 'neurovascular', keywords: ['aneurysm', 'brain aneurysm', 'cerebral aneurysm'], symptoms: ['severe_headache', 'vision_problems', 'neck_pain', 'seizures'], bodyAreas: ['head_brain'] },
-  { id: 'acute_stroke', categoryId: 'neurovascular', keywords: ['stroke', 'blood clot brain', 'ischemic stroke'], symptoms: ['stroke_symptoms', 'confusion', 'balance_issues', 'vision_problems'], bodyAreas: ['head_brain'], emergencyKeywords: ['face drooping', 'arm weakness', 'speech difficulty'] },
-  { id: 'carotid_stenosis', categoryId: 'neurovascular', keywords: ['carotid', 'carotid artery', 'neck artery'], symptoms: ['vision_problems', 'stroke_symptoms', 'neck_pain'], bodyAreas: ['head_brain', 'neck'] },
-  { id: 'csdh', categoryId: 'neurovascular', keywords: ['subdural hematoma', 'chronic subdural', 'brain bleed', 'csdh'], symptoms: ['confusion', 'severe_headache', 'balance_issues'], bodyAreas: ['head_brain'] },
-  { id: 'avm', categoryId: 'neurovascular', keywords: ['avm', 'arteriovenous malformation', 'brain avm', 'dural fistula'], symptoms: ['seizures', 'balance_issues', 'headache'], bodyAreas: ['head_brain'] },
-  { id: 'dbs', categoryId: 'neuromodulation', keywords: ['parkinson', 'dbs', 'deep brain stimulation', 'tremor', 'essential tremor', 'dystonia'], symptoms: ['tremor', 'rigidity', 'balance_issues', 'confusion'], bodyAreas: ['head_brain'] },
-  { id: 'sleep_apnea', categoryId: 'neuromodulation', keywords: ['sleep apnea', 'inspire therapy', 'hypoglossal', 'snoring', 'osa'], symptoms: ['loud_snoring', 'breathing_pauses', 'daytime_sleepiness', 'morning_headaches', 'cpap_intolerance'], bodyAreas: ['sleep', 'head_brain'] },
-  { id: 'uterine_fibroids', categoryId: 'urogenital', keywords: ['uterine fibroid', 'fibroids', 'uae', 'heavy periods'], symptoms: ['heavy_periods', 'pelvic_pain', 'frequent_urination'], bodyAreas: ['pelvic_female'] },
-  { id: 'prostate_enlargement', categoryId: 'urogenital', keywords: ['bph', 'prostate enlargement', 'prostate', 'pae', 'benign prostatic'], symptoms: ['weak_stream', 'urgency', 'nighttime_urination', 'incomplete_emptying', 'frequent_urination'], bodyAreas: ['pelvic_male'] },
-  { id: 'pelvic_congestion', categoryId: 'urogenital', keywords: ['pelvic congestion', 'varicocele', 'ovarian vein'], symptoms: ['chronic_pelvic_pain', 'varicose_veins_pelvis'], bodyAreas: ['pelvic_female', 'pelvic_male'] },
-  { id: 'varicocele', categoryId: 'urogenital', keywords: ['varicocele', 'scrotal veins', 'male infertility'], symptoms: ['scrotal_pain', 'infertility'], bodyAreas: ['pelvic_male'] },
-  { id: 'varicose_veins', categoryId: 'urogenital', keywords: ['varicose veins', 'spider veins', 'venous insufficiency', 'evla', 'rfa'], symptoms: ['visible_varicose', 'leg_pain_swelling', 'skin_changes'], bodyAreas: ['legs'] },
-  { id: 'hemorrhoids', categoryId: 'gastrointestinal', keywords: ['hemorrhoids', 'hemorrhoid', 'piles', 'hae'], symptoms: ['hemorrhoid_bleeding', 'hemorrhoid_pain'], bodyAreas: ['abdomen'] },
-  { id: 'knee_arthritis', categoryId: 'musculoskeletal', keywords: ['knee arthritis', 'osteoarthritis knee', 'gae', 'knee pain'], symptoms: ['knee_pain', 'knee_stiffness', 'knee_swelling', 'not_ready_surgery'], bodyAreas: ['knees'] },
-  { id: 'plantar_fasciitis', categoryId: 'musculoskeletal', keywords: ['plantar fasciitis', 'heel pain', 'foot pain', 'pfe'], symptoms: ['heel_pain', 'heel_tenderness', 'treatment_failed'], bodyAreas: ['feet'] },
-  { id: 'oncology_intervention', categoryId: 'vascular', keywords: ['liver cancer', 'liver tumor', 'tace', 'y-90', 'radioembolization', 'kidney tumor', 'lung tumor', 'ablation'], symptoms: ['liver_tumor', 'kidney_tumor', 'lung_tumor'], bodyAreas: ['abdomen', 'chest'] },
-  { id: 'peripheral_vascular', categoryId: 'vascular', keywords: ['peripheral artery disease', 'pad', 'claudication', 'leg artery', 'peripheral vascular'], symptoms: ['walking_pain', 'leg_pain_swelling', 'cold_feet', 'skin_changes'], bodyAreas: ['legs'] },
-  { id: 'aortic_disease', categoryId: 'vascular', keywords: ['aortic aneurysm', 'aaa', 'taa', 'evar', 'tevar', 'aortic'], symptoms: ['abdominal_aorta', 'thoracic_aorta', 'back_pain'], bodyAreas: ['abdomen', 'chest'] },
+// Female-specific pelvic symptoms
+export const femalePelvicSymptoms: Symptom[] = [
+  { id: 'heavy_periods', label: { en: 'Heavy menstrual bleeding', 'zh-TW': '經血過多' }, relatedConditions: ['uterine_fibroids'] },
+  { id: 'pelvic_pressure', label: { en: 'Pelvic pressure/pain (worse with periods)', 'zh-TW': '盆腔壓迫感/疼痛（經期加重）' }, relatedConditions: ['uterine_fibroids'] },
+  { id: 'pelvic_pain_standing', label: { en: 'Pelvic pain (worse when standing/walking)', 'zh-TW': '盆腔疼痛（站立/行走時加重）' }, relatedConditions: ['pelvic_congestion'] },
+  { id: 'dyspareunia', label: { en: 'Pain during intercourse', 'zh-TW': '性交疼痛' }, relatedConditions: ['pelvic_congestion', 'uterine_fibroids'] },
+  { id: 'urinary_freq', label: { en: 'Urinary frequency/urgency', 'zh-TW': '頻尿/尿急' }, relatedConditions: ['uterine_fibroids'] },
+  { id: 'varicose_veins_pelvis', label: { en: 'Varicose veins in pelvic area', 'zh-TW': '盆腔靜脈曲張' }, relatedConditions: ['pelvic_congestion'] },
 ];
 
-// Emergency detection disabled to avoid scaring users
-export const emergencyKeywords: { en: string; 'zh-TW': string }[] = [];
+// Male-specific pelvic symptoms
+export const malePelvicSymptoms: Symptom[] = [
+  { id: 'weak_stream', label: { en: 'Weak urine stream', 'zh-TW': '尿流無力' }, relatedConditions: ['prostate_enlargement'] },
+  { id: 'urinary_freq', label: { en: 'Frequent urination (daytime)', 'zh-TW': '日間頻尿' }, relatedConditions: ['prostate_enlargement'] },
+  { id: 'nocturia', label: { en: 'Nighttime urination (2+ times)', 'zh-TW': '夜尿（2次以上）' }, relatedConditions: ['prostate_enlargement'] },
+  { id: 'urinary_urgency', label: { en: 'Urgent need to urinate', 'zh-TW': '尿急' }, relatedConditions: ['prostate_enlargement'] },
+  { id: 'incomplete_emptying', label: { en: 'Feeling of incomplete emptying', 'zh-TW': '排尿不盡感' }, relatedConditions: ['prostate_enlargement'] },
+  { id: 'dribbling', label: { en: 'Dribbling after urination', 'zh-TW': '排尿後滴瀝' }, relatedConditions: ['prostate_enlargement'] },
+  { id: 'scrotal_pain', label: { en: 'Scrotal pain or swelling', 'zh-TW': '陰囊疼痛或腫脹' }, relatedConditions: ['varicocele'] },
+  { id: 'scrotal_veins', label: { en: 'Visible enlarged scrotal veins', 'zh-TW': '明顯腫大陰囊靜脈' }, relatedConditions: ['varicocele'] },
+  { id: 'infertility', label: { en: 'Infertility concerns', 'zh-TW': '不育問題' }, relatedConditions: ['varicocele'] },
+];
 
-// Conversation flow steps
-export type ConversationStep = 
-  | 'welcome'
-  | 'body_area'
-  | 'symptoms'
-  | 'duration'
-  | 'severity'
-  | 'results'
-  | 'complete';
+// Condition mappings to treatments
+export const conditionMappings: ConditionMapping[] = [
+  { id: 'cerebral_aneurysm', categoryId: 'neurovascular', keywords: ['aneurysm', 'brain aneurysm', 'cerebral aneurysm'], symptoms: ['severe_headache', 'vision_problems', 'neck_pain'], bodyAreas: ['head_brain'] },
+  { id: 'acute_stroke', categoryId: 'neurovascular', keywords: ['stroke', 'blood clot brain', 'ischemic stroke'], symptoms: ['stroke_symptoms', 'confusion', 'balance_issues', 'vision_problems'], bodyAreas: ['head_brain'] },
+  { id: 'carotid_stenosis', categoryId: 'neurovascular', keywords: ['carotid', 'carotid artery', 'neck artery'], symptoms: ['vision_problems', 'stroke_symptoms', 'neck_pain'], bodyAreas: ['head_brain'] },
+  { id: 'csdh', categoryId: 'neurovascular', keywords: ['subdural hematoma', 'chronic subdural', 'brain bleed', 'csdh'], symptoms: ['confusion', 'severe_headache', 'balance_issues'], bodyAreas: ['head_brain'] },
+  { id: 'avm', categoryId: 'neurovascular', keywords: ['avm', 'arteriovenous malformation', 'brain avm', 'dural fistula'], symptoms: ['seizures', 'balance_issues'], bodyAreas: ['head_brain'] },
+  { id: 'dbs', categoryId: 'neuromodulation', keywords: ['parkinson', 'dbs', 'deep brain stimulation', 'tremor', 'essential tremor', 'dystonia'], symptoms: ['tremor', 'rigidity', 'balance_issues', 'confusion'], bodyAreas: ['head_brain'] },
+  { id: 'sleep_apnea', categoryId: 'neuromodulation', keywords: ['sleep apnea', 'inspire therapy', 'hypoglossal', 'snoring', 'osa'], symptoms: ['loud_snoring', 'breathing_pauses', 'daytime_sleepiness', 'morning_headaches', 'cpap_intolerance'], bodyAreas: ['sleep'] },
+  { id: 'uterine_fibroids', categoryId: 'urogenital', keywords: ['uterine fibroid', 'fibroids', 'uae', 'heavy periods'], symptoms: ['heavy_periods', 'pelvic_pressure', 'urinary_freq'], bodyAreas: ['pelvic'], requiredGender: 'female' },
+  { id: 'pelvic_congestion', categoryId: 'urogenital', keywords: ['pelvic congestion', 'ovarian vein'], symptoms: ['pelvic_pain_standing', 'varicose_veins_pelvis', 'dyspareunia'], bodyAreas: ['pelvic'], requiredGender: 'female' },
+  { id: 'prostate_enlargement', categoryId: 'urogenital', keywords: ['bph', 'prostate enlargement', 'prostate', 'pae', 'benign prostatic'], symptoms: ['weak_stream', 'urinary_urgency', 'nocturia', 'incomplete_emptying', 'dribbling', 'urinary_freq'], bodyAreas: ['pelvic'], requiredGender: 'male' },
+  { id: 'varicocele', categoryId: 'urogenital', keywords: ['varicocele', 'scrotal veins', 'male infertility'], symptoms: ['scrotal_pain', 'scrotal_veins', 'infertility'], bodyAreas: ['pelvic'], requiredGender: 'male' },
+  { id: 'varicose_veins', categoryId: 'urogenital', keywords: ['varicose veins', 'spider veins', 'venous insufficiency', 'evla', 'rfa'], symptoms: ['visible_varicose', 'leg_pain_swelling', 'restless_legs'], bodyAreas: ['legs'] },
+  { id: 'hemorrhoids', categoryId: 'gastrointestinal', keywords: ['hemorrhoids', 'hemorrhoid', 'piles', 'hae'], symptoms: ['rectal_bleeding', 'anal_pain', 'anal_lump', 'mucus_discharge'], bodyAreas: ['hemorrhoids'] },
+  { id: 'knee_arthritis', categoryId: 'musculoskeletal', keywords: ['knee arthritis', 'osteoarthritis knee', 'gae', 'knee pain'], symptoms: ['knee_activity_pain', 'knee_rest_pain', 'knee_stiffness', 'knee_swelling', 'knee_instability'], bodyAreas: ['knees'] },
+  { id: 'plantar_fasciitis', categoryId: 'musculoskeletal', keywords: ['plantar fasciitis', 'heel pain', 'foot pain', 'pfe'], symptoms: ['heel_pain', 'arch_pain', 'foot_pain_after_rest'], bodyAreas: ['feet'] },
+  { id: 'oncology_intervention', categoryId: 'vascular', keywords: ['liver cancer', 'liver tumor', 'tace', 'y-90', 'radioembolization', 'kidney tumor', 'lung tumor', 'ablation'], symptoms: ['liver_tumor', 'kidney_tumor', 'lung_tumor'], bodyAreas: ['abdomen', 'chest'] },
+  { id: 'peripheral_vascular', categoryId: 'vascular', keywords: ['peripheral artery disease', 'pad', 'claudication', 'leg artery', 'peripheral vascular'], symptoms: ['walking_pain', 'leg_pain_swelling', 'cold_feet', 'skin_discoloration', 'leg_ulcers'], bodyAreas: ['legs'] },
+  { id: 'aortic_disease', categoryId: 'vascular', keywords: ['aortic aneurysm', 'aaa', 'taa', 'evar', 'tevar', 'aortic'], symptoms: ['aaa_known', 'taa_known'], bodyAreas: ['abdomen', 'chest'] },
+];
 
-export interface ConversationState {
-  step: ConversationStep;
-  selectedBodyArea?: string;
-  selectedSymptoms: string[];
-  duration?: string;
-  severity?: string;
-  matchedConditions: ConditionResult[];
+// Get body area options
+export function getBodyAreaOptions(lang: Locale): QuickReplyOption[] {
+  return bodyAreas.map(area => ({
+    id: `area_${area.id}`,
+    label: area.label[lang],
+    value: area.id,
+    action: 'select_body_area' as const
+  }));
 }
 
-// Initial welcome messages
-export function getWelcomeMessage(lang: Locale): string {
-  return lang === 'zh-TW' 
-    ? '您好！我是BEVA診所的虛擬助手。我可以幫助您了解哪些治療項目可能適合您的情況。請注意，我無法提供醫療診斷，如有緊急情況請立即就醫。'
-    : 'Hello! I\'m the BEVA Clinic virtual assistant. I can help you learn which treatments might be suitable for your condition. Please note that I cannot provide medical diagnoses. For emergencies, please seek immediate medical care.';
+// Get gender selection options
+export function getGenderOptions(lang: Locale): QuickReplyOption[] {
+  return [
+    { id: 'gender_female', label: lang === 'zh-TW' ? '女性' : 'Female', value: 'female', action: 'select_body_area' },
+    { id: 'gender_male', label: lang === 'zh-TW' ? '男性' : 'Male', value: 'male', action: 'select_body_area' },
+  ];
+}
+
+// Get symptoms for a body area
+export function getSymptomOptions(lang: Locale, bodyAreaId: string, gender?: 'male' | 'female'): QuickReplyOption[] {
+  // Special handling for pelvic area with gender
+  if (bodyAreaId === 'pelvic') {
+    const symptoms = gender === 'female' ? femalePelvicSymptoms : malePelvicSymptoms;
+    return symptoms.map(symptom => ({
+      id: `sym_${symptom.id}`,
+      label: symptom.label[lang],
+      value: symptom.id,
+      action: 'select_symptom' as const
+    }));
+  }
+  
+  const area = bodyAreas.find(a => a.id === bodyAreaId);
+  if (!area) return [];
+  
+  return area.symptoms.map(symptom => ({
+    id: `sym_${symptom.id}`,
+    label: symptom.label[lang],
+    value: symptom.id,
+    action: 'select_symptom' as const
+  }));
 }
 
 // Duration options
 export function getDurationOptions(lang: Locale): QuickReplyOption[] {
   const labels = lang === 'zh-TW' 
-    ? ['少於1週', '1-4週', '1-6個月', '超過6個月']
-    : ['Less than 1 week', '1-4 weeks', '1-6 months', 'More than 6 months'];
+    ? ['少於2週', '2週至3個月', '3個月至1年', '超過1年']
+    : ['Less than 2 weeks', '2 weeks to 3 months', '3 months to 1 year', 'More than 1 year'];
   
   return [
-    { id: 'dur_1', label: labels[0], value: 'less_than_week', action: 'select_duration' },
-    { id: 'dur_2', label: labels[1], value: '1_to_4_weeks', action: 'select_duration' },
-    { id: 'dur_3', label: labels[2], value: '1_to_6_months', action: 'select_duration' },
-    { id: 'dur_4', label: labels[3], value: 'more_than_6_months', action: 'select_duration' },
+    { id: 'dur_1', label: labels[0], value: 'less_than_2_weeks', action: 'select_duration' },
+    { id: 'dur_2', label: labels[1], value: '2_weeks_to_3_months', action: 'select_duration' },
+    { id: 'dur_3', label: labels[2], value: '3_months_to_1_year', action: 'select_duration' },
+    { id: 'dur_4', label: labels[3], value: 'more_than_1_year', action: 'select_duration' },
   ];
 }
 
 // Severity options
 export function getSeverityOptions(lang: Locale): QuickReplyOption[] {
   const labels = lang === 'zh-TW'
-    ? ['輕微 - 不影響日常活動', '中度 - 有些影響', '嚴重 - 顯著影響生活品質']
-    : ['Mild - does not affect daily activities', 'Moderate - some impact', 'Severe - significantly affects quality of life'];
+    ? ['輕微 - 偶爾影響', '中度 - 經常影響', '嚴重 - 顯著影響生活品質']
+    : ['Mild - occasional impact', 'Moderate - frequent impact', 'Severe - significantly affects quality of life'];
   
   return [
     { id: 'sev_mild', label: labels[0], value: 'mild', action: 'select_severity' },
@@ -236,50 +293,26 @@ export function getSeverityOptions(lang: Locale): QuickReplyOption[] {
   ];
 }
 
-// Get body area options - includes direct access options for common conditions
-export function getBodyAreaOptions(lang: Locale): QuickReplyOption[] {
-  const directOptions: QuickReplyOption[] = [
-    {
-      id: 'direct_hemorrhoids',
-      label: lang === 'zh-TW' ? '肛門 (痔瘡/直腸出血)' : 'Anus (Hemorrhoids/Rectal bleeding)',
-      value: 'hemorrhoids',
-      action: 'select_body_area' as const
-    }
-  ];
-  
-  const areaOptions: QuickReplyOption[] = bodyAreas.map(area => ({
-    id: `area_${area.id}`,
-    label: area.label[lang],
-    value: area.id,
-    action: 'select_body_area' as const
-  }));
-  
-  return [...directOptions, ...areaOptions];
-}
-
-// Get symptoms for a body area
-export function getSymptomOptions(lang: Locale, bodyAreaId: string): QuickReplyOption[] {
-  const area = bodyAreas.find(a => a.id === bodyAreaId);
-  if (!area) return [];
-  
-  return area.symptoms.map(symptom => ({
-    id: `sym_${symptom.id}`,
-    label: symptom.label[lang],
-    value: symptom.id,
-    action: 'select_symptom'
-  }));
-}
-
-// Emergency detection disabled to avoid scaring users - always returns false
+// Check for emergency symptoms - disabled to avoid scaring users
 export function checkEmergency(_symptomIds: string[], _lang: Locale): { isEmergency: boolean; message?: string } {
   return { isEmergency: false };
 }
 
 // Match conditions based on symptoms
-export function matchConditions(symptomIds: string[], lang: Locale, categoryNames: Record<string, Record<Locale, string>>): ConditionResult[] {
+export function matchConditions(
+  symptomIds: string[], 
+  lang: Locale, 
+  categoryNames: Record<string, Record<Locale, string>>,
+  gender?: 'male' | 'female'
+): ConditionResult[] {
   const scores: Record<string, { score: number; matchedSymptoms: number; totalSymptoms: number }> = {};
   
   for (const mapping of conditionMappings) {
+    // Skip if gender doesn't match
+    if (mapping.requiredGender && gender && mapping.requiredGender !== gender) {
+      continue;
+    }
+    
     const matchedSymptoms = mapping.symptoms.filter(s => symptomIds.includes(s));
     if (matchedSymptoms.length > 0) {
       const score = (matchedSymptoms.length / mapping.symptoms.length) + (matchedSymptoms.length * 0.1);
@@ -317,7 +350,6 @@ export function matchConditions(symptomIds: string[], lang: Locale, categoryName
 
 // Get condition display data
 function getConditionData(conditionId: string, lang: Locale): { title: string; shortDescription: string } {
-  // This maps to the dictionary data - will be passed in from component
   const conditions: Record<string, Record<Locale, { title: string; shortDescription: string }>> = {
     cerebral_aneurysm: {
       en: { title: 'Cerebral Aneurysm Embolization', shortDescription: 'Minimally invasive treatment for brain aneurysms using advanced coiling and flow diversion techniques.' },
@@ -351,17 +383,17 @@ function getConditionData(conditionId: string, lang: Locale): { title: string; s
       en: { title: 'Uterine Fibroid Embolization', shortDescription: 'Non-surgical treatment for uterine fibroids causing heavy bleeding and pain.' },
       'zh-TW': { title: '子宮動脈栓塞術', shortDescription: '非手術治療子宮肌瘤，減少大量出血及疼痛。' }
     },
+    pelvic_congestion: {
+      en: { title: 'Pelvic Congestion Embolization', shortDescription: 'Vein embolization for pelvic congestion syndrome causing chronic pelvic pain.' },
+      'zh-TW': { title: '盆腔充血栓塞術', shortDescription: '針對盆腔充血綜合症引起慢性盆腔疼痛的靜脈栓塞術。' }
+    },
     prostate_enlargement: {
       en: { title: 'Prostate Artery Embolization', shortDescription: 'Minimally invasive treatment for enlarged prostate (BPH) urinary symptoms.' },
       'zh-TW': { title: '前列腺動脈栓塞術', shortDescription: '微創治療前列腺肥大（BPH）的泌尿症狀。' }
     },
-    pelvic_congestion: {
-      en: { title: 'Pelvic Congestion & Varicocele Embolization', shortDescription: 'Vein embolization for pelvic congestion syndrome and male varicocele.' },
-      'zh-TW': { title: '盆腔充血及精索靜脈曲張栓塞術', shortDescription: '針對盆腔充血綜合症及男性精索靜脈曲張的靜脈栓塞術。' }
-    },
     varicocele: {
-      en: { title: 'Pelvic Congestion & Varicocele Embolization', shortDescription: 'Vein embolization for pelvic congestion syndrome and male varicocele.' },
-      'zh-TW': { title: '盆腔充血及精索靜脈曲張栓塞術', shortDescription: '針對盆腔充血綜合症及男性精索靜脈曲張的靜脈栓塞術。' }
+      en: { title: 'Varicocele Embolization', shortDescription: 'Minimally invasive treatment for varicocele causing pain and infertility.' },
+      'zh-TW': { title: '精索靜脈曲張栓塞術', shortDescription: '微創治療引起疼痛及不育的精索靜脈曲張。' }
     },
     varicose_veins: {
       en: { title: 'Varicose Vein Treatment', shortDescription: 'Advanced minimally invasive options for varicose veins and chronic venous insufficiency.' },
@@ -411,4 +443,11 @@ export function getDisclaimer(lang: Locale): string {
   return lang === 'zh-TW'
     ? '免責聲明：此工具僅供參考，不能替代專業醫療建議、診斷或治療。如有醫療緊急情況，請立即致電緊急服務或前往急症室。'
     : 'Disclaimer: This tool is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. For medical emergencies, please call emergency services or visit the ER immediately.';
+}
+
+// Initial welcome messages
+export function getWelcomeMessage(lang: Locale): string {
+  return lang === 'zh-TW' 
+    ? '您好！我是BEVA診所的虛擬助手。我可以幫助您了解哪些治療項目可能適合您的情況。請注意，我無法提供醫療診斷，如有緊急情況請立即就醫。'
+    : 'Hello! I\'m the BEVA Clinic virtual assistant. I can help you learn which treatments might be suitable for your condition. Please note that I cannot provide medical diagnoses. For emergencies, please seek immediate medical care.';
 }

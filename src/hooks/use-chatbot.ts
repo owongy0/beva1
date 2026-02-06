@@ -8,6 +8,7 @@ import {
   ConversationState,
   getWelcomeMessage,
   getBodyAreaOptions,
+  getGenderOptions,
   getSymptomOptions,
   getDurationOptions,
   getSeverityOptions,
@@ -41,6 +42,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
   const [conversationState, setConversationState] = useState<ConversationState>({
     step: 'welcome',
     selectedSymptoms: [],
+    followUpAnswers: {},
     matchedConditions: [],
   });
   const [isTyping, setIsTyping] = useState(false);
@@ -107,6 +109,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
     setConversationState({
       step: 'welcome',
       selectedSymptoms: [],
+      followUpAnswers: {},
       matchedConditions: [],
     });
 
@@ -131,18 +134,43 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
       content: bodyAreaQuestion,
       type: 'quick_replies',
       options: getBodyAreaOptions(lang),
+      step: 'body_area',
     });
 
     setConversationState(prev => ({ ...prev, step: 'body_area' }));
   }, [lang, addMessage, showTyping]);
 
   const handleBodyAreaSelect = useCallback(async (bodyAreaId: string) => {
-    // Handle direct condition shortcuts
+    // Special handling for pelvic - need gender first
+    if (bodyAreaId === 'pelvic') {
+      setConversationState(prev => ({
+        ...prev,
+        step: 'gender_select',
+        selectedBodyArea: bodyAreaId,
+      }));
+
+      await showTyping(500);
+
+      const genderQuestion = lang === 'zh-TW'
+        ? '請問您的生理性別？這有助於我們為您推薦最適合的治療方案。'
+        : 'What is your biological sex? This helps us recommend the most suitable treatments for you.';
+
+      addMessage({
+        role: 'bot',
+        content: genderQuestion,
+        type: 'quick_replies',
+        options: getGenderOptions(lang),
+        step: 'gender_select',
+      });
+      return;
+    }
+
+    // Special handling for hemorrhoids - go straight to symptoms
     if (bodyAreaId === 'hemorrhoids') {
       setConversationState(prev => ({
         ...prev,
         step: 'symptoms',
-        selectedBodyArea: 'abdomen',
+        selectedBodyArea: bodyAreaId,
       }));
 
       await showTyping(500);
@@ -151,18 +179,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
         ? `請問您有什麼痔瘡症狀？（可多選，完成後點擊「繼續」）`
         : `What hemorrhoid symptoms are you experiencing? (Select all that apply, then click "Continue")`;
 
-      // Get only hemorrhoid-related symptoms
-      const abdomenArea = bodyAreas.find(a => a.id === 'abdomen');
-      const hemorrhoidSymptoms = abdomenArea?.symptoms.filter(s => 
-        s.relatedConditions.includes('hemorrhoids')
-      ) || [];
-      
-      const symptoms = hemorrhoidSymptoms.map(symptom => ({
-        id: `sym_${symptom.id}`,
-        label: symptom.label[lang],
-        value: symptom.id,
-        action: 'select_symptom' as const
-      }));
+      const symptoms = getSymptomOptions(lang, bodyAreaId);
       
       // Add continue option
       const continueOption: QuickReplyOption = {
@@ -177,6 +194,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
         content: symptomQuestion,
         type: 'quick_replies',
         options: [...symptoms, continueOption],
+        step: 'symptoms',
       });
       return;
     }
@@ -211,6 +229,39 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
       content: symptomQuestion,
       type: 'quick_replies',
       options: [...symptoms, continueOption],
+      step: 'symptoms',
+    });
+  }, [lang, addMessage, showTyping]);
+
+  const handleGenderSelect = useCallback(async (gender: 'male' | 'female') => {
+    setConversationState(prev => ({
+      ...prev,
+      step: 'symptoms',
+      selectedGender: gender,
+    }));
+
+    await showTyping(500);
+
+    const symptomQuestion = gender === 'female' 
+      ? (lang === 'zh-TW' ? '請問您有什麼婦科症狀？（可多選，完成後點擊「繼續」）' : 'What gynecological symptoms are you experiencing? (Select all that apply, then click "Continue")')
+      : (lang === 'zh-TW' ? '請問您有什麼泌尿生殖症狀？（可多選，完成後點擊「繼續」）' : 'What urological symptoms are you experiencing? (Select all that apply, then click "Continue")');
+
+    const symptoms = getSymptomOptions(lang, 'pelvic', gender);
+    
+    // Add continue option
+    const continueOption: QuickReplyOption = {
+      id: 'continue',
+      label: lang === 'zh-TW' ? '繼續 →' : 'Continue →',
+      value: 'continue',
+      action: 'select_symptom',
+    };
+
+    addMessage({
+      role: 'bot',
+      content: symptomQuestion,
+      type: 'quick_replies',
+      options: [...symptoms, continueOption],
+      step: 'symptoms',
     });
   }, [lang, addMessage, showTyping]);
 
@@ -227,9 +278,6 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
 
   const handleContinueToDuration = useCallback(async () => {
     const { selectedSymptoms } = conversationState;
-    
-    // Note: Emergency detection has been removed to avoid scaring users
-    // The checkEmergency function always returns false
     
     // Check if any symptoms selected
     if (selectedSymptoms.length === 0) {
@@ -287,7 +335,12 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
   }, [conversationState.selectedSymptoms, showTyping]);
 
   const showResults = useCallback(async (symptomIds: string[]) => {
-    const matched = matchConditions(symptomIds, lang, categoryNames);
+    const matched = matchConditions(
+      symptomIds, 
+      lang, 
+      categoryNames, 
+      conversationState.selectedGender
+    );
     
     setConversationState(prev => ({
       ...prev,
@@ -331,8 +384,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
     }
 
     // Disclaimer is shown in the fixed footer of the chat window, not as a message
-    // This prevents it from displacing important content
-  }, [lang, categoryNames, addMessage, showTyping]);
+  }, [lang, categoryNames, conversationState.selectedGender, addMessage, showTyping]);
 
   const handleOptionClick = useCallback((option: QuickReplyOption) => {
     // Handle based on action type
@@ -344,12 +396,28 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
           content: option.label,
           type: 'text',
         });
-        handleBodyAreaSelect(option.value);
+        
+        // Check if this is gender selection
+        if (option.value === 'male' || option.value === 'female') {
+          handleGenderSelect(option.value as 'male' | 'female');
+        } else {
+          handleBodyAreaSelect(option.value);
+        }
         break;
       case 'select_symptom':
         if (option.value === 'continue') {
           // Add user message showing selected symptoms
           const selectedLabels = conversationState.selectedSymptoms.map(symptomId => {
+            // Check pelvic symptoms based on gender
+            if (conversationState.selectedBodyArea === 'pelvic' && conversationState.selectedGender) {
+              const { femalePelvicSymptoms, malePelvicSymptoms } = require('@/lib/chatbot-data');
+              const symptoms = conversationState.selectedGender === 'female' 
+                ? femalePelvicSymptoms 
+                : malePelvicSymptoms;
+              const symptom = symptoms.find((s: any) => s.id === symptomId);
+              if (symptom) return symptom.label[lang];
+            }
+            
             for (const area of bodyAreas) {
               const symptom = area.symptoms.find(s => s.id === symptomId);
               if (symptom) return symptom.label[lang];
@@ -399,7 +467,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
         closeChat();
         break;
     }
-  }, [addMessage, handleBodyAreaSelect, handleSymptomSelect, handleContinueToDuration, handleDurationSelect, handleSeveritySelect, startNewConversation, closeChat]);
+  }, [addMessage, handleBodyAreaSelect, handleGenderSelect, handleSymptomSelect, handleContinueToDuration, handleDurationSelect, handleSeveritySelect, startNewConversation, closeChat, lang, conversationState]);
 
   return {
     isOpen,
