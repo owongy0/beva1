@@ -36,7 +36,7 @@ import { Dictionary } from '@/i18n/get-dictionary';
 
 // Extracted components
 import { HeroCarousel } from '@/components/hero-carousel';
-import { TestimonialCarousel } from '@/components/testimonial-carousel';
+import { TestimonialShowcase } from '@/components/testimonial-showcase';
 import { SectionHeader } from '@/components/section-header';
 import { Footer } from '@/components/footer';
 import { ChatWidget } from '@/components/chatbot';
@@ -308,9 +308,9 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-[#00477f] mx-auto rounded-full mb-4 md:mb-6"></div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-            {/* Left - Testimonial Carousel */}
-            <TestimonialCarousel lang={lang} />
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
+            {/* Left - Testimonial Showcase */}
+            <TestimonialShowcase lang={lang} />
 
             {/* Right - Key Points */}
             <div className="order-2 space-y-6 sm:space-y-8">
