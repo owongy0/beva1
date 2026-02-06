@@ -12,7 +12,7 @@ import { ConditionResultCard } from './condition-result';
 interface ChatWindowProps {
   lang: Locale;
   categoryNames: Record<string, Record<Locale, string>>;
-  onViewTreatment: (categoryId: string, conditionId: string) => void;
+  onViewTreatment: (categoryId: string) => void;
   onClose: () => void;
 }
 

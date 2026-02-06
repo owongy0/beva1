@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import Image from 'next/image';
 import { Locale } from '@/i18n/config';
 
 interface Testimonial {
@@ -15,6 +16,23 @@ interface Testimonial {
 interface TestimonialShowcaseProps {
   lang: Locale;
 }
+
+// Memoized stars component
+const StarRating = memo(function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="flex gap-1">
+      {Array.from({ length: rating }).map((_, i) => (
+        <svg 
+          key={i} 
+          className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current" 
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+});
 
 export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,20 +67,30 @@ export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
     },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 6000);
-    return () => clearInterval(interval);
+  const nextTestimonial = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   }, [testimonials.length]);
 
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
+  const prevTestimonial = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  }, [testimonials.length]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    const interval = setInterval(() => {
+      timeoutId = setTimeout(() => {
+        requestAnimationFrame(() => {
+          nextTestimonial();
+        });
+      }, 6000);
+    }, 6000);
+    
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeoutId);
+    };
+  }, [nextTestimonial]);
 
   const current = testimonials[currentIndex];
 
@@ -72,17 +100,21 @@ export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
       <div className="relative">
         {/* Image Card - Top */}
         <div className="relative rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
-          <img 
-            src={current.image} 
+          <Image 
+            src={current.image}
             alt="Patient testimonial"
-            className="w-full h-full object-cover transition-transform duration-700"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover"
+            quality={75}
+            priority={currentIndex === 0}
           />
           {/* Gradient overlay for text readability if needed */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
           
           {/* Patient badge on image */}
           <div className="absolute top-4 left-4">
-            <span className="inline-block px-3 py-1.5 bg-white/90 backdrop-blur rounded-full text-xs font-medium text-slate-800">
+            <span className="inline-block px-3 py-1.5 bg-white/90 rounded-full text-xs font-medium text-slate-800">
               {lang === 'zh-TW' ? '病人分享' : 'Patient Story'}
             </span>
           </div>
@@ -91,15 +123,17 @@ export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
           <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-3">
             <button
               onClick={prevTestimonial}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur hover:bg-white shadow-lg flex items-center justify-center transition-all hover:scale-110"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95"
               aria-label="Previous testimonial"
+              style={{ willChange: 'transform' }}
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
             </button>
             <button
               onClick={nextTestimonial}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur hover:bg-white shadow-lg flex items-center justify-center transition-all hover:scale-110"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95"
               aria-label="Next testimonial"
+              style={{ willChange: 'transform' }}
             >
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
             </button>
@@ -108,7 +142,10 @@ export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
 
         {/* Quote Card - Staggered/Offset below */}
         <div className="relative -mt-16 sm:-mt-20 mx-4 sm:mx-6">
-          <div className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-xl border border-stone-100">
+          <div 
+            className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 shadow-xl border border-stone-100"
+            style={{ transform: 'translateZ(0)' }}
+          >
             {/* Quote icon */}
             <div className="absolute -top-3 left-6 w-6 h-6 bg-[#00477f] rounded-full flex items-center justify-center">
               <Quote className="w-3 h-3 text-white" />
@@ -116,11 +153,7 @@ export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
 
             {/* Stars */}
             <div className="flex gap-1 mb-3">
-              {[...Array(current.rating)].map((_, i) => (
-                <svg key={i} className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+              <StarRating rating={current.rating} />
             </div>
 
             {/* Quote text */}
@@ -141,10 +174,10 @@ export function TestimonialShowcase({ lang }: TestimonialShowcaseProps) {
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
+                    className={`h-2 rounded-full transition-all duration-300 ${
                       index === currentIndex 
                         ? 'bg-[#00477f] w-5' 
-                        : 'bg-stone-300 hover:bg-stone-400'
+                        : 'bg-stone-300 hover:bg-stone-400 w-2'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
                   />

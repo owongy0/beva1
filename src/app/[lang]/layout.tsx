@@ -185,7 +185,7 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <Providers>
-          <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+          <header className="sticky top-0 z-50 w-full border-b bg-white">
             <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
               
               {/* Logo */}
@@ -252,7 +252,7 @@ export default async function LocaleLayout({
                       <span className="sr-only">{dict.nav.menu}</span>
                     </button>
                   </SheetTrigger>
-                  <SheetContent side="right" className="w-[280px] sm:w-[320px] bg-white p-0" showCloseButton={false}>
+                  <SheetContent side="right" className="w-[280px] sm:w-[320px] bg-white p-0 [&>[data-slot=sheet-overlay]]:bg-black/50" showCloseButton={false}>
                     {/* Header with Logo and Close */}
                     <div className="p-4 sm:p-6 border-b bg-gray-50 flex items-center justify-between">
                       <SheetTitle className="text-left">

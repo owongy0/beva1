@@ -1,0 +1,11 @@
+Performance optimization: Fix mobile frame rate issues
+
+- Replace 3D flip cards with GPU-friendly modal in team-grid.tsx
+- Optimize hero carousel with Next.js Image component and lazy loading
+- Remove expensive backdrop-blur effects from header
+- Add memoization to prevent unnecessary re-renders
+- Implement CSS containment and GPU acceleration hints
+- Optimize chatbot hook to reduce re-renders
+- Add requestAnimationFrame for smooth animations
+- Configure Next.js image optimization and package imports
+- Add reduced-motion support for accessibility

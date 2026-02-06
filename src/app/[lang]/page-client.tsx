@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import {
@@ -105,10 +105,13 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                   <button className="group relative bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 hover:border-[#00477f]/20 h-full flex flex-col text-left">
                     {/* Category Image */}
                     <div className="aspect-[2/1] overflow-hidden bg-stone-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img 
                         src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg"
                         alt={category.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 will-change-transform"
                       />
                     </div>
                     
@@ -280,9 +283,13 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
 
       {/* Full-Width Image Break Section */}
       <section className="relative h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: 'url(/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg)' }}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/doctor-talking-with-male-patient-GettyImages-172600009-1040x615.jpg"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-[#00477f]/60" />
         <div className="relative h-full flex items-center justify-center px-4">

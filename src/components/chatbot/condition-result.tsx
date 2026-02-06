@@ -6,7 +6,7 @@ import { ArrowRight, Stethoscope } from 'lucide-react';
 interface ConditionResultProps {
   result: ConditionResultType;
   lang: Locale;
-  onViewTreatment: (categoryId: string, conditionId: string) => void;
+  onViewTreatment: (categoryId: string) => void;
   onBookAppointment: () => void;
 }
 
@@ -49,7 +49,7 @@ export function ConditionResultCard({
       
       <div className="flex gap-2">
         <button
-          onClick={() => onViewTreatment(result.categoryId, result.conditionId)}
+          onClick={() => onViewTreatment(result.categoryId)}
           className="flex-1 px-3 py-2 bg-[#00477f] text-white rounded-lg text-xs font-medium hover:bg-[#003d70] transition-colors flex items-center justify-center gap-1"
         >
           {lang === 'zh-TW' ? '了解更多' : 'Learn More'}

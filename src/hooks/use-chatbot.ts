@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import {
   Locale,
   ChatMessage,
@@ -13,8 +13,9 @@ import {
   getDurationOptions,
   getSeverityOptions,
   matchConditions,
-  getDisclaimer,
   bodyAreas,
+  femalePelvicSymptoms,
+  malePelvicSymptoms,
 } from '@/lib/chatbot-data';
 
 interface UseChatbotProps {
@@ -36,6 +37,9 @@ interface UseChatbotReturn {
 // Generate unique ID
 const generateId = () => Math.random().toString(36).substring(2, 9);
 
+// Static options - computed once per language
+const getInitialOptions = (lang: Locale) => getBodyAreaOptions(lang);
+
 export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbotReturn {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -46,39 +50,10 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
     matchedConditions: [],
   });
   const [isTyping, setIsTyping] = useState(false);
-
-  // Initialize conversation when opened
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      startNewConversation();
-    }
-  }, [isOpen]);
-
-  // Load from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('chatbot_state');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.messages?.length > 0) {
-          setMessages(parsed.messages);
-          setConversationState(parsed.conversationState);
-        }
-      } catch {
-        // Ignore parse errors
-      }
-    }
-  }, []);
-
-  // Save to localStorage
-  useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem('chatbot_state', JSON.stringify({
-        messages,
-        conversationState,
-      }));
-    }
-  }, [messages, conversationState]);
+  
+  // Use ref for typing timeout to avoid re-renders
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitializedRef = useRef(false);
 
   const toggleChat = useCallback(() => {
     setIsOpen(prev => !prev);
@@ -99,10 +74,71 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
   }, []);
 
   const showTyping = useCallback(async (delay: number = 800) => {
+    // Clear any existing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    
     setIsTyping(true);
-    await new Promise(resolve => setTimeout(resolve, delay));
-    setIsTyping(false);
+    
+    return new Promise<void>((resolve) => {
+      typingTimeoutRef.current = setTimeout(() => {
+        setIsTyping(false);
+        resolve();
+      }, delay);
+    });
   }, []);
+
+  // Define showResults early since it's used by handleSeveritySelect
+  const showResults = useCallback(async (symptomIds: string[]) => {
+    const matched = matchConditions(
+      symptomIds, 
+      lang, 
+      categoryNames, 
+      conversationState.selectedGender
+    );
+    
+    setConversationState(prev => ({
+      ...prev,
+      matchedConditions: matched,
+      step: 'results',
+    }));
+
+    if (matched.length === 0) {
+      const noMatchMessage = lang === 'zh-TW'
+        ? '根據您提供的資訊，我們無法確定具體的治療建議。建議您預約諮詢，讓我們的專科醫生為您進行詳細評估。'
+        : 'Based on the information provided, we cannot determine specific treatment recommendations. We suggest booking a consultation for a detailed evaluation by our specialists.';
+
+      addMessage({
+        role: 'bot',
+        content: noMatchMessage,
+        type: 'text',
+      });
+    } else {
+      const resultsMessage = lang === 'zh-TW'
+        ? `根據您的症狀，以下治療項目可能適合您的情況：`
+        : `Based on your symptoms, the following treatments may be suitable for your condition:`;
+
+      addMessage({
+        role: 'bot',
+        content: resultsMessage,
+        type: 'results',
+        results: matched,
+      });
+
+      await showTyping(500);
+
+      const nextStepMessage = lang === 'zh-TW'
+        ? '您可以點擊上方「了解更多」查看治療詳情，或點擊「預約諮詢」與我們的專科醫生聯繫。'
+        : 'You can click "Learn More" above to view treatment details, or "Book Consultation" to connect with our specialists.';
+
+      addMessage({
+        role: 'bot',
+        content: nextStepMessage,
+        type: 'text',
+      });
+    }
+  }, [lang, categoryNames, conversationState.selectedGender, addMessage, showTyping]);
 
   const startNewConversation = useCallback(async () => {
     setMessages([]);
@@ -133,12 +169,52 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
       role: 'bot',
       content: bodyAreaQuestion,
       type: 'quick_replies',
-      options: getBodyAreaOptions(lang),
+      options: getInitialOptions(lang),
       step: 'body_area',
     });
 
     setConversationState(prev => ({ ...prev, step: 'body_area' }));
   }, [lang, addMessage, showTyping]);
+
+  // Initialize conversation when opened - only once
+  useEffect(() => {
+    if (isOpen && !isInitializedRef.current && messages.length === 0) {
+      isInitializedRef.current = true;
+      // Defer to avoid synchronous setState in effect
+      Promise.resolve().then(() => {
+        startNewConversation();
+      });
+    }
+  }, [isOpen, messages.length, startNewConversation]);
+
+  // Load from localStorage - only on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('chatbot_state');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.messages?.length > 0) {
+          setMessages(parsed.messages);
+          setConversationState(parsed.conversationState);
+        }
+      } catch {
+        // Ignore parse errors
+      }
+    }
+  }, []);
+
+  // Save to localStorage - debounced
+  useEffect(() => {
+    if (messages.length > 0) {
+      const timeoutId = setTimeout(() => {
+        localStorage.setItem('chatbot_state', JSON.stringify({
+          messages,
+          conversationState,
+        }));
+      }, 500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [messages, conversationState]);
 
   const handleBodyAreaSelect = useCallback(async (bodyAreaId: string) => {
     // Special handling for pelvic - need gender first
@@ -332,59 +408,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
 
     await showTyping(600);
     showResults(conversationState.selectedSymptoms);
-  }, [conversationState.selectedSymptoms, showTyping]);
-
-  const showResults = useCallback(async (symptomIds: string[]) => {
-    const matched = matchConditions(
-      symptomIds, 
-      lang, 
-      categoryNames, 
-      conversationState.selectedGender
-    );
-    
-    setConversationState(prev => ({
-      ...prev,
-      matchedConditions: matched,
-      step: 'results',
-    }));
-
-    if (matched.length === 0) {
-      const noMatchMessage = lang === 'zh-TW'
-        ? '根據您提供的資訊，我們無法確定具體的治療建議。建議您預約諮詢，讓我們的專科醫生為您進行詳細評估。'
-        : 'Based on the information provided, we cannot determine specific treatment recommendations. We suggest booking a consultation for a detailed evaluation by our specialists.';
-
-      addMessage({
-        role: 'bot',
-        content: noMatchMessage,
-        type: 'text',
-      });
-    } else {
-      const resultsMessage = lang === 'zh-TW'
-        ? `根據您的症狀，以下治療項目可能適合您的情況：`
-        : `Based on your symptoms, the following treatments may be suitable for your condition:`;
-
-      addMessage({
-        role: 'bot',
-        content: resultsMessage,
-        type: 'results',
-        results: matched,
-      });
-
-      await showTyping(500);
-
-      const nextStepMessage = lang === 'zh-TW'
-        ? '您可以點擊上方「了解更多」查看治療詳情，或點擊「預約諮詢」與我們的專科醫生聯繫。'
-        : 'You can click "Learn More" above to view treatment details, or "Book Consultation" to connect with our specialists.';
-
-      addMessage({
-        role: 'bot',
-        content: nextStepMessage,
-        type: 'text',
-      });
-    }
-
-    // Disclaimer is shown in the fixed footer of the chat window, not as a message
-  }, [lang, categoryNames, conversationState.selectedGender, addMessage, showTyping]);
+  }, [conversationState.selectedSymptoms, showTyping, showResults]);
 
   const handleOptionClick = useCallback((option: QuickReplyOption) => {
     // Handle based on action type
@@ -410,11 +434,10 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
           const selectedLabels = conversationState.selectedSymptoms.map(symptomId => {
             // Check pelvic symptoms based on gender
             if (conversationState.selectedBodyArea === 'pelvic' && conversationState.selectedGender) {
-              const { femalePelvicSymptoms, malePelvicSymptoms } = require('@/lib/chatbot-data');
               const symptoms = conversationState.selectedGender === 'female' 
                 ? femalePelvicSymptoms 
                 : malePelvicSymptoms;
-              const symptom = symptoms.find((s: any) => s.id === symptomId);
+              const symptom = symptoms.find((s) => s.id === symptomId);
               if (symptom) return symptom.label[lang];
             }
             
@@ -469,7 +492,7 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
     }
   }, [addMessage, handleBodyAreaSelect, handleGenderSelect, handleSymptomSelect, handleContinueToDuration, handleDurationSelect, handleSeveritySelect, startNewConversation, closeChat, lang, conversationState]);
 
-  return {
+  return useMemo(() => ({
     isOpen,
     messages,
     conversationState,
@@ -478,5 +501,5 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
     closeChat,
     handleOptionClick,
     startNewConversation,
-  };
+  }), [isOpen, messages, conversationState, isTyping, toggleChat, closeChat, handleOptionClick, startNewConversation]);
 }
