@@ -368,14 +368,8 @@ export function useChatbot({ lang, categoryNames }: UseChatbotProps): UseChatbot
       });
     }
 
-    await showTyping(400);
-
-    // Add disclaimer
-    addMessage({
-      role: 'bot',
-      content: getDisclaimer(lang),
-      type: 'text',
-    });
+    // Disclaimer is shown in the fixed footer of the chat window, not as a message
+    // This prevents it from displacing important content
   }, [lang, categoryNames, addMessage, showTyping]);
 
   const handleOptionClick = useCallback((option: QuickReplyOption) => {

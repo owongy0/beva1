@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { MessageCircle, X, Stethoscope } from 'lucide-react';
 import { Locale } from '@/lib/chatbot-data';
 import { useChatbot } from '@/hooks/use-chatbot';
@@ -14,7 +14,32 @@ interface ChatWidgetProps {
 
 export function ChatWidget({ lang, categoryNames, onOpenTreatmentDialog }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [showPreview, setShowPreview] = useState(true);
+  const [showPreview, setShowPreview] = useState(false);
+  const [hasScrolledPastTreatments, setHasScrolledPastTreatments] = useState(false);
+
+  // Monitor scroll position to show preview only after treatments section
+  useEffect(() => {
+    const handleScroll = () => {
+      // Get the treatments section
+      const proceduresSection = document.getElementById('procedures');
+      if (proceduresSection) {
+        const rect = proceduresSection.getBoundingClientRect();
+        // Show preview when user has scrolled past the treatments section (bottom of it is above viewport bottom)
+        const hasPassed = rect.bottom < window.innerHeight;
+        setHasScrolledPastTreatments(hasPassed);
+        
+        // Auto-show preview when first passing the treatments section
+        if (hasPassed && !hasScrolledPastTreatments && !isOpen) {
+          setShowPreview(true);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check initial position
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasScrolledPastTreatments, isOpen]);
 
   const toggleChat = useCallback(() => {
     setIsOpen(prev => !prev);
@@ -54,8 +79,8 @@ export function ChatWidget({ lang, categoryNames, onOpenTreatmentDialog }: ChatW
       {/* Preview Card + Floating Button */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-          {/* Preview Card */}
-          {showPreview && (
+          {/* Preview Card - Only show after scrolling past treatments */}
+          {showPreview && hasScrolledPastTreatments && (
             <div 
               className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4 max-w-[280px] animate-in fade-in slide-in-from-bottom-4 duration-300 cursor-pointer hover:shadow-2xl transition-shadow"
               onClick={toggleChat}
