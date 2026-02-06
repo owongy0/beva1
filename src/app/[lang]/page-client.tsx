@@ -25,6 +25,7 @@ import {
   Sparkles,
   ArrowRight,
   Mail,
+  User,
 } from 'lucide-react';
 import {
   Accordion,
@@ -209,96 +210,110 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
         </div>
       </section>
 
-      {/* Our Focus Section */}
+      {/* Why Choose Us Section */}
       <section id="about" className="py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-              {lang === 'zh-TW' ? '我們的專科範疇' : 'Our Clinical Focus'}
+              {lang === 'zh-TW' ? '為何選擇我們' : 'Why Choose Us'}
             </h2>
             <div className="w-24 h-1.5 bg-[#00477f] mx-auto rounded-full mb-6"></div>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
               {lang === 'zh-TW' 
-                ? '從腦部血管到周邊動脈，我們以微創技術治療全身各部位的血管疾病，避免傳統開刀手術的風險與恢復期。'
-                : 'From brain vessels to peripheral arteries, we treat vascular conditions throughout the body using minimally invasive techniques—avoiding the risks and recovery time of traditional open surgery.'}
+                ? '我們結合專業醫療團隊、先進微創技術與以病人為本的服務理念，為您提供安全、有效的治療方案。'
+                : 'We combine expert medical teams, advanced minimally invasive techniques, and patient-centered care to deliver safe, effective treatments.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Neurovascular */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Expert Team */}
             <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">
-                {lang === 'zh-TW' ? '腦血管疾病' : 'Neurovascular Conditions'}
-              </h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '治療腦動脈瘤、血管畸形及腦部出血性疾病，無需開顱手術。'
-                  : 'Brain aneurysms, vascular malformations, and intracranial hemorrhage—treated without opening the skull.'}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['Cerebral Aneurysm', 'Brain AVM', 'Dural AV Fistula', 'cSDH'].map((item) => (
-                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
-                    {item}
-                  </span>
-                ))}
+              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
+                <Award className="w-7 h-7 text-[#00477f]" />
               </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {lang === 'zh-TW' ? '專科醫生團隊' : 'Specialist Doctors'}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '由資深血管介入專科醫生主理，具備豐富臨床經驗及國際專業認證。'
+                  : 'Led by experienced interventional specialists with international certifications and proven clinical expertise.'}
+              </p>
             </div>
 
-            {/* Arterial/Vascular */}
+            {/* Minimally Invasive */}
             <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">
-                {lang === 'zh-TW' ? '動脈及主動脈疾病' : 'Arterial & Aortic Disease'}
-              </h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '頸動脈狹窄及主動脈瘤的血管內修復，降低中風風險。'
-                  : 'Carotid artery stenosis and aortic aneurysm repair—reducing stroke risk and preventing rupture.'}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['Carotid Stenting', 'EVAR/TEVAR'].map((item) => (
-                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
-                    {item}
-                  </span>
-                ))}
+              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
+                <Stethoscope className="w-7 h-7 text-[#00477f]" />
               </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {lang === 'zh-TW' ? '微創治療技術' : 'Minimally Invasive'}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '採用先進血管內治療，傷口細小、恢復快，無需傳統開刀手術。'
+                  : 'Advanced endovascular procedures with tiny incisions, faster recovery—no traditional open surgery needed.'}
+              </p>
             </div>
 
-            {/* Pelvic/Organ Health */}
+            {/* Same-Day Discharge */}
             <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">
-                {lang === 'zh-TW' ? '盆腔及器官健康' : 'Pelvic & Organ Health'}
-              </h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '子宮肌瘤、前列腺肥大及痔瘡的動脈栓塞治療，保留器官功能。'
-                  : 'Uterine fibroids, enlarged prostate, and hemorrhoids—treated while preserving organ function.'}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['Uterine Fibroids', 'BPH', 'Hemorrhoids'].map((item) => (
-                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
-                    {item}
-                  </span>
-                ))}
+              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
+                <Clock className="w-7 h-7 text-[#00477f]" />
               </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {lang === 'zh-TW' ? '即日出院' : 'Same-Day Discharge'}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '多數治療可於日間中心完成，當天即可回家休息，減少住院時間。'
+                  : 'Most procedures done at our day procedure centre—return home the same day with minimal hospital stay.'}
+              </p>
             </div>
 
-            {/* Chronic Pain/Musculoskeletal */}
+            {/* Personalised Care */}
             <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">
-                {lang === 'zh-TW' ? '慢性疼痛治療' : 'Chronic Pain Management'}
-              </h3>
-              <p className="text-slate-600 mb-4 leading-relaxed">
-                {lang === 'zh-TW'
-                  ? '膝關節炎及足底筋膜炎的血管栓塞治療，延遲或避免關節置換手術。'
-                  : 'Knee osteoarthritis and plantar fasciitis—delaying or avoiding joint replacement surgery.'}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['Knee Arthritis', 'Plantar Fasciitis'].map((item) => (
-                  <span key={item} className="px-3 py-1 bg-white rounded-full text-sm text-slate-600 border border-slate-200">
-                    {item}
-                  </span>
-                ))}
+              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
+                <User className="w-7 h-7 text-[#00477f]" />
               </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {lang === 'zh-TW' ? '個人化治療方案' : 'Personalised Care'}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '根據每位病人的情況制定專屬治療計劃，確保最佳治療效果。'
+                  : 'Tailored treatment plans based on your specific condition for optimal outcomes and peace of mind.'}
+              </p>
+            </div>
+
+            {/* Modern Facilities */}
+            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
+              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
+                <MapPin className="w-7 h-7 text-[#00477f]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {lang === 'zh-TW' ? '現代化醫療設施' : 'Modern Facilities'}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '配備先進醫療設備的日間治療中心，提供安全舒適的治療環境。'
+                  : 'State-of-the-art day procedure centre equipped with advanced medical technology in a comfortable setting.'}
+              </p>
+            </div>
+
+            {/* Comprehensive Support */}
+            <div className="bg-slate-50 rounded-2xl p-8 hover:bg-[#f0f5fa] transition-colors duration-300">
+              <div className="w-14 h-14 bg-[#00477f]/10 rounded-xl flex items-center justify-center mb-6">
+                <Phone className="w-7 h-7 text-[#00477f]" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {lang === 'zh-TW' ? '全程跟進服務' : 'Ongoing Support'}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">
+                {lang === 'zh-TW'
+                  ? '從諮詢到術後跟進，提供全程醫療支援，解答您的所有疑問。'
+                  : 'From initial consultation through recovery, we provide continuous support and answer all your questions.'}
+              </p>
             </div>
           </div>
 

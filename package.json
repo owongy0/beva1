@@ -28,8 +28,11 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-leaflet": "^5.0.0",
-    "resend": "^6.9.1",
     "tailwind-merge": "^3.4.0"
+  },
+  "overrides": {
+    "@auth/core": "0.41.1",
+    "nodemailer": false
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
