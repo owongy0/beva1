@@ -1,5 +1,6 @@
 import { type Metadata } from 'next'
 import Image from 'next/image'
+import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import '../globals.css'
@@ -30,9 +31,71 @@ export async function generateMetadata({
   const { lang } = await params
   const dict = await getDictionary(lang as 'en' | 'zh-TW')
   
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://beva.com.hk'
+  
   return {
-    title: dict.metadata.title,
+    title: {
+      default: dict.metadata.title,
+      template: '%s | Brain & Endovascular Associates'
+    },
     description: dict.metadata.description,
+    keywords: [
+      'endovascular treatment',
+      'brain aneurysm treatment',
+      'stroke treatment',
+      'minimally invasive surgery',
+      'vascular surgery',
+      'neurovascular',
+      'interventional radiology',
+      'Hong Kong',
+      '血管內治療',
+      '腦動脈瘤',
+      '中風治療',
+      '微創手術'
+    ],
+    authors: [{ name: 'Brain & Endovascular Associates' }],
+    creator: 'Brain & Endovascular Associates',
+    publisher: 'Brain & Endovascular Associates',
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    alternates: {
+      canonical: `${baseUrl}/${lang}`,
+      languages: {
+        'en': `${baseUrl}/en`,
+        'zh-TW': `${baseUrl}/zh-TW`,
+      },
+    },
+    openGraph: {
+      type: 'website',
+      locale: lang === 'zh-TW' ? 'zh_HK' : 'en_HK',
+      url: `${baseUrl}/${lang}`,
+      siteName: 'Brain & Endovascular Associates',
+      title: dict.metadata.title,
+      description: dict.metadata.description,
+      images: [
+        {
+          url: `${baseUrl}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: 'Brain & Endovascular Associates',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: dict.metadata.title,
+      description: dict.metadata.description,
+      images: [`${baseUrl}/og-image.jpg`],
+    },
     icons: {
       icon: [
         { url: '/bevafavicon.webp?v=2', type: 'image/webp' },
@@ -40,6 +103,10 @@ export async function generateMetadata({
       apple: [
         { url: '/bevafavicon.webp?v=2', type: 'image/webp' },
       ],
+    },
+    manifest: '/manifest.json',
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
     },
   }
 }
@@ -69,9 +136,53 @@ export default async function LocaleLayout({
     callUs: lang === 'zh-TW' ? '致電我們' : 'Call Us',
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://beva.com.hk'
+  
+  // JSON-LD Structured Data for Medical Organization
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalOrganization',
+    name: 'Brain & Endovascular Associates',
+    alternateName: 'BEVA',
+    url: `${baseUrl}/${lang}`,
+    logo: `${baseUrl}/BEVA1.svg`,
+    description: dict.metadata.description,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '21/F, 21 Ashley Road',
+      addressLocality: 'Tsim Sha Tsui',
+      addressRegion: 'Kowloon',
+      addressCountry: 'HK',
+    },
+    telephone: dict.contact.phone,
+    email: dict.contact.email,
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '09:00',
+        closes: '18:00',
+      },
+    ],
+    medicalSpecialty: [
+      'Endovascular Surgery',
+      'Interventional Radiology',
+      'Neurovascular Surgery',
+      'Vascular Surgery',
+    ],
+    sameAs: [
+      // Add social media URLs when available
+    ],
+  }
+
   return (
     <html lang={lang} className="scroll-smooth">
       <body className={`${inter.variable} font-sans antialiased bg-white text-black`}>
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <Providers>
           <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
             <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">

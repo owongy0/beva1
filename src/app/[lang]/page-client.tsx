@@ -387,33 +387,49 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
             subtitle={t.contact.subtitle} 
           />
           
-          <div className="grid lg:grid-cols-5 gap-6 sm:gap-8">
+          <div className="grid lg:grid-cols-5 gap-6 sm:gap-8 items-center">
             {/* Contact Info - Left Side */}
-            <div className="lg:col-span-2 space-y-5 sm:space-y-6">
+            <div className="lg:col-span-2 space-y-5 sm:space-y-6 flex flex-col justify-center h-full">
               {/* Main CTA Card */}
-              <div className="bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 text-white shadow-xl shadow-[#00477f]/20">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3">
-                  {lang === 'zh-TW' ? '預約諮詢' : 'Book a Consultation'}
-                </h3>
-                <p className="text-white/80 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                  {lang === 'zh-TW' 
-                    ? '與我們的專科醫生團隊預約初步諮詢，討論您的治療選項。'
-                    : 'Schedule an initial consultation with our specialist team to discuss your treatment options.'}
-                </p>
+              <div className="relative overflow-hidden bg-gradient-to-br from-[#00477f] to-[#003d70] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 text-white shadow-xl shadow-[#00477f]/20">
+                {/* Decorative Pattern */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
                 
-                {/* Phone & WhatsApp Buttons */}
-                <div className="space-y-3">
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                      <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
+                        {lang === 'zh-TW' ? '預約諮詢' : 'Book a Consultation'}
+                      </h3>
+                      <p className="text-white/70 text-xs sm:text-sm">
+                        {lang === 'zh-TW' ? '專科醫生一對一諮詢' : 'One-on-one with our specialists'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <p className="text-white/80 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                    {lang === 'zh-TW' 
+                      ? '與我們的專科醫生團隊預約初步諮詢，討論您的治療選項。'
+                      : 'Schedule an initial consultation with our specialist team to discuss your treatment options.'}
+                  </p>
+                  
+                  {/* Phone Button */}
                   <Button 
-                    className="w-full bg-white text-[#00477f] hover:bg-stone-100 py-3 sm:py-4 text-sm sm:text-base font-semibold"
+                    className="w-full bg-white text-[#00477f] hover:bg-stone-100 py-4 sm:py-5 text-sm sm:text-base font-semibold shadow-lg"
                     onClick={() => window.location.href = `tel:${t.contact.phone.replace(/\s/g, '')}`}
                   >
-                    <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    <Phone className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
                     {t.contact.phone}
                   </Button>
                   
+                  {/* WhatsApp Button */}
                   <Button 
                     variant="outline"
-                    className="w-full border-2 border-white text-white hover:bg-white/10 bg-transparent py-3 sm:py-4 text-sm sm:text-base font-semibold"
+                    className="w-full border-2 border-white/80 text-white hover:bg-white/15 bg-transparent/10 py-3 sm:py-4 text-sm sm:text-base font-semibold backdrop-blur-sm mt-3"
                     onClick={() => window.open(`https://wa.me/${t.contact.whatsapp.replace(/\D/g, '')}`, '_blank')}
                   >
                     <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -422,70 +438,57 @@ export default function HomePageClient({ lang, dictionary }: HomePageClientProps
                 </div>
               </div>
 
-              {/* Contact Methods Grid */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {/* Address */}
-                <div className="col-span-2 sm:col-span-1 flex items-start gap-2.5 sm:gap-3 p-3 sm:p-4 bg-stone-50 rounded-xl">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-sky-100 rounded-lg flex items-center justify-center shrink-0">
-                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
+              {/* Contact Info Cards - Two Rows */}
+              <div className="space-y-3 sm:space-y-4">
+                {/* Address Card */}
+                <a 
+                  href={`https://maps.google.com/?q=${encodeURIComponent(t.contact.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-stone-200 shadow-sm hover:shadow-md hover:border-[#00477f]/30 transition-all group"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#00477f]/10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-[#00477f] transition-colors">
+                    <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#00477f] group-hover:text-white transition-colors" />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-slate-900 text-xs sm:text-sm mb-0.5">
-                      {lang === 'zh-TW' ? '診所地址' : 'Address'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-slate-900 text-sm sm:text-base mb-0.5">
+                      {lang === 'zh-TW' ? '診所地址' : 'Clinic Address'}
                     </h4>
-                    <p className="text-slate-600 text-[10px] sm:text-xs leading-relaxed">
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                       {t.contact.address}
                     </p>
                   </div>
-                </div>
+                  <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-[#00477f] transition-colors shrink-0" />
+                </a>
 
-                {/* Hours */}
-                <div className="col-span-2 sm:col-span-1 flex items-start gap-2.5 sm:gap-3 p-3 sm:p-4 bg-stone-50 rounded-xl">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-sky-100 rounded-lg flex items-center justify-center shrink-0">
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
+                {/* Hours Card */}
+                <div className="flex items-center gap-4 p-4 sm:p-5 bg-white rounded-xl sm:rounded-2xl border border-stone-200 shadow-sm">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-amber-50 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0">
+                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-slate-900 text-xs sm:text-sm mb-0.5">
-                      {lang === 'zh-TW' ? '營業時間' : 'Hours'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-slate-900 text-sm sm:text-base mb-0.5">
+                      {lang === 'zh-TW' ? '營業時間' : 'Opening Hours'}
                     </h4>
-                    <p className="text-slate-600 text-[10px] sm:text-xs">
+                    <p className="text-slate-600 text-xs sm:text-sm">
                       {t.contact.hours}
                     </p>
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div className="col-span-2 sm:col-span-1 flex items-start gap-2.5 sm:gap-3 p-3 sm:p-4 bg-stone-50 rounded-xl">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-sky-100 rounded-lg flex items-center justify-center shrink-0">
-                    <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#00477f]" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-slate-900 text-xs sm:text-sm mb-0.5">Email</h4>
-                    <a href={`mailto:${t.contact.email}`} className="text-slate-600 hover:text-[#00477f] transition-colors text-[10px] sm:text-xs break-all">
-                      {t.contact.email}
-                    </a>
-                  </div>
-                </div>
-
-                {/* WhatsApp Quick Link */}
-                <div className="col-span-2 sm:col-span-1 flex items-start gap-2.5 sm:gap-3 p-3 sm:p-4 bg-stone-50 rounded-xl">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
-                    <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-slate-900 text-xs sm:text-sm mb-0.5">WhatsApp</h4>
-                    <a href={`https://wa.me/${t.contact.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-green-600 transition-colors text-[10px] sm:text-xs">
-                      {t.contact.whatsapp}
-                    </a>
                   </div>
                 </div>
               </div>
             </div>
             
             {/* Map - Right Side */}
-            <div className="lg:col-span-3 h-[300px] sm:h-[350px] lg:h-auto min-h-[300px] sm:min-h-[350px] lg:min-h-[450px]">
-              <div className="bg-stone-100 rounded-2xl sm:rounded-3xl overflow-hidden h-full border border-stone-200">
+            <div className="lg:col-span-3 h-[350px] sm:h-[400px] lg:h-auto min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
+              <div className="bg-stone-100 rounded-2xl sm:rounded-3xl overflow-hidden h-full border border-stone-200 shadow-lg">
                 <ClinicMap />
+              </div>
+              {/* Map Caption */}
+              <div className="mt-3 sm:mt-4 flex items-center gap-2 text-slate-500">
+                <MapPin className="w-4 h-4 text-[#00477f]" />
+                <p className="text-xs sm:text-sm">
+                  {lang === 'zh-TW' ? '點擊地圖查看詳細位置' : 'Click map to view detailed location'}
+                </p>
               </div>
             </div>
           </div>
